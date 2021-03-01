@@ -1,0 +1,4 @@
+[run]
+branch = true
+source = delfin
+omit = delfin/tests/*
