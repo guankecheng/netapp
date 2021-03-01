@@ -209,11 +209,11 @@ class SSHHandler(object):
                         total_cap = self.parse_string(pool_map.get('Storage Pool Total Size'))
                         free_cap = self.parse_string(pool_map.get('Storage Pool Usable Size'))
                         p = {
-                            'name': pool_map.get('Storage Pool Name'),
+                            'name': pool_map.get('StoragePoolName'),
                             'storage_id': storage_id,
-                            'native_storage_pool_id': pool_map.get('UUID of Storage Pool'),
+                            'native_storage_pool_id': pool_map.get('UUIDofStoragePool'),
                             'description': '',
-                            'status': pool_map.get('State of the Storage Pool'),
+                            'status': pool_map.get('StateoftheStoragePool'),
                             'storage_type': constants.StorageType.BLOCK,
                             # TODO
                             # 'subscribed_capacity': int(subscribed_capacity),
@@ -287,17 +287,17 @@ class SSHHandler(object):
                     alert_map = {}
                     self.handle_detail(alert_detail, alert_map, split=':')
                     alert_model = {
-                        'alert_id': alert_map.get('Alert ID'),
-                        'alert_name': alert_map.get('Probable Cause'),
-                        'severity': alert_map.get('Perceived Severity'),
+                        'alert_id': alert_map.get('AlertID'),
+                        'alert_name': alert_map.get('ProbableCause'),
+                        'severity': alert_map.get('PerceivedSeverity'),
                         'category': constants.Category.FAULT,
                         'type': 'EquipmentAlarm',
-                        'occur_time': alert_map.get('Indication Time'),
+                        'occur_time': alert_map.get('IndicationTime'),
                         'description': alert_map.get('Description'),
                         # TODO
-                        'sequence_number': alert_map.get('sequence_number'),
+                        'sequence_number': '',
                         'resource_type': '',
-                        'location': alert_map.get('Alerting Resource Name')
+                        'location': alert_map.get('AlertingResourceName')
                     }
                     alert_list.append(alert_model)
             return alert_list
