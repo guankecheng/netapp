@@ -23,9 +23,6 @@ DB_MAX_INT = 0x7FFFFFFF
 # Valid access type supported currently.
 ACCESS_TYPE = ['rest', 'ssh', 'cli', 'smis']
 
-RESOURCE_CLASS_TYPE = {'array_polling': 'ArrayPerformanceCollection'}
-SCHEDULING_MIN_INTERVAL = 5
-
 
 # Custom fields for Delfin objects
 class StorageStatus(object):
@@ -62,8 +59,9 @@ class ControllerStatus(object):
 class StorageType(object):
     BLOCK = 'block'
     FILE = 'file'
+    UNIFIED = 'unified'
 
-    ALL = (BLOCK, FILE)
+    ALL = (BLOCK, FILE, UNIFIED)
 
 
 class SyncStatus(object):
@@ -146,6 +144,55 @@ class DiskLogicalType(object):
     UNKNOWN = 'unknown'
 
     ALL = (FREE, MEMBER, HOTSPARE, CACHE, UNKNOWN)
+
+
+class FilesystemStatus(object):
+    NORMAL = 'normal'
+    FAULTY = 'faulty'
+
+    ALL = (NORMAL, FAULTY)
+
+
+class WORMType(object):
+    NON_WORM = 'non_worm'
+    AUDIT_LOG = 'audit_log'
+    COMPLIANCE = 'compliance'
+    ENTERPRISE = 'enterprise'
+
+    ALL = (NON_WORM, AUDIT_LOG, COMPLIANCE, ENTERPRISE)
+
+
+class NASSecurityMode(object):
+    MIXED = 'mixed'
+    NATIVE = 'native'
+    NTFS = 'ntfs'
+    UNIX = 'unix'
+
+    ALL = (MIXED, NATIVE, NTFS, UNIX)
+
+
+class QuotaType(object):
+    TREE = 'tree'
+    USER = 'user'
+    GROUP = 'group'
+
+    ALL = (TREE, USER, GROUP)
+
+
+class FSType(object):
+    THICK = 'thick'
+    THIN = 'thin'
+
+    ALL = (THICK, THIN)
+
+
+class ShareProtocol(object):
+    CIFS = 'cifs'
+    NFS = 'nfs'
+    FTP = 'ftp'
+    HDFS = 'hdfs'
+
+    ALL = (CIFS, NFS, FTP, HDFS)
 
 
 # Enumerations for alert severity
@@ -236,15 +283,14 @@ metric_struct = namedtuple("Metric", "name labels values")
 
 # Unified Array metrics model
 DELFIN_ARRAY_METRICS = [
-    "response_time",
+    "responseTime",
     "throughput",
-    "read_throughput",
-    "write_throughput",
-    "bandwidth",
-    "read_bandwidth",
-    "write_bandwidth"
+    "readThroughput",
+    "writeThroughput",
+    "requests",
+    "readRequests",
+    "writeRequests"
 ]
-
 
 BLOCK_SIZE = 4096
 
@@ -253,3 +299,31 @@ class ResourceSync(object):
     START = 100
     SUCCEED = 100
     FAILED = 101
+
+
+class TelemetryCollection(object):
+    """Performance monitoring task name"""
+    PERFORMANCE_TASK_METHOD = "delfin.task_manager.scheduler.schedulers." \
+                              "telemetry.performance_collection_handler." \
+                              "PerformanceCollectionHandler"
+    """Performance monitoring job interval"""
+    PERIODIC_JOB_INTERVAL = 180
+    """Failed Performance monitoring job interval"""
+    FAILED_JOB_SCHEDULE_INTERVAL = 240
+    """Failed Performance monitoring retry count"""
+    MAX_FAILED_JOB_RETRY_COUNT = 5
+    """Default performance collection interval"""
+    DEF_PERFORMANCE_COLLECTION_INTERVAL = 900
+
+
+class TelemetryTaskStatus(object):
+    """Telemetry task enum"""
+    TASK_EXEC_STATUS_SUCCESS = True
+    TASK_EXEC_STATUS_FAILURE = False
+
+
+class TelemetryJobStatus(object):
+    """Telemetry jobs enum"""
+    FAILED_JOB_STATUS_SUCCESS = "Success"
+    FAILED_JOB_STATUS_RETRYING = "Retrying"
+    FAILED_JOB_STATUS_INIT = "Initialized"

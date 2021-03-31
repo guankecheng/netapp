@@ -18,13 +18,13 @@ import paramiko
 import six
 from oslo_log import log as logging
 from oslo_utils import units
-import netapp_constants
 
-from alert_handler import AlertHandler
+from delfin.drivers.netapp.netapp_fas import netapp_constants
+
+from delfin.drivers.netapp.netapp_fas.alert_handler import AlertHandler
 from delfin import exception, utils
 from delfin.common import constants, alert_util
 from delfin.drivers.utils.ssh_client import SSHPool
-
 
 LOG = logging.getLogger(__name__)
 
@@ -33,7 +33,6 @@ class NetAppHandler(object):
     # TODO
     OID_SERIAL_NUM = '1.3.6.1.4.1.789.1.1.9.0'
     OID_TRAP_DATA = '1.3.6.1.4.1.789.1.1.12.0'
-
 
     TRAP_SEVERITY_MAP = {
         '1.3.6.1.4.1.2.6.190.1': constants.Severity.CRITICAL,
@@ -103,7 +102,7 @@ class NetAppHandler(object):
             raise exception.SSHException(msg)
 
     @staticmethod
-    def change_capacity_to_bytes(self, unit):
+    def change_capacity_to_bytes(unit):
         unit = unit.upper()
         if unit == 'TB':
             result = units.Ti
@@ -174,11 +173,11 @@ class NetAppHandler(object):
             }
             return s
         except exception.DelfinException as e:
-            err_msg = "Failed to get storage from netapp fas: %s" % (six.text_type(e.msg))
+            err_msg = "Failed to get storage from netapp_fas fas: %s" % (six.text_type(e.msg))
             LOG.error(err_msg)
             raise e
         except Exception as err:
-            err_msg = "Failed to get storage from netapp fas: %s" % (six.text_type(err))
+            err_msg = "Failed to get storage from netapp_fas fas: %s" % (six.text_type(err))
             LOG.error(err_msg)
             raise exception.InvalidResults(err_msg)
 
@@ -219,7 +218,7 @@ class NetAppHandler(object):
                     'free_capacity': int(self.parse_string(pool_map.get('StoragePoolUsableSize')))
                 }
                 pool_list.append(p)
-            for agg in agg_arr:
+            for agg in agg_arr[1:]:
                 self.handle_detail(agg, pool_map, split=':')
                 p = {
                     'name': pool_map.get('e'),
@@ -237,11 +236,11 @@ class NetAppHandler(object):
                 pool_list.append(p)
             return pool_list
         except exception.DelfinException as e:
-            err_msg = "Failed to get storage pool from netapp fas: %s" % (six.text_type(e))
+            err_msg = "Failed to get storage pool from netapp_fas fas: %s" % (six.text_type(e))
             LOG.error(err_msg)
             raise e
         except Exception as err:
-            err_msg = "Failed to get storage pool from netapp fas: %s" % (six.text_type(err))
+            err_msg = "Failed to get storage pool from netapp_fas fas: %s" % (six.text_type(err))
             LOG.error(err_msg)
             raise exception.InvalidResults(err_msg)
 
@@ -282,11 +281,11 @@ class NetAppHandler(object):
                 volume_list.append(v)
             return volume_list
         except exception.DelfinException as e:
-            err_msg = "Failed to get storage volume from netapp fas: %s" % (six.text_type(e))
+            err_msg = "Failed to get storage volume from netapp_fas fas: %s" % (six.text_type(e))
             LOG.error(err_msg)
             raise e
         except Exception as err:
-            err_msg = "Failed to get storage volume from netapp fas: %s" % (six.text_type(err))
+            err_msg = "Failed to get storage volume from netapp_fas fas: %s" % (six.text_type(err))
             LOG.error(err_msg)
             raise exception.InvalidResults(err_msg)
 
@@ -296,8 +295,8 @@ class NetAppHandler(object):
             alert_info = self.exec_ssh_command(netapp_constants.ALTER_SHOW_DETAIL_COMMAND)
             event_info = self.exec_ssh_command(netapp_constants.EVENT_SHOW_DETAIL_COMMAND)
             """Query the two alarms separately"""
-            AlertHandler.list_events(event_info, query_para, alert_list)
-            AlertHandler.list_alerts(alert_info, query_para, alert_list)
+            AlertHandler.list_events(self, event_info, query_para, alert_list)
+            AlertHandler.list_alerts(self, alert_info, query_para, alert_list)
             return alert_list
         except exception.DelfinException as e:
             err_msg = "Failed to get storage alert: %s" % (six.text_type(e))
@@ -313,11 +312,11 @@ class NetAppHandler(object):
             ssh_command = netapp_constants.CLEAR_ALERT_COMMAND + alert.get('alert_id')
             self.exec_ssh_command(ssh_command)
         except exception.DelfinException as e:
-            err_msg = "Failed to get storage alert from netapp fas: %s" % (six.text_type(e))
+            err_msg = "Failed to get storage alert from netapp_fas fas: %s" % (six.text_type(e))
             LOG.error(err_msg)
             raise e
         except Exception as err:
-            err_msg = "Failed to get storage alert from netapp fas: %s" % (six.text_type(err))
+            err_msg = "Failed to get storage alert from netapp_fas fas: %s" % (six.text_type(err))
             LOG.error(err_msg)
             raise exception.InvalidResults(err_msg)
 
@@ -344,12 +343,12 @@ class NetAppHandler(object):
             return controller_list
 
         except exception.DelfinException as e:
-            err_msg = "Failed to get storage controllers from netapp fas: %s" % (six.text_type(e))
+            err_msg = "Failed to get storage controllers from netapp_fas fas: %s" % (six.text_type(e))
             LOG.error(err_msg)
             raise e
 
         except Exception as err:
-            err_msg = "Failed to get storage controllers from netapp fas: %s" % (six.text_type(err))
+            err_msg = "Failed to get storage controllers from netapp_fas fas: %s" % (six.text_type(err))
             LOG.error(err_msg)
             raise exception.InvalidResults(err_msg)
 
@@ -369,7 +368,8 @@ class NetAppHandler(object):
                 """Traversal to get port IP address information"""
                 for interface_info in interface_arr:
                     self.handle_detail(interface_info, interface_map, split=':')
-                    if interface_map.get('CurrentPort') == ports_map.get('Port') and interface_map.get('IsHome') is True :
+                    if interface_map.get('CurrentPort') == ports_map.get('Port') and interface_map.get(
+                            'IsHome') is True:
                         if interface_map.get('Addressfamily') == 'ipv4':
                             ipv4 = interface_map.get('NetworkAddress')
                             ipv4_mask = interface_map.get('Netmask')
@@ -398,12 +398,12 @@ class NetAppHandler(object):
                 ports_list.append(c)
             return ports_list
         except exception.DelfinException as e:
-            err_msg = "Failed to get storage ports from netapp fas: %s" % (six.text_type(e))
+            err_msg = "Failed to get storage ports from netapp_fas fas: %s" % (six.text_type(e))
             LOG.error(err_msg)
             raise e
 
         except Exception as err:
-            err_msg = "Failed to get storage ports from netapp fas: %s" % (six.text_type(err))
+            err_msg = "Failed to get storage ports from netapp_fas fas: %s" % (six.text_type(err))
             LOG.error(err_msg)
             raise exception.InvalidResults(err_msg)
 
@@ -450,12 +450,12 @@ class NetAppHandler(object):
                 disks_list.append(d)
             return disks_list
         except exception.DelfinException as e:
-            err_msg = "Failed to get storage disks from netapp fas: %s" % (six.text_type(e))
+            err_msg = "Failed to get storage disks from netapp_fas fas: %s" % (six.text_type(e))
             LOG.error(err_msg)
             raise e
 
         except Exception as err:
-            err_msg = "Failed to get storage disks from netapp fas: %s" % (six.text_type(err))
+            err_msg = "Failed to get storage disks from netapp_fas fas: %s" % (six.text_type(err))
             LOG.error(err_msg)
             raise exception.InvalidResults(err_msg)
 
@@ -465,7 +465,7 @@ class NetAppHandler(object):
             qt_info = self.exec_ssh_command(netapp_constants.QTREE_SHOW_DETAIL_COMMAND)
             qt_arr = qt_info.split(netapp_constants.QTREE_SPLIT_STR)
             qt_map = {}
-            for qt in qt_arr:
+            for qt in qt_arr[1:]:
                 self.handle_detail(qt, qt_map, split=':')
                 q = {
                     'name': qt_map.get("QtreeName"),
@@ -478,13 +478,13 @@ class NetAppHandler(object):
 
             return qt_list
         except exception.DelfinException as err:
-            err_msg = "Failed to get qtrees from netapp fas: %s" % \
+            err_msg = "Failed to get storage qtrees from netapp_fas fas: %s" % \
                       (six.text_type(err))
             LOG.error(err_msg)
             raise err
 
         except Exception as err:
-            err_msg = "Failed to get qtrees from netapp fas: %s" % \
+            err_msg = "Failed to get storage qtrees from netapp_fas fas: %s" % \
                       (six.text_type(err))
             LOG.error(err_msg)
             raise exception.InvalidResults(err_msg)
@@ -495,7 +495,7 @@ class NetAppHandler(object):
             cifs_share_info = self.exec_ssh_command(netapp_constants.CIFS_SHARE_SHOW_DETAIL_COMMAND)
             cifs_share_arr = cifs_share_info.split(netapp_constants.CIFS_SHARE_SPLIT_STR)
             cifs_share_map = {}
-            for cifs_share in cifs_share_arr:
+            for cifs_share in cifs_share_arr[1:]:
                 self.handle_detail(cifs_share, cifs_share_map, split=':')
                 s = {
                     'name': cifs_share_map.get("Share"),
@@ -505,15 +505,16 @@ class NetAppHandler(object):
                     'path': cifs_share_map.get("Path"),
                     'protocol': constants.ShareProtocol.CIFS
                 }
+                shares_list.append(s)
             return shares_list
         except exception.DelfinException as err:
-            err_msg = "Failed to get shares from netapp fas: %s" % \
+            err_msg = "Failed to get storage shares from netapp_fas fas: %s" % \
                       (six.text_type(err))
             LOG.error(err_msg)
             raise err
 
         except Exception as err:
-            err_msg = "Failed to get shares from netapp fas: %s" % \
+            err_msg = "Failed to get storage shares from netapp_fas fas: %s" % \
                       (six.text_type(err))
             LOG.error(err_msg)
             raise exception.InvalidResults(err_msg)
@@ -526,38 +527,45 @@ class NetAppHandler(object):
             pool_list = self.list_storage_pools(storage_id)
             vserver_arr = vserver_info.split("\r\n")
             vserver_map = {}
-            for vserver in vserver_arr[3:]:
-                v_arr = vserver.split()
-                for pool in pool_list:
-                    if pool['name'] == v_arr[6]:
-                        vserver_map[v_arr[0]] = pool['native_storage_pool_id']
-
+            if len(vserver_arr) > 3:
+                for vserver in vserver_arr[3:]:
+                    v_arr = vserver.split()
+                    if len(v_arr) > 5:
+                        if v_arr[6] == '-':
+                            vserver_map[v_arr[0]] = '-'
+                        else:
+                            for pool in pool_list:
+                                if pool['name'] == v_arr[6]:
+                                    vserver_map[v_arr[0]] = pool['native_storage_pool_id']
             fs_arr = fs_info.split("\r\n")
-            for fs in fs_arr[1:]:
-                f_info = fs.split()
-                f = {
-                    'name': f_info[0],
-                    'storage_id': storage_id,
-                    'native_filesystem_id': '-',
-                    'native_pool_id': vserver_map[f_info[6]],
-                    'compressed': '-',
-                    'deduplicated': '-',
-                    'worm': '-',
-                    'status': '-',
-                    'type': '-',
-                    'total_capacity': int(self.parse_string(f_info[1]+'KB')),
-                    'used_capacity': int(self.parse_string(f_info[2]+'KB')),
-                    'free_capacity': int(self.parse_string(f_info[3]+'KB')),
-                }
+            if len(fs_arr) > 1:
+                for fs in fs_arr[1:]:
+                    f_info = fs.split()
+                    if len(f_info) > 6:
+                        f = {
+                            'name': f_info[0],
+                            'storage_id': storage_id,
+                            'native_filesystem_id': '-',
+                            'native_pool_id': vserver_map[f_info[6]],
+                            'compressed': '-',
+                            'deduplicated': '-',
+                            'worm': '-',
+                            'status': '-',
+                            'type': '-',
+                            'total_capacity': int(self.parse_string(f_info[1] + 'KB')),
+                            'used_capacity': int(self.parse_string(f_info[2] + 'KB')),
+                            'free_capacity': int(self.parse_string(f_info[3] + 'KB')),
+                        }
+                        fs_list.append(f)
             return fs_list
         except exception.DelfinException as err:
-            err_msg = "Failed to get shares from netapp fas: %s" % \
+            err_msg = "Failed to get storage filesystems from netapp_fas fas: %s" % \
                       (six.text_type(err))
             LOG.error(err_msg)
             raise err
 
         except Exception as err:
-            err_msg = "Failed to get shares from netapp fas: %s" % \
+            err_msg = "Failed to get storage filesystems from netapp_fas fas: %s" % \
                       (six.text_type(err))
             LOG.error(err_msg)
             raise exception.InvalidResults(err_msg)
@@ -567,5 +575,3 @@ class NetAppHandler(object):
 
     def remove_trap_config(self, context, trap_config):
         pass
-
-

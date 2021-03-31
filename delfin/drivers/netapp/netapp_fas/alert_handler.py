@@ -13,20 +13,31 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-from netapp_handler import NetAppHandler
+
 import time
-import netapp_constants
+from delfin.drivers.netapp.netapp_fas import netapp_constants
 from delfin.common import constants
 
 
 class AlertHandler(object):
+    @staticmethod
+    def handle_detail(system_info, storage_map, split):
+        detail_arr = system_info.split('\r\n')
+        for detail in detail_arr:
+            if detail is not None and detail != '':
+                strinfo = detail.split(split + " ")
+                key = strinfo[0].replace(' ', '')
+                value = ''
+                if len(strinfo) > 1:
+                    value = strinfo[1]
+                storage_map[key] = value
 
     @staticmethod
-    def list_events(event_info, query_para, alert_list):
+    def list_events(self, event_info, query_para, alert_list):
         event_arr = event_info.split(netapp_constants.ALTER_SPLIT_STR)
         event_map = {}
         for event_str in event_arr[1:]:
-            NetAppHandler.handle_detail(event_str, event_map, split=':')
+            self.handle_detail(event_str, event_map, split=':')
             occur_time = int(time.mktime(time.strptime(
                 event_map.get('Time'),
                 netapp_constants.EVENT_TIME_TYPE)))
@@ -46,11 +57,11 @@ class AlertHandler(object):
                 alert_list.append(alert_model)
 
     @staticmethod
-    def list_alerts(alert_info, query_para, alert_list):
+    def list_alerts(self, alert_info, query_para, alert_list):
         alert_arr = alert_info.split(netapp_constants.ALTER_SPLIT_STR)
         alert_map = {}
         for alert_str in alert_arr[1:]:
-            NetAppHandler.handle_detail(alert_str, alert_map, split=':')
+            self.handle_detail(alert_str, alert_map, split=':')
             occur_time = int(time.mktime(time.strptime(
                 alert_map.get('IndicationTime'),
                 netapp_constants.ALTER_TIME_TYPE)))
