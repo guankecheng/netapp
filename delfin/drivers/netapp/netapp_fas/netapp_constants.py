@@ -53,7 +53,8 @@ QTREE_SPLIT_STR = " Vserver "
 CIFS_SHARE_SHOW_DETAIL_COMMAND = "vserver cifs share show -instance"
 CIFS_SHARE_SPLIT_STR = " Vserve"
 
-FS_SHOW_COMMAND = "df"
+FS_SHOW_COMMAND = "df -skip-snapshot-lines"
 VSERVER_SHOW_COMMAND = "vserver show"
+FS_DEDUPLICATED_SHOW_COMMAND = "df -S"
 
 

@@ -34,16 +34,6 @@ class NetAppHandler(object):
     OID_SERIAL_NUM = '1.3.6.1.4.1.789.1.1.9.0'
     OID_TRAP_DATA = '1.3.6.1.4.1.789.1.1.12.0'
 
-    TRAP_SEVERITY_MAP = {
-        '1.3.6.1.4.1.2.6.190.1': constants.Severity.CRITICAL,
-        '1.3.6.1.4.1.2.6.190.2': constants.Severity.WARNING,
-        '1.3.6.1.4.1.2.6.190.3': constants.Severity.INFORMATIONAL,
-    }
-
-    SEVERITY_MAP = {"warning": "Warning",
-                    "informational": "Informational",
-                    "error": "Major"}
-
     SECONDS_TO_MS = 1000
 
     def __init__(self, **kwargs):
@@ -230,8 +220,7 @@ class NetAppHandler(object):
                     'subscribed_capacity': '',
                     'total_capacity': int(self.parse_string(pool_map.get('Size'))),
                     'used_capacity': int(self.parse_string(pool_map.get('UsedSize'))),
-                    'free_capacity': int(self.parse_string(pool_map.get('Size'))) -
-                                     int(self.parse_string(pool_map.get('UsedSize'))),
+                    'free_capacity': int(self.parse_string(pool_map.get('AvailableSize'))),
                 }
                 pool_list.append(p)
             return pool_list
@@ -524,6 +513,16 @@ class NetAppHandler(object):
             fs_list = []
             fs_info = self.exec_ssh_command(netapp_constants.FS_SHOW_COMMAND)
             vserver_info = self.exec_ssh_command(netapp_constants.VSERVER_SHOW_COMMAND)
+            deduplicated_info = self.exec_ssh_command(netapp_constants.FS_DEDUPLICATED_SHOW_COMMAND)
+            deduplicated_arr = deduplicated_info.split("\r\n")
+            deduplicated_map = {}
+            compressed_map = {}
+            for deduplicated in deduplicated_arr[1:]:
+                d_arr = deduplicated.spilt()
+                if len(d_arr) > 8:
+                    deduplicated_map[d_arr[0]] = True if int(d_arr[4]) > 0 else False
+                    compressed_map[d_arr[0]] = True if int(d_arr[6]) > 0 else False
+
             pool_list = self.list_storage_pools(storage_id)
             vserver_arr = vserver_info.split("\r\n")
             vserver_map = {}
@@ -547,8 +546,8 @@ class NetAppHandler(object):
                             'storage_id': storage_id,
                             'native_filesystem_id': '-',
                             'native_pool_id': vserver_map[f_info[6]],
-                            'compressed': '-',
-                            'deduplicated': '-',
+                            'compressed': compressed_map[f_info[0]],
+                            'deduplicated': deduplicated_map[f_info[0]],
                             'worm': '-',
                             'status': '-',
                             'type': '-',
