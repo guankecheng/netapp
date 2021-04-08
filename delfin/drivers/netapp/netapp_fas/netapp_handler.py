@@ -484,6 +484,20 @@ class NetAppHandler(object):
             cifs_share_info = self.exec_ssh_command(netapp_constants.CIFS_SHARE_SHOW_DETAIL_COMMAND)
             cifs_share_arr = cifs_share_info.split(netapp_constants.CIFS_SHARE_SPLIT_STR)
             cifs_share_map = {}
+            nfs_share_info = self.exec_ssh_command(netapp_constants.NFS_SHARE_SHOW_COMMAND)
+            nfs_share_arr = nfs_share_info.split("\r\n")
+            for nfs_share in nfs_share_arr[3:]:
+                share_arr = nfs_share.split()
+                if share_arr[3] is True:
+                    s = {
+                        'name': share_arr[0],
+                        'storage_id': storage_id,
+                        'native_share_id': '-',
+                        'native_filesystem_id': '-',
+                        'path': share_arr[4],
+                        'protocol': constants.ShareProtocol.NFS
+                    }
+                    shares_list.append(s)
             for cifs_share in cifs_share_arr[1:]:
                 self.handle_detail(cifs_share, cifs_share_map, split=':')
                 s = {
