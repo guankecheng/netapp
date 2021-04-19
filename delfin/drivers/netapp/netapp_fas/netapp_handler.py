@@ -546,6 +546,7 @@ class NetAppHandler(object):
 
     def list_shares(self, storage_id):
         try:
+
             shares_list = []
             cifs_share_info = self.exec_ssh_command(netapp_constants.CIFS_SHARE_SHOW_DETAIL_COMMAND)
             cifs_share_arr = cifs_share_info.split(netapp_constants.CIFS_SHARE_SPLIT_STR)
