@@ -14,17 +14,16 @@
 #    under the License.
 
 CLUSTER_SHOW_COMMAND = "cluster identity show"
-AGGREGATE_SHOW_COMMAND = "storage aggregate show"
 VERSION_SHOW_COMMAND = "version"
-DISK_SHOW_COMMAND = "disk show"
 
 POOLS_SHOW_DETAIL_COMMAND = "storage pool show -instance"
-AGGREGATE_SHOW__DETAIL_COMMAND = "storage aggregate show -instance"
-POOLS_SPLIT_STR = "Storage Pool N"
+AGGREGATE_SHOW_DETAIL_COMMAND = "storage aggregate show -instance"
+POOLS_SPLIT_STR = "   Storage Pool N"
 AGGREGATE_SPLIT_STR = "                                         Aggregat"
 
 VOLUME_SHOW_DETAIL_COMMAND = "vol show -instance"
 VOLUME_SPLIT_STR = "                                   Vserver"
+THIN_VOLUME_SHOW_COMMAND = "vol show -space-guarantee none"
 
 ALTER_SHOW_DETAIL_COMMAND = "system health alert show -instance"
 EVENT_SHOW_DETAIL_COMMAND = "event show -instance -severity EMERGENCY"
@@ -38,8 +37,9 @@ CONTROLLER_SHOW_DETAIL_COMMAND = "system controller show -instance"
 CONTROLLER_SPLIT_STR = "  Nod"
 
 PORT_SHOW_DETAIL_COMMAND = "port show -instance"
-INTERFACE_SHOW_DETAIL_COMMAND = ""
-PORT_SPLIT_STR = "  Nod"
+INTERFACE_SHOW_DETAIL_COMMAND = "network interface show -instance"
+FC_PORT_SHOW_DETAIL_COMMAND = "fcp adapter show -instance"
+PORT_SPLIT_STR = "   Nod"
 INTERFACE_SPLIT_STR = " Vserver "
 
 DISK_SHOW_DETAIL_COMMAND = "disk show -instance"
@@ -51,8 +51,8 @@ QTREE_SPLIT_STR = " Vserver "
 
 
 CIFS_SHARE_SHOW_DETAIL_COMMAND = "vserver cifs share show -instance"
-CIFS_SHARE_SPLIT_STR = " Vserve"
-NFS_SHARE_SHOW_COMMAND = "vol show -junction"
+CIFS_SHARE_SPLIT_STR = "  Vserve"
+SHARE_AGREEMENT_SHOW_COMMAND = "vserver show -fields Allowed-protocols"
 
 
 FS_SHOW_COMMAND = "df -skip-snapshot-lines"
