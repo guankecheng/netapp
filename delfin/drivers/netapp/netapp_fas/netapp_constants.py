@@ -31,7 +31,8 @@ ALTER_SPLIT_STR = " Node"
 EVENT_TIME_TYPE = '%m/%d/%Y %H:%M:%S'
 ALTER_TIME_TYPE = '%a %b %d %H:%M:%S %Y'
 
-CLEAR_ALERT_COMMAND = "system health alert delete -alerting-resource * -alert-id "
+CLEAR_ALERT_COMMAND = \
+    "system health alert delete -alerting-resource * -alert-id "
 
 CONTROLLER_SHOW_DETAIL_COMMAND = "system controller show -instance"
 CONTROLLER_SPLIT_STR = "  Nod"
@@ -49,16 +50,12 @@ DISK_SPLIT_STR = "     Dis"
 QTREE_SHOW_DETAIL_COMMAND = "qtree show -instance"
 QTREE_SPLIT_STR = " Vserver "
 
-
 CIFS_SHARE_SHOW_DETAIL_COMMAND = "vserver cifs share show -instance"
 CIFS_SHARE_SPLIT_STR = "  Vserve"
 SHARE_AGREEMENT_SHOW_COMMAND = "vserver show -fields Allowed-protocols"
-
 
 FS_SHOW_COMMAND = "df -skip-snapshot-lines"
 VSERVER_SHOW_COMMAND = "vserver show"
 FS_DEDUPLICATED_SHOW_COMMAND = "df -S"
 FS_TYPE_UNIX_COMMAND = ""
 FS_TYPE_NTFS_COMMAND = ""
-
-

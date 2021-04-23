@@ -69,4 +69,3 @@ class NetAppFasDriver(driver.StorageDriver):
 
     def clear_alert(self, context, alert):
         return self.netapp_handler.clear_alert(alert)
-

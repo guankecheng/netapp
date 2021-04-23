@@ -41,7 +41,10 @@ class AlertHandler(object):
             occur_time = int(time.mktime(time.strptime(
                 event_map.get('Time'),
                 netapp_constants.EVENT_TIME_TYPE)))
-            if query_para is None or (query_para.get('begin_time') <= occur_time <= query_para.get('end_time')):
+            if query_para is None or \
+                    (query_para.get('begin_time')
+                     <= occur_time
+                     <= query_para.get('end_time')):
                 alert_model = {
                     'alert_id': event_map.get('Sequence#'),
                     'alert_name': event_map.get('MessageName'),
@@ -65,7 +68,10 @@ class AlertHandler(object):
             occur_time = int(time.mktime(time.strptime(
                 alert_map.get('IndicationTime'),
                 netapp_constants.ALTER_TIME_TYPE)))
-            if query_para is None or (query_para.get('begin_time') <= occur_time <= query_para.get('end_time')):
+            if query_para is None or \
+                    (query_para.get('begin_time')
+                     <= occur_time
+                     <= query_para.get('end_time')):
                 alert_model = {
                     'alert_id': alert_map.get('AlertID'),
                     'alert_name': alert_map.get('ProbableCause'),

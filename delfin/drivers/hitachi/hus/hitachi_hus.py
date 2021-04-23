@@ -13,43 +13,46 @@
 # limitations under the License.
 
 from delfin.drivers import driver
-from delfin.drivers.netapp.netapp_fas import netapp_handler
-from delfin.drivers.netapp.netapp_fas.netapp_handler import NetAppHandler
+from delfin.drivers.hitachi.hus import hus_handler
 
 
 class HitachiHUSDriver(driver.StorageDriver):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.netapp_handler = netapp_handler.NetAppHandler(**kwargs)
-        self.netapp_handler.login()
+        self.hus_handler = hus_handler.HusHandler(**kwargs)
+        # self.hus_handler.login()
 
     def reset_connection(self, context, **kwargs):
-        self.netapp_handler.login()
+        # self.hus_handler.login()
+        pass
 
     def get_storage(self, context):
-        return self.netapp_handler.get_storage()
+        return self.hus_handler.get_storage()
 
     def list_storage_pools(self, context):
-        return self.netapp_handler.list_storage_pools(self.storage_id)
+        return self.hus_handler.list_storage_pools(self.storage_id)
 
     def list_volumes(self, context):
-        return self.netapp_handler.list_volumes(self.storage_id)
+        return self.hus_handler.list_volumes(self.storage_id)
 
     def list_controllers(self, context):
-        return self.netapp_handler.list_controllers(self.storage_id)
+        return self.hus_handler.list_controllers(self.storage_id)
 
     def list_ports(self, context):
-        return self.netapp_handler.list_ports(self.storage_id)
+        return self.hus_handler.list_ports(self.storage_id)
 
     def list_disks(self, context):
-        return self.netapp_handler.list_disks(self.storage_id)
+        # return self.hus_handler.list_disks(self.storage_id)
+        pass
 
     def list_alerts(self, context, query_para=None):
-        return self.netapp_handler.list_alerts(query_para)
+        # return self.hus_handler.list_alerts(query_para)
+        pass
 
     def list_qtrees(self, context):
-        return self.netapp_handler.list_qtrees(self.storage_id)
+        pass
+        # return self.hus_handler.list_qtrees(self.storage_id)
 
     def list_filesystems(self, context):
         return self.netapp_handler.list_filesystems(self.storage_id)
@@ -65,7 +68,7 @@ class HitachiHUSDriver(driver.StorageDriver):
 
     @staticmethod
     def parse_alert(context, alert):
-        return NetAppHandler.parse_alert(alert)
+        pass
 
     def clear_alert(self, context, alert):
-        return self.netapp_handler.clear_alert(alert)
+        pass
