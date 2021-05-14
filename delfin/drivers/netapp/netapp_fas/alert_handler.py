@@ -33,7 +33,7 @@ ALERT_SEVERITY_MAP = {
 class AlertHandler(object):
     @staticmethod
     def handle_detail(system_info, storage_map, split):
-        detail_arr = system_info.split('\n')
+        detail_arr = system_info.split('\r\n')
         for detail in detail_arr:
             if detail is not None and detail != '':
                 strinfo = detail.split(split + " ")

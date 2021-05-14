@@ -160,8 +160,8 @@ class NetAppHandler(object):
                 netapp_constants.VERSION_SHOW_COMMAND)
             status_info = self.exec_ssh_command(
                 netapp_constants.STORAGE_STATUS_COMMAND)
-            version_arr = version.split('\n')
-            status = STATUS_MAP.get(status_info.split("\n")[2])
+            version_arr = version.split('\r\n')
+            status = STATUS_MAP.get(status_info.split("\r\n")[2])
             disk_list = self.list_disks(None)
             pool_list = self.list_storage_pools(None)
             storage_map = {}
@@ -201,7 +201,7 @@ class NetAppHandler(object):
 
     @staticmethod
     def handle_detail(system_info, storage_map, split):
-        detail_arr = system_info.split('\n')
+        detail_arr = system_info.split('\r\n')
         for detail in detail_arr:
             if detail is not None and detail != '':
                 strinfo = detail.split(split + " ")
@@ -249,7 +249,6 @@ class NetAppHandler(object):
                 'description': '',
                 'status': status,
                 'storage_type': constants.StorageType.UNIFIED,
-                'subscribed_capacity': '',
                 'total_capacity':
                     int(self.parse_string(agg_map['Size'])),
                 'used_capacity':
@@ -278,8 +277,7 @@ class NetAppHandler(object):
                 'native_storage_pool_id': pool_map['UUIDofStoragePool'],
                 'description': '',
                 'status': status,
-                'storage_type': constants.StorageType.BLOCK,
-                'subscribed_capacity': '',
+                'storage_type': constants.StorageType.UNIFIED,
                 'total_capacity':
                     int(self.parse_string(pool_map['StoragePoolTotalSize'])),
                 'used_capacity':
@@ -653,7 +651,7 @@ class NetAppHandler(object):
             physicals_info = self.exec_ssh_command(
                 netapp_constants.DISK_SHOW_PHYSICAL_COMMAND)
             disks_map = {}
-            physical_arr = physicals_info.split('\n')
+            physical_arr = physicals_info.split('\r\n')
             speed = physical_type = firmware = '-'
             for i in range(2, len(physical_arr), 2):
                 physicals_list.append(physical_arr[i].split())
@@ -745,7 +743,7 @@ class NetAppHandler(object):
                 netapp_constants.SHARE_AGREEMENT_SHOW_COMMAND)
             cifs_share_map = {}
             protocol_map = {}
-            protocol_arr = protocol_info.split('\n')
+            protocol_arr = protocol_info.split('\r\n')
             for protocol in protocol_arr[2:]:
                 agr_arr = protocol.split()
                 if len(agr_arr) > 1:
@@ -792,7 +790,7 @@ class NetAppHandler(object):
             thin_fs_info = self.exec_ssh_command(
                 netapp_constants.THIN_FS_SHOW_COMMAND)
             pool_list = self.list_storage_pools(storage_id)
-            thin_fs_arr = thin_fs_info.split("\n")
+            thin_fs_arr = thin_fs_info.split("\r\n")
             type = constants.FSType.THICK
             fs_map = {}
             for fs_str in fs_arr[1:]:
