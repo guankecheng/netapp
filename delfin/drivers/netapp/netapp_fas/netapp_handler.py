@@ -76,8 +76,7 @@ class NetAppHandler(object):
 
     def login(self):
         try:
-            with self.ssh_pool.item() as ssh:
-                NetAppHandler.do_exec('lssystem', ssh)
+            self.exec_ssh_command('version')
         except Exception as e:
             LOG.error("Failed to login netapp_fas %s" %
                       (six.text_type(e)))
