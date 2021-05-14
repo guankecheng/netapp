@@ -16,7 +16,7 @@
 ACCESS_INFO = {
     "storage_id": "12345",
     "vendor": "HITACHI",
-    "model": "hus",
+    "model": "hus_110",
     "cli": {
         "host": "192.168.3.97",
         "port": 22,
@@ -276,7 +276,7 @@ RAID_GROUP_DETAIL_INFO = """RAID Group : 1
        5        20971520 blocks  LUN16
        6       892817408 blocks  Free"""
 
-ISCSI_PORT_INFO = """Port 0A
+ISCSI_PORT_INFO = """Port 0E
     Port Number : 3260
     Keep Alive Timer[sec.] : 60
     MTU : 1500
@@ -317,7 +317,7 @@ ISCSI_PORT_INFO = """Port 0A
     Windows Scale : Enable
     Delayed Ack : Enable
 
-Port 0B
+Port 0F
     Port Number : 3260
     Keep Alive Timer[sec.] : 60
     MTU : 1500

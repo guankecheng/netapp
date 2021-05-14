@@ -40,6 +40,6 @@ SOCKET_TIMEOUT = 30
 
 EXCEPTION_MAP = {'Illegal option set': exception.Invalid,
                  'parameter not enough': exception.Invalid,
-                 'Cannot specify the option for this OS':  exception.Invalid}
+                 'Cannot specify the option for this OS': exception.Invalid}
 CER_STORE = '2'
 CER_REJECT = '3'

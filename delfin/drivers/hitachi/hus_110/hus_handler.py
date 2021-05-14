@@ -16,11 +16,11 @@ import time
 
 import six
 from oslo_log import log as logging
-from oslo_utils import units
-from delfin.drivers.hitachi.hus import hus_constants
+from delfin.drivers.hitachi.hus_110 import constants as constant
 from delfin import exception
 from delfin.common import constants
 from delfin.drivers.utils.cli_client import NaviClient
+from delfin.drivers.utils.tools import Tools
 
 LOG = logging.getLogger(__name__)
 
@@ -28,18 +28,18 @@ LOG = logging.getLogger(__name__)
 def cli_handler(command_str):
     storage_info = NaviClient.exec(
         command_str.split(),
-        hus_constants.STORAGE_MODEL,
-        hus_constants.EXCEPTION_MAP)
+        constant.STORAGE_MODEL,
+        constant.EXCEPTION_MAP)
     return storage_info
 
 
 class HusHandler(object):
 
     def __init__(self, **kwargs):
-        storage_info = cli_handler(hus_constants.STORAGE_NAME_COMMAND)
+        storage_info = cli_handler(constant.STORAGE_NAME_COMMAND)
         cli_access = kwargs.get('cli')
-        storage_arr = storage_info.split("\n")
-        for storage in storage_arr:
+        storage_array = storage_info.split("\r\n")
+        for storage in storage_array:
             storage_str = storage.split()
             for _ in storage_str:
                 if _ == cli_access['host']:
@@ -48,37 +48,9 @@ class HusHandler(object):
                     pass
 
     @staticmethod
-    def change_capacity_to_bytes(unit):
-        unit = unit.upper()
-        if unit == 'TB':
-            result = units.Ti
-        elif unit == 'GB':
-            result = units.Gi
-        elif unit == 'MB':
-            result = units.Mi
-        elif unit == 'KB':
-            result = units.Ki
-        elif unit == 'bl':
-            result = units.Ki * 4
-        else:
-            result = 1
-        return int(result)
-
-    def parse_string(self, value):
-        capacity = 0
-        if value:
-            if value.isdigit():
-                capacity = float(value)
-            else:
-                unit = value[-2:]
-                capacity = float(value[:-2]) * int(
-                    self.change_capacity_to_bytes(unit))
-        return capacity
-
-    @staticmethod
-    def handle_detail(system_info, storage_map, split, is_raid_group=False):
-        detail_arr = system_info.split('\n')
-        for detail in detail_arr:
+    def get_detail(system_info, storage_map, split, is_raid_group=False):
+        detail_array = system_info.split('\r\n')
+        for detail in detail_array:
             if detail is not None and detail != '':
                 strinfo = detail.split(split + "")
                 key = strinfo[0].replace(' ', '')
@@ -101,28 +73,29 @@ class HusHandler(object):
             storage_map = {}
             raw_capacity = used_capacity = total_capacity = free_capacity = 0
             storage_info = cli_handler(
-                hus_constants.STORAGE_INFO_COMMAND %
+                constant.STORAGE_INFO_COMMAND %
                 {'unit_name': self.storage_name})
-            self.handle_detail(storage_info, storage_map, ":")
+            self.get_detail(storage_info, storage_map, ":")
             disk_info = cli_handler(
-                hus_constants.DISK_INFO_COMMAND %
+                constant.DISK_INFO_COMMAND %
                 {'unit_name': self.storage_name})
             pool_list = self.list_storage_pools(None)
-            disk_arr = disk_info.split("\n")
-            if len(disk_arr) > 1:
-                for c in disk_arr[1:]:
-                    c_arr = c.split()
-                    if len(c_arr) > 1:
-                        raw_capacity += int(self.parse_string(c_arr[2]))
+            disk_array = disk_info.split("\r\n")
+            if len(disk_array) > 1:
+                for disk in disk_array[1:]:
+                    disk_array = disk.split()
+                    if len(disk_array) > 1:
+                        raw_capacity += int(
+                            Tools.get_capacity_size(disk_array[2]))
             for pool in pool_list:
                 used_capacity += pool['used_capacity']
                 total_capacity += pool['total_capacity']
                 free_capacity += pool['free_capacity']
-            s = {
+            storage = {
                 'name': self.storage_name,
-                'vendor': hus_constants.STORAGE_VENDOR,
+                'vendor': constant.STORAGE_VENDOR,
                 'description': '',
-                'model': storage_map['ArrayUnitType'],
+                'model': storage_map['arrayayUnitType'],
                 'status': 'normal',
                 'serial_number': storage_map['SerialNumber'],
                 'firmware_version': storage_map['FirmwareRevision(CTL0)'],
@@ -132,34 +105,35 @@ class HusHandler(object):
                 'free_capacity': free_capacity,
                 'raw_capacity': raw_capacity
             }
-            return s
+            return storage
         except exception.DelfinException as e:
             err_msg = "Failed to get storage pool from " \
-                      "hus, : %s" % (six.text_type(e))
+                      "hus_110, : %s" % (six.text_type(e))
             LOG.error(err_msg)
             raise e
         except Exception as err:
             err_msg = "Failed to get storage pool from " \
-                      "hus, : %s" % (six.text_type(err))
+                      "hus_110, : %s" % (six.text_type(err))
             LOG.error(err_msg)
             raise exception.InvalidResults(err_msg)
 
     def get_pools(self, storage_id):
         pool_list = []
         pool_map = {}
-        pool_info = cli_handler(
-            (hus_constants.POOL_INFO_COMMAND %
+        pools_info = cli_handler(
+            (constant.POOL_INFO_COMMAND %
              {'unit_name': self.storage_name}))
-        pool_arr = pool_info.split("\n")
-        if len(pool_arr) > 2:
-            for p in pool_arr[2:]:
-                pool = p.split()
-                if len(pool) > 2:
+        pools_array = pools_info.split("\r\n")
+        if len(pools_array) > 2:
+            for pool_info in pools_array[2:]:
+                pool_array = pool_info.split()
+                if len(pool_array) > 2:
                     pool_detail = cli_handler(
-                        hus_constants.POOL_DETAIL_INFO_COMMAND %
-                        {'unit_name': self.storage_name, 'pool_no': pool[0]})
-                    self.handle_detail(pool_detail, pool_map, ":")
-                    p = {
+                        constant.POOL_DETAIL_INFO_COMMAND %
+                        {'unit_name': self.storage_name,
+                         'pool_no': pool_array[0]})
+                    self.get_detail(pool_detail, pool_map, ":")
+                    pool_model = {
                         'name': pool_map['DPPool'],
                         'storage_id': storage_id,
                         'native_storage_pool_id': pool_map['DPPool'],
@@ -171,64 +145,64 @@ class HusHandler(object):
                         'storage_type': constants.StorageType.BLOCK,
                         'subscribed_capacity': '',
                         'total_capacity':
-                            int(self.parse_string
+                            int(Tools.get_capacity_size
                                 (pool_map['TotalCapacity'])),
                         'used_capacity':
-                            int(self.parse_string(
+                            int(Tools.get_capacity_size(
                                 pool_map['Total'])) +
-                            int(self.parse_string(
+                            int(Tools.get_capacity_size(
                                 pool_map['UserData'])) +
-                            int(self.parse_string(
+                            int(Tools.get_capacity_size(
                                 pool_map['ReplicationData'])) +
-                            int(self.parse_string(
+                            int(Tools.get_capacity_size(
                                 pool_map['ManagementArea'])),
                         'free_capacity':
-                            int(self.parse_string(
+                            int(Tools.get_capacity_size(
                                 pool_map['ReplicationAvailableCapacity']))
                     }
-                    pool_list.append(p)
+                    pool_list.append(pool_model)
         return pool_list
 
     def get_raid_groups(self, storage_id):
         pool_list = []
-        raidgroup_map = {}
+        raid_group_map = {}
         raid_group_info = cli_handler(
-            (hus_constants.RAIDGROUP_INFO_COMMAND %
+            (constant.RAIDGROUP_INFO_COMMAND %
              {'unit_name': self.storage_name}))
-        raid_group_arr = raid_group_info.split("\n")
-        if len(raid_group_arr) > 2:
-            for r in raid_group_arr[2:]:
-                raidgroup = r.split()
-                if len(raidgroup) > 2:
+        raid_group_array = raid_group_info.split("\r\n")
+        if len(raid_group_array) > 2:
+            for raid_array in raid_group_array[2:]:
+                raid_group = raid_array.split()
+                if len(raid_group) > 2:
                     raid_detail = cli_handler(
-                        hus_constants.RAIDGROUP_DETAIL_INFO_COMMAND %
+                        constant.RAIDGROUP_DETAIL_INFO_COMMAND %
                         {'unit_name': self.storage_name,
-                         'raidgroup_no': raidgroup[0]})
-                    self.handle_detail(raid_detail, raidgroup_map, ":", True)
-                    g = {
-                        'name': raidgroup_map['RAIDGroup'],
+                         'raidgroup_no': raid_group[0]})
+                    self.get_detail(raid_detail, raid_group_map, ":", True)
+                    raid_group_model = {
+                        'name': raid_group_map['RAIDGroup'],
                         'storage_id': storage_id,
-                        'native_storage_pool_id': raidgroup_map['RAIDGroup'],
+                        'native_storage_pool_id': raid_group_map['RAIDGroup'],
                         'description': '',
                         'status':
                             constants.StoragePoolStatus.NORMAL
-                            if raidgroup_map['Status'] == 'Normal'
+                            if raid_group_map['Status'] == 'Normal'
                             else constants.StoragePoolStatus.OFFLINE,
                         'storage_type': constants.StorageType.BLOCK,
                         'subscribed_capacity': '',
                         'total_capacity':
-                            int(self.parse_string(
-                                raidgroup_map['TotalCapacity'])),
+                            int(Tools.get_capacity_size(
+                                raid_group_map['TotalCapacity'])),
                         'used_capacity':
-                            int(self.parse_string(
-                                raidgroup_map['TotalCapacity'])) -
-                            int(self.parse_string(
-                                raidgroup_map['FreeCapacity'])),
+                            int(Tools.get_capacity_size(
+                                raid_group_map['TotalCapacity'])) -
+                            int(Tools.get_capacity_size(
+                                raid_group_map['FreeCapacity'])),
                         'free_capacity':
-                            int(self.parse_string(
-                                raidgroup_map['FreeCapacity']))
+                            int(Tools.get_capacity_size(
+                                raid_group_map['FreeCapacity']))
                     }
-                    pool_list.append(g)
+                    pool_list.append(raid_group_model)
             return pool_list
 
     def list_storage_pools(self, storage_id):
@@ -239,12 +213,12 @@ class HusHandler(object):
             return pool_list
         except exception.DelfinException as e:
             err_msg = "Failed to get storage pool from " \
-                      "hus, : %s" % (six.text_type(e))
+                      "hus_110, : %s" % (six.text_type(e))
             LOG.error(err_msg)
             raise e
         except Exception as err:
             err_msg = "Failed to get storage pool from " \
-                      "hus, : %s" % (six.text_type(err))
+                      "hus_110, : %s" % (six.text_type(err))
             LOG.error(err_msg)
             raise exception.InvalidResults(err_msg)
 
@@ -252,115 +226,120 @@ class HusHandler(object):
     def list_alerts(query_para):
         try:
             alert_list = []
-            alerts_info = cli_handler(hus_constants.ALERT_INFO_COMMAND)
-            alerts_arr = alerts_info.split('\n')
-            for alert_info in alerts_arr:
-                alert_arr = alert_info.split('/')
+            alerts_info = cli_handler(constant.ALERT_INFO_COMMAND)
+            alerts_array = alerts_info.split('\r\n')
+            for alert_info in alerts_array:
+                alert_array = alert_info.split('/')
                 occur_time = int(time.mktime(time.strptime(
-                    alert_arr[0],
-                    hus_constants.ALTER_TIME_TYPE)))
+                    alert_array[0], constant.ALTER_TIME_TYPE)))
                 if query_para is None or \
                         (query_para['begin_time']
                          <= occur_time
                          <= query_para['end_time']):
-                    a = {
+                    alert_model = {
                         'alert_id': '',
                         'alert_name': '',
                         'severity': '',
                         'category': '',
                         'type': '',
-                        'occur_time': alert_arr[0],
-                        'description': alert_arr[2],
+                        'occur_time': alert_array[0],
+                        'description': alert_array[2],
                         'sequence_number': '',
                         'resource_type': constants.DEFAULT_RESOURCE_TYPE,
-                        'location': alert_arr[1]
+                        'location': alert_array[1]
                     }
-                    alert_list.append(a)
+                    alert_list.append(alert_model)
             return alert_list
         except exception.DelfinException as e:
             err_msg = "Failed to get storage alert from " \
-                      "hus, : %s" % (six.text_type(e))
+                      "hus_110, : %s" % (six.text_type(e))
             LOG.error(err_msg)
             raise e
         except Exception as err:
             err_msg = "Failed to get storage alert from " \
-                      "hus, : %s" % (six.text_type(err))
+                      "hus_110, : %s" % (six.text_type(err))
             LOG.error(err_msg)
             raise exception.InvalidResults(err_msg)
 
     def get_pools_volumes(self, storage_id):
         volumes_list = []
         pool_list = cli_handler(
-            (hus_constants.POOL_INFO_COMMAND %
+            (constant.POOL_INFO_COMMAND %
              {'unit_name': self.storage_name}))
-        pool_arr = pool_list.split("\n")
-        if len(pool_arr) > 2:
-            for pool in pool_arr[2:]:
-                p_arr = pool.split()
+        pools_array = pool_list.split("\r\n")
+        if len(pools_array) > 2:
+            for pool in pools_array[2:]:
+                pool_array = pool.split()
                 pool_info = cli_handler(
-                    hus_constants.POOL_DETAIL_INFO_COMMAND %
-                    {'unit_name': self.storage_name, 'pool_no': pool_arr[0]})
+                    constant.POOL_DETAIL_INFO_COMMAND %
+                    {'unit_name': self.storage_name, 'pool_no': pool_array[0]})
                 volumes = pool_info.split("Logical Unit")
                 if len(volumes) > 1:
-                    volume_arr = volumes[1].split('\n')
-                    for volume_info in volume_arr[3:]:
+                    volume_array = volumes[1].split('\r\n')
+                    for volume_info in volume_array[3:]:
                         volume = volume_info.split()
                         if len(volume) > 9:
-                            v = {
+                            volume_model = {
                                 'name': volume[0],
                                 'storage_id': storage_id,
                                 'description': '',
                                 'status':
-                                    constants.PortHealthStatus.NORMAL
+                                    constants.StoragePoolStatus.NORMAL
                                     if volume[9] == 'normal'
-                                    else constants.PortHealthStatus.ABNORMAL,
+                                    else constants.StoragePoolStatus.ABNORMAL,
                                 'native_volume_id': volume[0],
-                                'native_storage_pool_id': p_arr[0],
+                                'native_storage_pool_id': pool_array[0],
                                 'wwn': '',
                                 'compressed': '',
                                 'deduplicated': '',
                                 'type': constants.VolumeType.THIN,
                                 'total_capacity':
-                                    int(self.parse_string(volume[1] + 'GB')),
+                                    int(Tools.get_capacity_size(
+                                        volume[1] + 'GB')),
                                 'used_capacity':
-                                    int(self.parse_string(volume[3] + 'GB')),
+                                    int(Tools.get_capacity_size(
+                                        volume[3] + 'GB')),
                                 'free_capacity':
-                                    int(self.parse_string(volume[1] + 'GB')) -
-                                    int(self.parse_string(volume[3] + 'GB'))
+                                    int(Tools.get_capacity_size(
+                                        volume[1] + 'GB')) -
+                                    int(Tools.get_capacity_size(
+                                        volume[3] + 'GB'))
                             }
-                            volumes_list.append(v)
+                            volumes_list.append(volume_model)
                     return volumes_list
 
     def get_raid_group_volumes(self, storage_id):
         volumes_list = []
         volumes_info = cli_handler(
-            (hus_constants.VOLUMES_INFO_COMMAND %
+            (constant.VOLUMES_INFO_COMMAND %
              {'unit_name': self.storage_name}))
-        volumes_arr = volumes_info.split("\n")
-        if len(volumes_arr) > 2:
-            for volume_info in volumes_arr[2:]:
-                volume_arr = volume_info.split()
-                if len(volume_arr) > 4 and volume_arr[4] != 'N/A':
-                    v = {
-                        'name': volume_arr[0],
+        volumes_array = volumes_info.split("\r\n")
+        if len(volumes_array) > 2:
+            for volume_info in volumes_array[2:]:
+                volume_array = volume_info.split()
+                if len(volume_array) > 4 and volume_array[4] != 'N/A':
+                    volume_model = {
+                        'name': volume_array[0],
                         'storage_id': storage_id,
                         'description': '',
                         'status':
-                            constants.PortHealthStatus.NORMAL
-                            if volume_arr[13] == 'normal'
-                            else constants.PortHealthStatus.ABNORMAL,
-                        'native_volume_id': volume_arr[0],
-                        'native_storage_pool_id': volume_arr[4],
+                            constants.VolumeStatus.AVAILABLE
+                            if volume_array[13] == 'normal'
+                            else constants.VolumeStatus.ERROR,
+                        'native_volume_id': volume_array[0],
+                        'native_storage_pool_id': volume_array[4],
                         'wwn': '',
                         'compressed': '',
                         'deduplicated': '',
                         'type': constants.VolumeType.THICK,
                         'total_capacity':
-                            int(self.parse_string(volume_arr[1] + 'GB')),
-                        'used_capacity': '',
-                        'free_capacity': ''
+                            int(Tools.get_capacity_size(
+                                volume_array[1] + 'GB')),
+                        'used_capacity': int(Tools.get_capacity_size(
+                                volume_array[1] + 'GB')),
+                        'free_capacity': 0
                     }
-                    volumes_list.append(v)
+                    volumes_list.append(volume_model)
             return volumes_list
 
     def list_volumes(self, storage_id):
@@ -370,12 +349,12 @@ class HusHandler(object):
             return raid_group_volumes_list + pool_volumes_list
         except exception.DelfinException as e:
             err_msg = "Failed to get storage pool from " \
-                      "hus, : %s" % (six.text_type(e))
+                      "hus_110, : %s" % (six.text_type(e))
             LOG.error(err_msg)
             raise e
         except Exception as err:
             err_msg = "Failed to get storage pool from " \
-                      "hus, : %s" % (six.text_type(err))
+                      "hus_110, : %s" % (six.text_type(err))
             LOG.error(err_msg)
             raise exception.InvalidResults(err_msg)
 
@@ -383,76 +362,86 @@ class HusHandler(object):
         try:
             controller_list = []
             status_info = cli_handler(
-                hus_constants.STATUS_INFO_COMMAND %
+                constant.STATUS_INFO_COMMAND %
                 {'unit_name': self.storage_name})
-            status_arr = status_info.split("Cache")
-            controllers_arr = status_arr[1].split("Interface Board")
-            controller_arr = controllers_arr[0].split("\n")
+            status_array = status_info.split("Cache")
+            controllers_array = status_array[1].split("Interface Board")
+            controller_array = controllers_array[0].split("\r\n")
             v_map = {}
             version_info = cli_handler(
-                hus_constants.STORAGE_INFO_COMMAND %
+                constant.STORAGE_INFO_COMMAND %
                 {'unit_name': self.storage_name})
-            self.handle_detail(version_info, v_map, ":")
-            if len(controller_arr) > 2:
-                for controller in controller_arr[2:]:
-                    c_arr = controller.split()
-                    if len(c_arr) > 2:
-                        v = v_map['FirmwareRevision(CTL' + c_arr[0] + ')']
+            self.get_detail(version_info, v_map, ":")
+            if len(controller_array) > 2:
+                for controller in controller_array[2:]:
+                    c_array = controller.split()
+                    if len(c_array) > 2:
+                        v = v_map['FirmwareRevision(CTL' + c_array[0] + ')']
                         c = {
-                            'name': 'controller' + c_arr[0],
+                            'name': 'controller' + c_array[0],
                             'storage_id': storage_id,
-                            'native_controller_id': c_arr[0],
+                            'native_controller_id': c_array[0],
                             'status':
                                 constants.ControllerStatus.NORMAL
-                                if c_arr[3] == 'normal'
+                                if c_array[3] == 'normal'
                                 else constants.ControllerStatus.OFFLINE,
                             'location': '',
                             'soft_version': v,
                             'cpu_info': '',
-                            'memory_size': c_arr[2],
+                            'memory_size': c_array[2],
                         }
                         controller_list.append(c)
                 return controller_list
         except exception.DelfinException as e:
             err_msg = "Failed to get storage controllers " \
-                      "from hus, : %s" % (six.text_type(e))
+                      "from hus_110, : %s" % (six.text_type(e))
             LOG.error(err_msg)
             raise e
 
         except Exception as err:
             err_msg = "Failed to get storage controllers " \
-                      "from hus, : %s" % (six.text_type(err))
+                      "from hus_110, : %s" % (six.text_type(err))
             LOG.error(err_msg)
             raise exception.InvalidResults(err_msg)
 
     def get_fc_ports(self, storage_id):
         fc_list = []
+        key = ''
         fc_info = cli_handler(
-            hus_constants.FC_PORT_INFO_COMMAND %
+            constant.FC_PORT_INFO_COMMAND %
             {'unit_name': self.storage_name})
         port_status_info = cli_handler(
-            hus_constants.STATUS_INFO_COMMAND %
+            constant.STATUS_INFO_COMMAND %
             {'unit_name': self.storage_name})
-        # port_wwn_info = cli_handler(
-        #     hus_constants.WWN_INFO_COMMAND %
-        #     {'unit_name': self.storage_name})
+        port_wwn_info = cli_handler(
+            constant.WWN_INFO_COMMAND %
+            {'unit_name': self.storage_name})
+        wwns_array = port_wwn_info.split("\r\n")
+        wwn_map = {}
+        for wwn_info in wwns_array:
+            wwn_array = wwn_info.split()
+            if len(wwn_array) > 5:
+                key = wwn_array[1]
+            elif len(wwn_array) == 2 and wwn_array[1] != 'WWN':
+                value = wwn_array[0]
+                wwn_map[key] = value
         port_status = \
             port_status_info.split("Host Connector")[1].split('Fan')[0]
         info = fc_info.split('Transfer Rate')
-        ports_arr = info[0].split('\r\n')
+        ports_array = info[0].split('\r\n')
         info = info[1].split('Topology Information')
-        speeds_arr = info[0].split('\r\n')
+        speeds_array = info[0].split('\r\n')
         info = info[1].split('Link Status')
-        status_arr = info[1].split('\r\n')
-        if len(ports_arr) > 3:
-            for ports in ports_arr[3:]:
+        status_array = info[1].split('\r\n')
+        if len(ports_array) > 3:
+            for ports in ports_array[3:]:
                 status_info = speed_info = []
                 health_status = constants.PortHealthStatus.NORMAL
                 port_info = ports.split()
                 if len(port_info) > 5:
-                    port_status_arr = port_status.split("\r\n")
-                    if len(port_status_arr) > 2:
-                        for port_status in port_status_arr[2:]:
+                    port_status_array = port_status.split("\r\n")
+                    if len(port_status_array) > 2:
+                        for port_status in port_status_array[2:]:
                             health = port_status.split()
                             if len(health) > 1 \
                                     and health[0] == \
@@ -461,21 +450,21 @@ class HusHandler(object):
                                     constants.PortHealthStatus.NORMAL if \
                                     health[1] == 'Normal' else \
                                     constants.PortHealthStatus.ABNORMAL
-                    if len(speeds_arr) > 2:
-                        for speeds in speeds_arr[2:]:
+                    if len(speeds_array) > 2:
+                        for speeds in speeds_array[2:]:
                             speed_info = speeds.split()
                             if len(speed_info) > 1 and \
                                     speed_info[0] + speed_info[1] == \
                                     port_info[0] + port_info[1]:
                                 break
-                    if len(status_arr) > 2:
-                        for status in status_arr[2:]:
+                    if len(status_array) > 2:
+                        for status in status_array[2:]:
                             status_info = status.split()
                             if len(status_info) > 1 and \
                                     status_info[0] + status_info[1] == \
                                     port_info[0] + port_info[1]:
                                 break
-                    p = {
+                    port_model = {
                         'name': port_info[0] + port_info[1],
                         'storage_id': storage_id,
                         'native_port_id': port_info[3],
@@ -486,41 +475,41 @@ class HusHandler(object):
                             else constants.PortConnectionStatus.DISCONNECTED,
                         'health_status': health_status,
                         'type': constants.PortType.FC,
-                        'logical_type': '-',
+                        'logical_type': '',
                         'speed': speed_info[3],
                         'max_speed': speed_info[3],
-                        'native_parent_id': '-',
-                        'wwn': '-',
+                        'native_parent_id': '',
+                        'wwn': wwn_map.get(port_info[0] + port_info[1]),
                         'mac_address': '',
                         'ipv4': '',
-                        'ipv4_mask': '-',
+                        'ipv4_mask': '',
                         'ipv6': '',
                         'ipv6_mask': ''
                     }
-                    fc_list.append(p)
+                    fc_list.append(port_model)
             return fc_list
 
     def get_iscsi_port(self, storage_id):
         port_list = []
         ports_info = cli_handler(
-            hus_constants.ISCSI_PORT_INFO_COMMAND %
+            constant.ISCSI_PORT_INFO_COMMAND %
             {'unit_name': self.storage_name})
-        ports_arr = ports_info.split("Delayed Ack")
+        ports_array = ports_info.split("Delayed Ack")
         port_map = {}
-        for port_info in ports_arr:
-            port_info_arr = port_info.split("\r\n")
-            if len(port_info_arr) > 9:
-                if port_info_arr[0].split()[0] == ':':
-                    name = port_info_arr[2].split()[1]
+        for port_info in ports_array:
+            port_info_array = port_info.split("\r\n")
+            if len(port_info_array) > 9:
+                if port_info_array[0].split()[0] == ':':
+                    name = port_info_array[2].split()[1]
                 else:
-                    name = port_info_arr[0].split()[1]
-                self.handle_detail(port_info, port_map, ":")
+                    name = port_info_array[0].split()[1]
+                self.get_detail(port_info, port_map, ":")
                 port_map['IPAddress'] = ''
                 if port_map.get('IPv6Status') == 'Enable':
                     port_str = port_info.split('Global IP Address')
                     if len(port_str) > 0:
-                        port_info_arr = port_str[0].split("\r\n")
-                        for detail in port_info_arr:
+                        port_info_array = port_str[0].split("\r\n")
+                        for detail in port_info_array:
                             if detail is not None and detail != '':
                                 strinfo = detail.split(":")
                                 key = strinfo[0].replace(' ', '')
@@ -534,7 +523,7 @@ class HusHandler(object):
                                         else:
                                             value += strinfo[i] + ':'
                                 port_map[key] = value
-                p = {
+                port_model = {
                     'name': name,
                     'storage_id': storage_id,
                     'native_port_id': port_map['PortNumber'],
@@ -556,7 +545,7 @@ class HusHandler(object):
                     'ipv6': port_map['IPAddress'],
                     'ipv6_mask': ''
                 }
-                port_list.append(p)
+                port_list.append(port_model)
         return port_list
 
     def list_ports(self, storage_id):
@@ -566,13 +555,13 @@ class HusHandler(object):
             return port_list
         except exception.DelfinException as e:
             err_msg = "Failed to get storage ports from " \
-                      "hus, : %s" % (six.text_type(e))
+                      "hus_110, : %s" % (six.text_type(e))
             LOG.error(err_msg)
             raise e
 
         except Exception as err:
             err_msg = "Failed to get storage ports from " \
-                      "hus, : %s" % (six.text_type(err))
+                      "hus_110, : %s" % (six.text_type(err))
             LOG.error(err_msg)
             raise exception.InvalidResults(err_msg)
 
@@ -580,11 +569,11 @@ class HusHandler(object):
         try:
             disks_list = []
             disk_info = cli_handler(
-                hus_constants.DISK_INFO_COMMAND %
+                constant.DISK_INFO_COMMAND %
                 {'unit_name': self.storage_name})
-            disk_arr = disk_info.split("\n")
-            if len(disk_arr) > 1:
-                for disk in disk_arr[1:]:
+            disk_array = disk_info.split("\r\n")
+            if len(disk_array) > 1:
+                for disk in disk_array[1:]:
                     disk = disk.split()
                     if len(disk) > 8:
                         d = {
@@ -597,23 +586,23 @@ class HusHandler(object):
                             'firmware': disk[7],
                             'speed': disk[4],
                             'capacity':
-                                int(self.parse_string(disk[2])),
-                            'status': '-',
+                                int(Tools.get_capacity_size(disk[2])),
+                            'status': '',
                             'physical_type': disk[3],
-                            'logical_type': '-',
-                            'health_score': '-',
+                            'logical_type': '',
+                            'health_score': '',
                             'native_disk_group_id': '',
-                            'location': '-',
+                            'location': '',
                         }
                         disks_list.append(d)
                 return disks_list
         except exception.DelfinException as e:
             err_msg = "Failed to get storage disks from " \
-                      "hus, : %s" % (six.text_type(e))
+                      "hus_110, : %s" % (six.text_type(e))
             LOG.error(err_msg)
             raise e
         except Exception as err:
             err_msg = "Failed to get storage disks from " \
-                      "hus, : %s" % (six.text_type(err))
+                      "hus_110, : %s" % (six.text_type(err))
             LOG.error(err_msg)
             raise exception.InvalidResults(err_msg)

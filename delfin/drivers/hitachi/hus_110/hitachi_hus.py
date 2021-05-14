@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from delfin.drivers import driver
-from delfin.drivers.hitachi.hus import hus_handler
+from delfin.drivers.hitachi.hus_110 import hus_handler
 
 
 class HitachiHUSDriver(driver.StorageDriver):

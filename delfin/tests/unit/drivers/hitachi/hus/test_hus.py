@@ -15,7 +15,7 @@ from unittest import TestCase, mock
 
 from delfin.tests.unit.drivers.hitachi.hus import test_constans
 from delfin import context
-from delfin.drivers.hitachi.hus.hitachi_hus import HitachiHUSDriver
+from delfin.drivers.hitachi.hus_110.hitachi_hus import HitachiHUSDriver
 from delfin.drivers.utils.cli_client import NaviClient
 
 
@@ -71,7 +71,8 @@ class TestHUSStorageDriver(TestCase):
             side_effect=[
                 test_constans.ISCSI_PORT_INFO,
                 test_constans.PORT_INFO,
-                test_constans.STATUS_INFO])
+                test_constans.STATUS_INFO,
+                test_constans.WWN_INFO])
         data = self.hus_client.list_ports(context)
         self.assertEqual(data[0]['name'], '0A')
 

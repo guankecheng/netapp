@@ -1,4 +1,4 @@
-# Copyright 2020 The SODA Authors.
+# Copyright 2021 The SODA Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,11 +13,11 @@
 # limitations under the License.
 
 from delfin.drivers import driver
-from delfin.drivers.netapp.netapp_fas import netapp_handler
-from delfin.drivers.netapp.netapp_fas.netapp_handler import NetAppHandler
+from delfin.drivers.netapp.dataontap import netapp_handler
+from delfin.drivers.netapp.dataontap.netapp_handler import NetAppHandler
 
 
-class NetAppFasDriver(driver.StorageDriver):
+class NetAppCmodeDriver(driver.StorageDriver):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -50,6 +50,9 @@ class NetAppFasDriver(driver.StorageDriver):
 
     def list_qtrees(self, context):
         return self.netapp_handler.list_qtrees(self.storage_id)
+
+    def list_quotas(self, context):
+        return self.netapp_handler.list_quotas(self.storage_id)
 
     def list_filesystems(self, context):
         return self.netapp_handler.list_filesystems(self.storage_id)

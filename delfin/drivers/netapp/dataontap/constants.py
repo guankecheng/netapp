@@ -1,4 +1,4 @@
-# Copyright 2020 The SODA Authors.
+# Copyright 2021 The SODA Authors.
 # All Rights Reserved.
 #
 #    Licensed under the Apache License, Version 2.0 (the "License"); you may
@@ -12,6 +12,7 @@
 #    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 #    License for the specific language governing permissions and limitations
 #    under the License.
+from delfin.common import constants
 
 CLUSTER_SHOW_COMMAND = "cluster identity show"
 VERSION_SHOW_COMMAND = "version"
@@ -35,6 +36,13 @@ ALTER_TIME_TYPE = '%a %b %d %H:%M:%S %Y'
 CLEAR_ALERT_COMMAND = \
     "system health alert delete -alerting-resource * -alert-id"
 
+DISK_SHOW_DETAIL_COMMAND = "disk show -instance"
+DISK_SHOW_PHYSICAL_COMMAND = "disk show -physical"
+DISK_SPLIT_STR = "     Dis"
+
+LUN_SHOW_DETAIL_COMMAND = "lun show -instance"
+LUN_SPLIT_STR = "  Vserver"
+
 CONTROLLER_SHOW_DETAIL_COMMAND = "node show -instance"
 CONTROLLER_SPLIT_STR = "  Nod"
 
@@ -44,10 +52,6 @@ FC_PORT_SHOW_DETAIL_COMMAND = "fcp adapter show -instance"
 PORT_SPLIT_STR = "   Nod"
 INTERFACE_SPLIT_STR = " Vserver "
 
-DISK_SHOW_DETAIL_COMMAND = "disk show -instance"
-DISK_SHOW_PHYSICAL_COMMAND = "disk show -physical"
-DISK_SPLIT_STR = "     Dis"
-
 QTREE_SHOW_DETAIL_COMMAND = "qtree show -instance"
 QTREE_SPLIT_STR = " Vserver "
 
@@ -55,12 +59,115 @@ CIFS_SHARE_SHOW_DETAIL_COMMAND = "vserver cifs share show -instance"
 CIFS_SHARE_SPLIT_STR = "  Vserve"
 SHARE_AGREEMENT_SHOW_COMMAND = "vserver show -fields Allowed-protocols"
 
-LUN_SHOW_DETAIL_COMMAND = "lun show -instance"
-LUN_SPLIT_STR = "  Vserver"
+STORAGE_VENDOR = "netapp"
+STORAGE_MODEL = "cmodel"
 
-STORAGE_VENDOR = "NetApp"
+QUOTA_SHOW_DETAIL_COMMAND = "quota report -instance"
 
-ALERT_SEVERITY_COMMAND = "event route show -fields severity"
+
+STORAGE_STATUS = {
+    'ok': constants.StorageStatus.NORMAL,
+    'ok-with-suppressed': constants.StorageStatus.NORMAL,
+    'degraded': constants.StorageStatus.ABNORMAL,
+    'unreachable': constants.StorageStatus.ABNORMAL
+}
+
+AGGREGATE_STATUS = {
+    'online': constants.StoragePoolStatus.NORMAL,
+    'creating': constants.StoragePoolStatus.NORMAL,
+    'mounting': constants.StoragePoolStatus.NORMAL,
+    'relocating': constants.StoragePoolStatus.NORMAL,
+    'quiesced': constants.StoragePoolStatus.NORMAL,
+    'quiescing': constants.StoragePoolStatus.NORMAL,
+    'unmounted': constants.StoragePoolStatus.OFFLINE,
+    'unmounting': constants.StoragePoolStatus.OFFLINE,
+    'destroying': constants.StoragePoolStatus.ABNORMAL,
+    'partial': constants.StoragePoolStatus.ABNORMAL,
+    'frozen': constants.StoragePoolStatus.ABNORMAL,
+    'reverted': constants.StoragePoolStatus.NORMAL,
+    'restricted': constants.StoragePoolStatus.NORMAL,
+    'inconsistent': constants.StoragePoolStatus.ABNORMAL,
+    'iron_restricted': constants.StoragePoolStatus.ABNORMAL,
+    'unknown': constants.StoragePoolStatus.ABNORMAL,
+    'offline': constants.StoragePoolStatus.OFFLINE,
+    'failed': constants.StoragePoolStatus.ABNORMAL,
+    'remote_cluster': constants.StoragePoolStatus.NORMAL,
+}
+
+VOLUME_STATUS = {
+    'online': constants.VolumeStatus.AVAILABLE,
+    'offline': constants.VolumeStatus.ERROR,
+    'nvfail': constants.VolumeStatus.ERROR,
+    'space-error': constants.VolumeStatus.ERROR,
+    'foreign-lun-error': constants.VolumeStatus.ERROR,
+}
+
+ALERT_SEVERITY = {
+    'Unknown': constants.Severity.NOT_SPECIFIED,
+    'Other': constants.Severity.NOT_SPECIFIED,
+    'Information': constants.Severity.INFORMATIONAL,
+    'Degraded': constants.Severity.WARNING,
+    'Minor': constants.Severity.MINOR,
+    'Major': constants.Severity.MAJOR,
+    'Critical': constants.Severity.CRITICAL,
+    'Fatal': constants.Severity.FATAL,
+}
+
+DISK_TYPE = {
+    'ATA': constants.DiskPhysicalType.ATA,
+    'BSAS': constants.DiskPhysicalType.SATA,
+    'FCAL': constants.DiskPhysicalType.FC,
+    'FSAS': constants.DiskPhysicalType.NL_SAS,
+    'LUN ': constants.DiskPhysicalType.LUN,
+    'SAS': constants.DiskPhysicalType.SAS,
+    'MSATA': constants.DiskPhysicalType.SATA,
+    'SSD': constants.DiskPhysicalType.SSD,
+    'VMDISK': constants.DiskPhysicalType.VMDISK,
+    'unknown': constants.DiskPhysicalType.UNKNOWN,
+}
+
+DISK_LOGICAL = {
+    'aggregate': constants.DiskLogicalType.AGGREGATE,
+    'spare': constants.DiskLogicalType.SPARE,
+    'unknown': constants.DiskLogicalType.UNKNOWN,
+    'free': constants.DiskLogicalType.FREE,
+    'broken': constants.DiskLogicalType.BROKEN,
+    'foreign': constants.DiskLogicalType.FOREIGN,
+    'labelmaint': constants.DiskLogicalType.LABELMAINT,
+    'maintenance': constants.DiskLogicalType.MAINTENANCE,
+    'shared': constants.DiskLogicalType.SHARED,
+    'unassigned': constants.DiskLogicalType.UNASSIGNED,
+    'unsupported': constants.DiskLogicalType.UNSUPPORTED,
+    'remote': constants.DiskLogicalType.REMOTE,
+    'mediator': constants.DiskLogicalType.MEDIATOR,
+}
+
+FS_STATUS = {
+    'online': constants.FilesystemStatus.NORMAL,
+    'restricted': constants.FilesystemStatus.FAULTY,
+    'offline': constants.FilesystemStatus.NORMAL,
+    'force-online': constants.FilesystemStatus.FAULTY,
+    'force-offline': constants.FilesystemStatus.FAULTY,
+}
+
+NETWORK_LOGICAL_TYPE = {
+    'data': constants.PortLogicalType.FRONTEND,
+    'cluster': constants.PortLogicalType.FRONTEND,
+    'node-mgmt': constants.PortLogicalType.MANAGEMENT,
+    'cluster-mgmt': constants.PortLogicalType.INTERNAL,
+    'intercluster': constants.PortLogicalType.INTERCONNECT,
+}
+
+FC_TYPE = {
+    'fibre-channel': constants.PortType.FC,
+    'ethernet': constants.PortType.FCOE
+}
+
+WORM_TYPE = {
+    'non-snaplock': constants.WORMType.NON_WORM,
+    'compliance': constants.WORMType.COMPLIANCE,
+    'enterprise': constants.WORMType.ENTERPRISE
+}
 
 SEVERITY_MAP = {
     'AccessCache.ReachedLimits': 'EMERGENCY',
