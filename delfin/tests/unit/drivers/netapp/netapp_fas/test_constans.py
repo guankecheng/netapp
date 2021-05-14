@@ -34,11 +34,15 @@ aggr2       8.79GB    4.98GB   43% online       3 cl-01   raid_dp,\r
 
 VERSION = """NetApp Release 9.0: Fri Aug 19 06:39:33 UTC 2016"""
 
+SYSTEM_STATUS = """Status\r
+---------------\r
+ok"""
+
 DISK_INFO = """
                      Usable           Disk    Container   Container\r
 Disk                   Size Shelf Bay Type    Type        Name      Owner\r
 ---------------- ---------- ----- --- ------- ----------- --------- -----\r
-NET-1.1              1020MB     -  16 FCAL    aggregate   aggr0     cl-01\r
+NET-1.1              1020254     -  16 FCAL    aggregate   aggr0     cl-01\r
 NET-1.2              1020MB     -  17 FCAL    aggregate   aggr1     cl-01\r
 NET-1.3              1020MB     -  18 FCAL    aggregate   aggr1     cl-01\r
 NET-1.4              1020MB     -  19 FCAL    aggregate   aggr1     cl-01\r
@@ -331,7 +335,41 @@ Threshold When Aggregate Is Considered Balanced (%): 40\r
 3 entries were displayed.\r
 """
 
-VOLUMES_INFO = """\r
+LUN_INFO = """              Vserver Name: svm5\r
+                  LUN Path: /vol/lun_0_vol/lun_0\r
+               Volume Name: lun_0_vol\r
+                Qtree Name: ""\r
+                  LUN Name: lun_0\r
+                  LUN Size: 512MB\r
+                   OS Type: linux\r
+         Space Reservation: enabled\r
+             Serial Number: wpEzy]QpkWFm\r
+       Serial Number (Hex): 7770457a795d51706b57466d\r
+                   Comment:\r
+Space Reservations Honored: true\r
+          Space Allocation: disabled\r
+                     State: online\r
+                  LUN UUID: d4d1c11a-fa21-4ef8-9536-776017748474\r
+                    Mapped: unmapped
+                Block Size: 512\r
+          Device Legacy ID: -\r
+          Device Binary ID: -\r
+            Device Text ID: -\r
+                 Read Only: false\r
+     Fenced Due to Restore: false\r
+                 Used Size: 0\r
+       Maximum Resize Size: 64.00GB\r
+             Creation Time: 5/7/2021 18:34:52\r
+                     Class: regular\r
+      Node Hosting the LUN: cl-01\r
+          QoS Policy Group: -\r
+       Caching Policy Name: -\r
+                     Clone: false\r
+  Clone Autodelete Enabled: false\r
+       Inconsistent Import: false\r
+       """
+
+FS_INFO = """\r
                                    Vserver Name: cl-01\r
                                     Volume Name: vol0\r
                                  Aggregate Name: aggr0\r
@@ -663,16 +701,21 @@ Additional Information: Shelf uuid: 50:05:0c:c1:02:00:0f:02\r
 Alerting Resource Name: Shelf ID 2\r
  Additional Alert Tags: quality-of-service, nondisruptive-upgrade\r"""
 
-CONTROLLER_INFO = """\r
-                     Node: node1\r
-                System ID: 140733730268652\r
-               Model Name: FAS2520\r
-              Part Number: 111-01316\r
-                 Revision: 21\r
-            Serial Number: 700001456939\r
-          Controller Type: none\r
-                   Status: ok\r
-               Chassis ID: 4591227214\r"""
+CONTROLLER_INFO = """                         Node: cl-01\r
+                                             Owner: \r
+                                          Location: \r
+                                             Model: SIMBOX\r
+                                     Serial Number: 4082368-50-7\r
+                                         Asset Tag: -\r
+                                            Uptime: 1 days 06:17\r
+                                   NVRAM System ID: 4082368507\r
+                                         System ID: 4082368507\r
+                                            Vendor: NetApp\r
+                                            Health: true\r
+                                       Eligibility: true\r
+                           Differentiated Services: false\r
+                               All-Flash Optimized: false\r
+                               """
 
 PORTS_INFO = """\r
                                         Node: cl-01\r
@@ -785,7 +828,7 @@ INTERFACE_INFO = """\r
          DNS Query Listen Enable: false\r
              Failover Group Name: Default\r
                         FCP WWPN: -\r
-                  Address family: ipv4\r
+                  Address family: ipv6\r
                          Comment: -\r
                   IPspace of LIF: Default\r
   Is Dynamic DNS Update Enabled?: -\r
@@ -1034,7 +1077,7 @@ Errors:\r
 -\r
 """
 
-PHYSICAL_INFO = """\r
+PHYSICAL_INFO = """
 Disk             Type    Vendor   Model                Revision     RPM  BPS\r
 ---------------- ------- -------- -------------------- -------- ------- ----\r
 NET-1.1          FCAL    NETAPP   VD-1000MB-FZ-520     0042       15000  520\r
@@ -1330,42 +1373,14 @@ svm5    nfs,cifs,fcp,iscsi\r
 7 entries were displayed.\r
 """
 
-FILE_SYSTEM_INFO = """
-Filesystem              kbytes     used  avail capacity  Mounted on  Vserver\r
-/vol/vol0/              785324    678268  107056      86%  ---         cl-01\r
-/vol/vol0/.snapshot      41332    236540       0     572%  ---         cl-01\r
-/vol/svm1_root/         778240        288  777952       0%  /           svm1\r
-/vol/svm1_root/.snapshot 40960          0   40960       0%  //.snapshot svm1\r
-/vol/vol_svm1_1/       2097152       2564 2094588       0%  ---         svm1\r
-/vol/vol_svm1_1/.snapshot    0       2028       0       0%  ---         svm1\r
-/vol/vol_svm1_2/       2097152       3160 2093992       0%  ---         svm1\r
-/vol/vol_svm1_2/.snapshot    0       1816       0       0%  ---         svm1\r
-/vol/svm2_root/         778240        280  777960       0%  /           svm2\r
-/vol/svm2_root/.snapshot 40960          0   40960       0%  //.snapshot svm2\r
-/vol/vol_svm2_1/       2097152       3420 2093732       0%  ---         svm2\r
-/vol/vol_svm2_1/.snapshot    0       1912       0       0%  ---         svm2\r
-/vol/vol_svm2_2/       1048576       2960 1045616       0%  ---         svm2\r
-/vol/vol_svm2_2/.snapshot    0       1716       0       0%  ---         svm2\r
-/vol/vol_svm2_3/         19456        244   19212       1%  ---         svm2\r
-/vol/vol_svm2_3/.snapshot 1024        704     320      69%  ---         svm2\r
-/vol/vol_svm2_4/         19456        244   19212       1%  ---         svm2\r
-/vol/vol_svm2_4/.snapshot 1024        704     320      69%  ---         svm2\r
-/vol/vol_svm2_5/       1992296       1608 1990688       0%  ---         svm2\r
-/vol/vol_svm2_5/.snapshot  104856     592  104264       1%  ---         svm2\r
-20 entries were displayed\r."""
-
-VSERVER_INFO = """
-                               Admin      Operational Root\r
-Vserver     Type    Subtype    State      State       Volume     Aggregate\r
------------ ------- ---------- ---------- ----------- ---------- ----------\r
-cl          admin   -          -          -           -          -\r
-cl-01       node    -          -          -           -          -\r
-svm1        data    default    running    running     svm1_root  aggr1\r
-svm2        data    default    running    running     svm2_root  aggr2\r
-4 entries were displayed.\r
-"""
-
-THIN_VOLUME_INFO = """
+THIN_FS_INFO = """
 Vserver Volume Aggregate State Type Size Available Used%\r
 --------- ------------ ------------ ---------- ---- -\r
 svm1 vol_svm1_2 aggr1 online RW 2GB 2.00GB 0%\r"""
+
+TRAP_MAP = {
+    '1.3.6.1.4.1.789.1.1.12.0':
+        'LUN.inconsistent.filesystem:The on-disk structure of the LUN at path '
+        'test in volume 0 (DSID 0) is inconsistent in the WAFL file system.',
+    '1.3.6.1.4.1.789.1.1.9.0': '1-80-000008'
+}

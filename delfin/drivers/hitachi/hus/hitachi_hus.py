@@ -43,22 +43,10 @@ class HitachiHUSDriver(driver.StorageDriver):
         return self.hus_handler.list_ports(self.storage_id)
 
     def list_disks(self, context):
-        # return self.hus_handler.list_disks(self.storage_id)
-        pass
+        return self.hus_handler.list_disks(self.storage_id)
 
     def list_alerts(self, context, query_para=None):
-        # return self.hus_handler.list_alerts(query_para)
-        pass
-
-    def list_qtrees(self, context):
-        pass
-        # return self.hus_handler.list_qtrees(self.storage_id)
-
-    def list_filesystems(self, context):
-        return self.netapp_handler.list_filesystems(self.storage_id)
-
-    def list_shares(self, context):
-        return self.netapp_handler.list_shares(self.storage_id)
+        return self.hus_handler.list_alerts(query_para)
 
     def add_trap_config(self, context, trap_config):
         pass
