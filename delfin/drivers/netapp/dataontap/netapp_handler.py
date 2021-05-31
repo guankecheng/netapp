@@ -374,10 +374,10 @@ class NetAppHandler(object):
             constant.DISK_SHOW_PHYSICAL_COMMAND)
         disks_map = {}
         physical_array = physicals_info.split('\r\n')
-        speed = physical_type = firmware = '-'
         for i in range(2, len(physical_array), 2):
             physicals_list.append(physical_array[i].split())
         for disk_str in disks_array[1:]:
+            speed = physical_type = firmware = '-'
             Tools.split_value_map(disk_str, disks_map, split=':')
             logical_type = constant.DISK_LOGICAL. \
                 get(disks_map['ContainerType'])
@@ -423,9 +423,9 @@ class NetAppHandler(object):
             constant.THIN_FS_SHOW_COMMAND)
         pool_list = self.list_storage_pools(storage_id)
         thin_fs_array = thin_fs_info.split("\r\n")
-        type = constants.FSType.THICK
         fs_map = {}
         for fs_str in fs_array[1:]:
+            type = constants.FSType.THICK
             Tools.split_value_map(fs_str, fs_map, split=':')
             if fs_map is not None or fs_map != {}:
                 pool_id = ""
