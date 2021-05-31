@@ -524,11 +524,11 @@ class NetAppHandler(object):
                     interface_map['Role'])
                 type = interface_map['DataProtocol']
                 if interface_map['Addressfamily'] == 'ipv4':
-                    ipv4 += interface_map['NetworkAddress'] + ','
-                    ipv4_mask += interface_map['Netmask'] + ','
+                    ipv4 = interface_map['NetworkAddress']
+                    ipv4_mask = interface_map['Netmask']
                 else:
-                    ipv6 += interface_map['NetworkAddress'] + ','
-                    ipv6_mask += interface_map['Netmask'] + ','
+                    ipv6 = interface_map['NetworkAddress']
+                    ipv6_mask = interface_map['Netmask']
                 port_model = {
                     'name': interface_map['LogicalInterfaceName'],
                     'storage_id': storage_id,
