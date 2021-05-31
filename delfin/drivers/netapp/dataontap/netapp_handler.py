@@ -120,7 +120,6 @@ class NetAppHandler(object):
                 "used_capacity": used_capacity,
                 "free_capacity": free_capacity
             }
-            LOG.info(storage_model)
             return storage_model
         except exception.DelfinException as e:
             err_msg = "Failed to get storage from " \
@@ -197,7 +196,6 @@ class NetAppHandler(object):
         try:
             pool_list = self.get_pool(storage_id)
             agg_list = self.get_aggregate(storage_id)
-            LOG.info(agg_list)
             return agg_list + pool_list
         except exception.DelfinException as e:
             err_msg = "Failed to get storage pool from " \
@@ -413,7 +411,6 @@ class NetAppHandler(object):
                 'location': '',
             }
             disks_list.append(disk_model)
-        LOG.info(disks_list)
         return disks_list
 
     def get_filesystems(self, storage_id):
@@ -469,7 +466,6 @@ class NetAppHandler(object):
                         int(Tools.get_capacity_size(fs_map['UsedSize']))
                 }
                 fs_list.append(fs_model)
-        LOG.info(fs_list)
         return fs_list
 
     def list_controllers(self, storage_id):
@@ -498,7 +494,6 @@ class NetAppHandler(object):
                         'memory_size': '',
                     }
                     controller_list.append(controller_model)
-            LOG.info(controller_list)
             return controller_list
         except exception.DelfinException as e:
             err_msg = "Failed to get storage controllers from " \
@@ -583,6 +578,8 @@ class NetAppHandler(object):
             for eth in eth_array[1:]:
                 eth_map = {}
                 Tools.split_value_map(eth, eth_map, split=':')
+                logical_type = constant.ETH_LOGICAL_TYPE.get(
+                    eth_map['PortType'])
                 eth_model = {
                     'name': eth_map['Port'],
                     'storage_id': storage_id,
@@ -597,7 +594,7 @@ class NetAppHandler(object):
                         if eth_map['PortHealthStatus'] == 'healthy'
                         else constants.PortHealthStatus.ABNORMAL,
                     'type': constants.PortType.ETH,
-                    'logical_type': '',
+                    'logical_type': logical_type,
                     'speed': eth_map['SpeedOperational'],
                     'max_speed': eth_map['MTU'],
                     'native_parent_id': '',
@@ -677,7 +674,6 @@ class NetAppHandler(object):
             self.get_network_port(storage_id) + \
             self.get_fc_port(storage_id) + \
             self.get_eth_port(storage_id)
-        LOG.info(ports_list)
         return ports_list
 
     def list_disks(self, storage_id):
@@ -712,7 +708,6 @@ class NetAppHandler(object):
                     'security_mode': qt_map['SecurityStyle'],
                 }
                 qt_list.append(qt_model)
-            LOG.info(qt_list)
             return qt_list
         except exception.DelfinException as err:
             err_msg = "Failed to get storage qtrees from " \
@@ -754,7 +749,6 @@ class NetAppHandler(object):
                     'protocol': protocol
                 }
                 shares_list.append(s)
-            LOG.info(shares_list)
             return shares_list
         except exception.DelfinException as err:
             err_msg = "Failed to get storage shares from " \
@@ -771,7 +765,6 @@ class NetAppHandler(object):
     def list_filesystems(self, storage_id):
         try:
             fs_list = self.get_filesystems(storage_id)
-            LOG.info(fs_list)
             return fs_list
         except exception.DelfinException as e:
             err_msg = "Failed to get storage volume from " \

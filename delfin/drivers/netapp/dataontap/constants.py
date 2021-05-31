@@ -151,11 +151,18 @@ FS_STATUS = {
 }
 
 NETWORK_LOGICAL_TYPE = {
-    'data': constants.PortLogicalType.FRONTEND,
-    'cluster': constants.PortLogicalType.FRONTEND,
-    'node-mgmt': constants.PortLogicalType.MANAGEMENT,
-    'cluster-mgmt': constants.PortLogicalType.INTERNAL,
-    'intercluster': constants.PortLogicalType.INTERCONNECT,
+    'data': constants.PortLogicalType.DATA,
+    'cluster': constants.PortLogicalType.CLUSTER,
+    'node-mgmt': constants.PortLogicalType.NODE_MGMT,
+    'cluster-mgmt': constants.PortLogicalType.CLUSTER_MGMT,
+    'intercluster': constants.PortLogicalType.INTERCLUSTER,
+}
+
+ETH_LOGICAL_TYPE = {
+    'physical': constants.PortLogicalType.PHYSICAL,
+    'if-group': constants.PortLogicalType.IF_GROUP,
+    'vlan': constants.PortLogicalType.VLAN,
+    'undef': constants.PortLogicalType.OTHER
 }
 
 FC_TYPE = {
