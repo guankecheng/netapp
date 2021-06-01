@@ -779,7 +779,44 @@ class NetAppHandler(object):
 
     def list_quotas(self, storage_id):
         try:
-            pass
+            quota_list = []
+            quotas_info = self.ssh_pool.do_exec(
+                constant.QUOTA_SHOW_DETAIL_COMMAND)
+            quotas_array = quotas_info.split(constant.QUOTA_SPLIT_STR)
+            for quota_info in quotas_array[1:]:
+                quota_map = {}
+                user_group_name = ''
+                Tools.split_value_map(quota_info, quota_map, ":")
+                type = constant.QUOTA_TYPE.get(quota_map['Type'])
+                native_qtree_id = '/vol/' + quota_map['VolumeName']
+                if type == 'tree':
+                    native_qtree_id += '/' + quota_map['Target']
+                else:
+                    if type == 'group':
+                        user_group_name = quota_map['Target']
+                    if quota_map['QtreeName'] != '':
+                        native_qtree_id += '/' + quota_map['QtreeName']
+                    else:
+                        native_qtree_id = ''
+                quota = {
+                    'id': '',
+                    'native_quota_id': '',
+                    'type': type,
+                    'storage_id': storage_id,
+                    'native_filesystem_id': quota_map['VolumeName'],
+                    'native_qtree_id': native_qtree_id,
+                    'capacity_hard_limit': Tools.get_capacity_size(
+                        quota_map['DiskLimit']),
+                    'capacity_soft_limit': Tools.get_capacity_size(
+                        quota_map['SoftDiskLimit']),
+                    'file_hard_limit': int(quota_map['FilesLimit']),
+                    'file_soft_limit': int(quota_map['SoftFilesLimit']),
+                    'file_count': '',
+                    'used_capacity': '',
+                    'user_group_name': user_group_name
+                }
+                quota_list.append(quota)
+            return quota_list
         except exception.DelfinException as e:
             err_msg = "Failed to get storage volume from " \
                       "netapp cmode: %s" % (six.text_type(e))

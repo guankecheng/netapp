@@ -74,7 +74,7 @@ class TestNetAppStorageDriver(TestCase):
     #     self.driver.list_storage_pools(context)
     #
     def test_list_volumes(self):
-        rs = self.driver.list_storage_pools(context)
+        rs = self.driver.list_quotas(context)
 
         print(rs)
     #

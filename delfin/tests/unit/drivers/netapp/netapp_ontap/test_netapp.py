@@ -131,3 +131,9 @@ class TestNetAppCmodeDriver(TestCase):
                          test_constans.AGGREGATE_DETAIL_INFO])
         data = self.netapp_client.list_filesystems(context)
         self.assertEqual(data[0]['name'], 'vol0')
+
+    def test_list_quotas(self):
+        SSHPool.do_exec = mock.Mock(
+            side_effect=[test_constans.QUOTAS_INFO])
+        data = self.netapp_client.list_quotas(context)
+        self.assertEqual(data[0]['id'], '')

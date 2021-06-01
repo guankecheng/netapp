@@ -1400,3 +1400,71 @@ TRAP_MAP = {
         'test in volume 0 (DSID 0) is inconsistent in the WAFL file system.',
     '1.3.6.1.4.1.789.1.1.9.0': '1-80-000008'
 }
+
+
+QUOTAS_INFO = """\r
+                 Vserver: svm5\r
+             Policy Name: default\r
+             Volume Name: svm5_vol1\r
+                    Type: tree\r
+                  Target: qtree_21052021_110317_94\r
+              Qtree Name: ""\r
+            User Mapping: -\r
+              Disk Limit: 4.88MB\r
+             Files Limit: 1000\r
+Threshold for Disk Limit: 4.88MB\r
+         Soft Disk Limit: 4.88MB\r
+        Soft Files Limit: 1000\r
+\r
+                 Vserver: svm5\r
+             Policy Name: default\r
+             Volume Name: svm5_vol1\r
+                    Type: user\r
+                  Target: ""\r
+              Qtree Name: ""\r
+            User Mapping: off\r
+              Disk Limit: 4.88MB\r
+             Files Limit: 1000\r
+Threshold for Disk Limit: 4.88MB\r
+         Soft Disk Limit: 4.88MB\r
+        Soft Files Limit: 1000\r
+\r
+                 Vserver: svm5\r
+             Policy Name: default\r
+             Volume Name: svm5_vol1\r
+                    Type: group\r
+                  Target: ""\r
+              Qtree Name: ""\r
+            User Mapping: -\r
+              Disk Limit: 4.88MB\r
+             Files Limit: 1000\r
+Threshold for Disk Limit: 4.88MB\r
+         Soft Disk Limit: 4.88MB\r
+        Soft Files Limit: 1000\r
+\r
+                 Vserver: svm5\r
+             Policy Name: default\r
+             Volume Name: svm5_vol1\r
+                    Type: group\r
+                  Target: ""\r
+              Qtree Name: qtree_08052021_152034_44\r
+            User Mapping: -\r
+              Disk Limit: 4.88MB\r
+             Files Limit: 100\r
+Threshold for Disk Limit: 4.88MB\r
+         Soft Disk Limit: 4.88MB\r
+        Soft Files Limit: 100\r
+\r
+                 Vserver: svm5\r
+             Policy Name: default\r
+             Volume Name: svm5_vol1\r
+                    Type: group\r
+                  Target: pcuser\r
+              Qtree Name: ""\r
+            User Mapping: -\r
+              Disk Limit: 4.88MB\r
+             Files Limit: 1000\r
+Threshold for Disk Limit: 4.88MB\r
+         Soft Disk Limit: 4.88MB\r
+        Soft Files Limit: 1000\r
+5 entries were displayed."""

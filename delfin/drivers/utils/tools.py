@@ -76,5 +76,5 @@ class Tools(object):
                 key = strinfo[0].replace(' ', '')
                 value = ''
                 if len(strinfo) > 1:
-                    value = strinfo[1]
+                    value = strinfo[1].replace('"', '')
                 value_map[key] = value

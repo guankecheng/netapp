@@ -62,8 +62,8 @@ SHARE_AGREEMENT_SHOW_COMMAND = "vserver show -fields Allowed-protocols"
 STORAGE_VENDOR = "netapp"
 STORAGE_MODEL = "cmodel"
 
-QUOTA_SHOW_DETAIL_COMMAND = "quota report -instance"
-
+QUOTA_SHOW_DETAIL_COMMAND = "volume quota policy rule show -instance"
+QUOTA_SPLIT_STR = "    Vserve"
 
 STORAGE_STATUS = {
     'ok': constants.StorageStatus.NORMAL,
@@ -174,6 +174,12 @@ WORM_TYPE = {
     'non-snaplock': constants.WORMType.NON_WORM,
     'compliance': constants.WORMType.COMPLIANCE,
     'enterprise': constants.WORMType.ENTERPRISE
+}
+
+QUOTA_TYPE = {
+    'user': constants.QuotaType.USER,
+    'tree': constants.QuotaType.TREE,
+    'group': constants.QuotaType.GROUP
 }
 
 SEVERITY_MAP = {
