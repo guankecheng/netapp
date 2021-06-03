@@ -16,6 +16,7 @@
 import time
 import six
 import hashlib
+import eventlet
 
 from oslo_log import log as logging
 from oslo_utils import units
@@ -736,6 +737,7 @@ class NetAppHandler(object):
                         'security_mode': qt_map['SecurityStyle'],
                     }
                     qt_list.append(qt_model)
+                    LOG.info(qt_model)
             return qt_list
         except exception.DelfinException as err:
             err_msg = "Failed to get storage qtrees from " \
@@ -749,47 +751,62 @@ class NetAppHandler(object):
             LOG.error(err_msg)
             raise exception.InvalidResults(err_msg)
 
+    def get_shares(self, storage_id, vserver_name):
+        shares_list = []
+        cifs_share_info = self.ssh_pool.do_exec(
+            (constant.CIFS_SHARE_SHOW_DETAIL_COMMAND %
+             {'vserver_name': vserver_name}))
+        cifs_share_array = cifs_share_info.split(
+            constant.CIFS_SHARE_SPLIT_STR)
+        protocol_info = self.ssh_pool.do_exec(
+            constant.SHARE_AGREEMENT_SHOW_COMMAND)
+        protocol_map = {}
+        protocol_arr = protocol_info.split('\r\n')
+        for protocol in protocol_arr[2:]:
+            agr_arr = protocol.split()
+            if len(agr_arr) > 1:
+                protocol_map[agr_arr[0]] = agr_arr[1]
+        for cifs_share in cifs_share_array[1:]:
+            share_map = {}
+            Tools.split_value_map(cifs_share, share_map, split=':')
+            if 'VolumeName' in share_map.keys():
+                protocol_str = protocol_map.get(share_map['r'])
+                fs_id = share_map['r'] + '_' + share_map['VolumeName']
+                share_id = fs_id + '_' + share_map['Share'] + '_'
+                if constants.ShareProtocol.CIFS in protocol_str:
+                    s = {
+                        'name': share_map['Share'],
+                        'storage_id': storage_id,
+                        'native_share_id': share_id +
+                                           constants.ShareProtocol.CIFS,
+                        'native_filesystem_id': fs_id,
+                        'path': share_map['Path'],
+                        'protocol': constants.ShareProtocol.CIFS
+                    }
+                    shares_list.append(s)
+                if constants.ShareProtocol.NFS in protocol_str:
+                    s = {
+                        'name': share_map['Share'],
+                        'storage_id': storage_id,
+                        'native_share_id': share_id +
+                                           constants.ShareProtocol.NFS,
+                        'native_filesystem_id': fs_id,
+                        'path': share_map['Path'],
+                        'protocol': constants.ShareProtocol.NFS
+                    }
+                    shares_list.append(s)
+        return shares_list
+
     def list_shares(self, storage_id):
         try:
             shares_list = []
-            cifs_share_info = self.ssh_pool.do_exec(
-                constant.CIFS_SHARE_SHOW_DETAIL_COMMAND)
-            cifs_share_array = cifs_share_info.split(
-                constant.CIFS_SHARE_SPLIT_STR)
-            protocol_info = self.ssh_pool.do_exec(
-                constant.SHARE_AGREEMENT_SHOW_COMMAND)
-            protocol_map = {}
-            protocol_arr = protocol_info.split('\r\n')
-            for protocol in protocol_arr[2:]:
-                agr_arr = protocol.split()
-                if len(agr_arr) > 1:
-                    protocol_map[agr_arr[0]] = agr_arr[1]
-            for cifs_share in cifs_share_array[1:]:
-                share_map = {}
-                Tools.split_value_map(cifs_share, share_map, split=':')
-                if 'VolumeName' in share_map.keys():
-                    protocol = protocol_map.get(share_map['r'])
-                    fs_id = share_map['r'] + '_' + share_map['VolumeName']
-                    if constants.ShareProtocol.CIFS in protocol:
-                        s = {
-                            'name': share_map['Share'],
-                            'storage_id': storage_id,
-                            'native_share_id': share_map['Share'],
-                            'native_filesystem_id': fs_id,
-                            'path': share_map['Path'],
-                            'protocol': constants.ShareProtocol.CIFS
-                        }
-                        shares_list.append(s)
-                    if constants.ShareProtocol.NFS in protocol:
-                        s = {
-                            'name': share_map['Share'],
-                            'storage_id': storage_id,
-                            'native_share_id': share_map['Share'],
-                            'native_filesystem_id': fs_id,
-                            'path': share_map['Path'],
-                            'protocol': constants.ShareProtocol.NFS
-                        }
-                        shares_list.append(s)
+            vserver_info = self.ssh_pool.do_exec(
+                constant.VSERVER_SHOW_COMMAND)
+            vserver_array = vserver_info.split("\r\n")
+            for vserver in vserver_array[2:]:
+                vserver_name = vserver.split()
+                if len(vserver_name) > 1 and vserver_name[0] != 'SVM_zhuyan':
+                    shares_list += self.get_shares(storage_id, vserver_name[0])
             return shares_list
         except exception.DelfinException as err:
             err_msg = "Failed to get storage shares from " \
