@@ -18,6 +18,7 @@ import six
 import hashlib
 
 from oslo_log import log as logging
+from oslo_utils import units
 
 from delfin.drivers.netapp.dataontap import constants as constant
 from delfin import exception
@@ -372,6 +373,15 @@ class NetAppHandler(object):
             constant.DISK_SPLIT_STR)
         physicals_info = self.ssh_pool.do_exec(
             constant.DISK_SHOW_PHYSICAL_COMMAND)
+        error_disk = self.ssh_pool.do_exec(
+            constant.DISK_ERROR_COMMAND
+        )
+        error_disk_list = []
+        error_disk_array = error_disk.split('\r\n')
+        for error_disk in error_disk_array[1:]:
+            error_array = error_disk.split()
+            if len(error_array) > 2:
+                error_disk_list.append(error_array[0])
         disks_map = {}
         physical_array = physicals_info.split('\r\n')
         for i in range(2, len(physical_array), 2):
@@ -389,9 +399,9 @@ class NetAppHandler(object):
                             constant.DISK_TYPE.get(physical_info[1])
                         speed = physical_info[5]
                         firmware = physical_info[4]
-            status = constants.DiskStatus.ABNORMAL
-            if disks_map['Errors:'] is None or disks_map['Errors:'] == "":
-                status = constants.DiskStatus.NORMAL
+            status = constants.DiskStatus.NORMAL
+            if disks_map['k'] in error_disk_list:
+                status = constants.DiskStatus.ABNORMAL
             disk_model = {
                 'name': disks_map['k'],
                 'storage_id': storage_id,
@@ -406,7 +416,6 @@ class NetAppHandler(object):
                 'status': status,
                 'physical_type': physical_type,
                 'logical_type': logical_type,
-                'health_score': '',
                 'native_disk_group_id': disks_map['Aggregate'],
                 'location': '',
             }
@@ -447,10 +456,11 @@ class NetAppHandler(object):
                         'false':
                     compressed = False
                 status = constant.FS_STATUS.get(fs_map['VolumeState'])
+                fs_id = fs_map['Name'] + '_' + fs_map['VolumeName']
                 fs_model = {
                     'name': fs_map['VolumeName'],
                     'storage_id': storage_id,
-                    'native_filesystem_id': fs_map['VolumeName'],
+                    'native_filesystem_id': fs_id,
                     'native_pool_id': pool_id,
                     'compressed': compressed,
                     'deduplicated': deduplicated,
@@ -522,17 +532,25 @@ class NetAppHandler(object):
                     interface_info, interface_map, split=':')
                 logical_type = constant.NETWORK_LOGICAL_TYPE.get(
                     interface_map['Role'])
-                type = interface_map['DataProtocol']
+                type_array = interface_map['DataProtocol'].split(', ')
+                port_type = constant.NETWORK_PORT_TYPE.get(type_array[0])
+                port_id = \
+                    interface_map['Name'] + \
+                    '_' + \
+                    interface_map['LogicalInterfaceName']
+                if len(type_array) > 1:
+                    port_type += '-' + \
+                                 constant.NETWORK_PORT_TYPE.get(type_array[1])
                 if interface_map['Addressfamily'] == 'ipv4':
                     ipv4 = interface_map['NetworkAddress']
                     ipv4_mask = interface_map['Netmask']
-                else:
+                elif interface_map['Addressfamily'] == 'ipv6':
                     ipv6 = interface_map['NetworkAddress']
                     ipv6_mask = interface_map['Netmask']
                 port_model = {
                     'name': interface_map['LogicalInterfaceName'],
                     'storage_id': storage_id,
-                    'native_port_id': interface_map['LogicalInterfaceName'],
+                    'native_port_id': port_id,
                     'location': '',
                     'connection_status':
                         constants.PortConnectionStatus.CONNECTED
@@ -542,12 +560,13 @@ class NetAppHandler(object):
                         constants.PortHealthStatus.NORMAL
                         if interface_map['OperationalStatus'] == 'up'
                         else constants.PortHealthStatus.ABNORMAL,
-                    'type': type,
+                    'type': port_type,
                     'logical_type': logical_type,
                     'speed': '',
                     'max_speed': '',
                     'native_parent_id': '',
-                    'wwn': interface_map['FCPWWPN'],
+                    'wwn': interface_map['FCPWWPN']
+                    if interface_map['FCPWWPN'] != '-' else None,
                     'mac_address': '',
                     'ipv4': ipv4,
                     'ipv4_mask': ipv4_mask,
@@ -580,10 +599,11 @@ class NetAppHandler(object):
                 Tools.split_value_map(eth, eth_map, split=':')
                 logical_type = constant.ETH_LOGICAL_TYPE.get(
                     eth_map['PortType'])
+                port_id = eth_map['e'] + '_' + eth_map['Port']
                 eth_model = {
                     'name': eth_map['Port'],
                     'storage_id': storage_id,
-                    'native_port_id': eth_map['Port'],
+                    'native_port_id': port_id,
                     'location': '',
                     'connection_status':
                         constants.PortConnectionStatus.CONNECTED
@@ -595,8 +615,8 @@ class NetAppHandler(object):
                         else constants.PortHealthStatus.ABNORMAL,
                     'type': constants.PortType.ETH,
                     'logical_type': logical_type,
-                    'speed': int(eth_map['SpeedOperational']),
-                    'max_speed': int(eth_map['MTU']),
+                    'speed': int(eth_map['SpeedOperational']) * units.Mi,
+                    'max_speed': int(eth_map['SpeedOperational']) * units.Mi,
                     'native_parent_id': '',
                     'wwn': '',
                     'mac_address': eth_map['MACAddress'],
@@ -630,10 +650,11 @@ class NetAppHandler(object):
                 fc_map = {}
                 Tools.split_value_map(fc, fc_map, split=':')
                 type = constant.FC_TYPE.get(fc_map['PhysicalProtocol'])
+                port_id = fc_map['e'] + '_' + fc_map['Adapter']
                 fc_model = {
                     'name': fc_map['Adapter'],
                     'storage_id': storage_id,
-                    'native_port_id': fc_map['Adapter'],
+                    'native_port_id': port_id,
                     'location': '',
                     'connection_status':
                         constants.PortConnectionStatus.CONNECTED
@@ -645,8 +666,8 @@ class NetAppHandler(object):
                         else constants.PortHealthStatus.ABNORMAL,
                     'type': type,
                     'logical_type': '',
-                    'speed': int(fc_map['DataLinkRate(Gbit)']) * 1000,
-                    'max_speed': int(fc_map['MaximumSpeed']) * 1000,
+                    'speed': int(fc_map['DataLinkRate(Gbit)']) * units.Gi,
+                    'max_speed': int(fc_map['MaximumSpeed']) * units.Gi,
                     'native_parent_id': '',
                     'wwn': fc_map['AdapterWWNN'],
                     'mac_address': '',
@@ -674,6 +695,7 @@ class NetAppHandler(object):
             self.get_network_port(storage_id) + \
             self.get_fc_port(storage_id) + \
             self.get_eth_port(storage_id)
+        LOG.info('------------------port_list:', ports_list)
         return ports_list
 
     def list_disks(self, storage_id):
@@ -697,17 +719,23 @@ class NetAppHandler(object):
             qt_info = self.ssh_pool.do_exec(
                 constant.QTREE_SHOW_DETAIL_COMMAND)
             qt_array = qt_info.split(constant.QTREE_SPLIT_STR)
-            qt_map = {}
             for qt in qt_array[1:]:
+                qt_map = {}
                 Tools.split_value_map(qt, qt_map, split=':')
-                qt_model = {
-                    'name': qt_map['QtreeName'],
-                    'storage_id': storage_id,
-                    'native_qtree_id': qt_map['Actual(Non-Junction)QtreePath'],
-                    'native_filesystem_id': qt_map['VolumeName'],
-                    'security_mode': qt_map['SecurityStyle'],
-                }
-                qt_list.append(qt_model)
+                if 'QtreeName' in qt_map.keys():
+                    fs_id = qt_map['Name'] + '_' + qt_map['VolumeName']
+                    qt_id = \
+                        qt_map['Name'] + '_' \
+                        + qt_map['Actual(Non-Junction)QtreePath']
+                    qt_model = {
+                        'name': qt_map['QtreeName'],
+                        'storage_id': storage_id,
+                        'native_qtree_id': qt_id,
+                        'path': qt_map['Actual(Non-Junction)QtreePath'],
+                        'native_filesystem_id': fs_id,
+                        'security_mode': qt_map['SecurityStyle'],
+                    }
+                    qt_list.append(qt_model)
             return qt_list
         except exception.DelfinException as err:
             err_msg = "Failed to get storage qtrees from " \
@@ -730,7 +758,6 @@ class NetAppHandler(object):
                 constant.CIFS_SHARE_SPLIT_STR)
             protocol_info = self.ssh_pool.do_exec(
                 constant.SHARE_AGREEMENT_SHOW_COMMAND)
-            cifs_share_map = {}
             protocol_map = {}
             protocol_arr = protocol_info.split('\r\n')
             for protocol in protocol_arr[2:]:
@@ -738,17 +765,31 @@ class NetAppHandler(object):
                 if len(agr_arr) > 1:
                     protocol_map[agr_arr[0]] = agr_arr[1]
             for cifs_share in cifs_share_array[1:]:
-                Tools.split_value_map(cifs_share, cifs_share_map, split=':')
-                protocol = protocol_map.get(cifs_share_map['r'])
-                s = {
-                    'name': cifs_share_map['Share'],
-                    'storage_id': storage_id,
-                    'native_share_id': cifs_share_map['Share'],
-                    'native_filesystem_id': cifs_share_map['VolumeName'],
-                    'path': cifs_share_map['Path'],
-                    'protocol': protocol
-                }
-                shares_list.append(s)
+                share_map = {}
+                Tools.split_value_map(cifs_share, share_map, split=':')
+                if 'VolumeName' in share_map.keys():
+                    protocol = protocol_map.get(share_map['r'])
+                    fs_id = share_map['r'] + '_' + share_map['VolumeName']
+                    if constants.ShareProtocol.CIFS in protocol:
+                        s = {
+                            'name': share_map['Share'],
+                            'storage_id': storage_id,
+                            'native_share_id': share_map['Share'],
+                            'native_filesystem_id': fs_id,
+                            'path': share_map['Path'],
+                            'protocol': constants.ShareProtocol.CIFS
+                        }
+                        shares_list.append(s)
+                    if constants.ShareProtocol.NFS in protocol:
+                        s = {
+                            'name': share_map['Share'],
+                            'storage_id': storage_id,
+                            'native_share_id': share_map['Share'],
+                            'native_filesystem_id': fs_id,
+                            'path': share_map['Path'],
+                            'protocol': constants.ShareProtocol.NFS
+                        }
+                        shares_list.append(s)
             return shares_list
         except exception.DelfinException as err:
             err_msg = "Failed to get storage shares from " \
@@ -787,35 +828,46 @@ class NetAppHandler(object):
                 quota_map = {}
                 user_group_name = ''
                 Tools.split_value_map(quota_info, quota_map, ":")
-                type = constant.QUOTA_TYPE.get(quota_map['Type'])
-                native_qtree_id = '/vol/' + quota_map['VolumeName']
-                if type == 'tree':
-                    native_qtree_id += '/' + quota_map['Target']
-                else:
-                    if type == 'group':
-                        user_group_name = quota_map['Target']
-                    if quota_map['QtreeName'] != '':
-                        native_qtree_id += '/' + quota_map['QtreeName']
+                print(quota_map)
+                if 'VolumeName' in quota_map.keys():
+                    quota_id = \
+                        quota_map['r'] + '_' + \
+                        quota_map['VolumeName'] + '_' + \
+                        quota_map['Type'] + '_' + \
+                        quota_map['Target']
+                    type = constant.QUOTA_TYPE.get(quota_map['Type'])
+                    native_qtree_id = '/vol/' + quota_map['VolumeName']
+                    if type == 'tree':
+                        native_qtree_id += '/' + quota_map['Target']
                     else:
-                        native_qtree_id = ''
-                quota = {
-                    'id': '',
-                    'native_quota_id': '',
-                    'type': type,
-                    'storage_id': storage_id,
-                    'native_filesystem_id': quota_map['VolumeName'],
-                    'native_qtree_id': native_qtree_id,
-                    'capacity_hard_limit': Tools.get_capacity_size(
-                        quota_map['DiskLimit']),
-                    'capacity_soft_limit': Tools.get_capacity_size(
-                        quota_map['SoftDiskLimit']),
-                    'file_hard_limit': int(quota_map['FilesLimit']),
-                    'file_soft_limit': int(quota_map['SoftFilesLimit']),
-                    'file_count': '',
-                    'used_capacity': '',
-                    'user_group_name': user_group_name
-                }
-                quota_list.append(quota)
+                        if type == 'group':
+                            user_group_name = quota_map['Target']
+                        if quota_map['QtreeName'] != '':
+                            native_qtree_id += '/' + quota_map['QtreeName']
+                        else:
+                            native_qtree_id = ''
+                    fs_id = quota_map['r'] + '_' + quota_map['VolumeName']
+                    qt_id = \
+                        quota_map['r'] + '_' \
+                        + native_qtree_id
+                    quota = {
+                        'id': quota_id,
+                        'native_quota_id': quota_id,
+                        'type': type,
+                        'storage_id': storage_id,
+                        'native_filesystem_id': fs_id,
+                        'native_qtree_id': qt_id,
+                        'capacity_hard_limit': Tools.get_capacity_size(
+                            quota_map['DiskLimit']),
+                        'capacity_soft_limit': Tools.get_capacity_size(
+                            quota_map['SoftDiskLimit']),
+                        'file_hard_limit': int(quota_map['FilesLimit']),
+                        'file_soft_limit': int(quota_map['SoftFilesLimit']),
+                        'file_count': '',
+                        'used_capacity': '',
+                        'user_group_name': user_group_name
+                    }
+                    quota_list.append(quota)
             return quota_list
         except exception.DelfinException as e:
             err_msg = "Failed to get storage volume from " \
