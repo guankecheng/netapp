@@ -39,6 +39,7 @@ CLEAR_ALERT_COMMAND = \
 DISK_SHOW_DETAIL_COMMAND = "disk show -instance"
 DISK_SHOW_PHYSICAL_COMMAND = "disk show -physical"
 DISK_SPLIT_STR = "     Dis"
+DISK_ERROR_COMMAND = "disk error show"
 
 LUN_SHOW_DETAIL_COMMAND = "lun show -instance"
 LUN_SPLIT_STR = "  Vserver"
@@ -55,9 +56,11 @@ INTERFACE_SPLIT_STR = " Vserver "
 QTREE_SHOW_DETAIL_COMMAND = "qtree show -instance"
 QTREE_SPLIT_STR = " Vserver "
 
-CIFS_SHARE_SHOW_DETAIL_COMMAND = "vserver cifs share show -instance"
+CIFS_SHARE_SHOW_DETAIL_COMMAND = "vserver cifs share show -instance" \
+                                 " -vserver %(vserver_name)s"
 CIFS_SHARE_SPLIT_STR = "  Vserve"
 SHARE_AGREEMENT_SHOW_COMMAND = "vserver show -fields Allowed-protocols"
+VSERVER_SHOW_COMMAND = "vserver show -type data"
 
 STORAGE_VENDOR = "netapp"
 STORAGE_MODEL = "cmodel"
@@ -180,6 +183,15 @@ QUOTA_TYPE = {
     'user': constants.QuotaType.USER,
     'tree': constants.QuotaType.TREE,
     'group': constants.QuotaType.GROUP
+}
+
+NETWORK_PORT_TYPE = {
+    'nfs': constants.PortType.NFS,
+    'cifs': constants.PortType.CIFS,
+    'iscsi': constants.PortType.ISCSI,
+    'fcp': constants.PortType.FC,
+    'fcache': constants.PortType.FCACHE,
+    'none': constants.PortType.OTHER
 }
 
 SEVERITY_MAP = {
