@@ -805,7 +805,7 @@ class NetAppHandler(object):
             vserver_array = vserver_info.split("\r\n")
             for vserver in vserver_array[2:]:
                 vserver_name = vserver.split()
-                if len(vserver_name) > 1 and vserver_name[0] != 'SVM_zhuyan':
+                if len(vserver_name) > 1:
                     shares_list += \
                         self.get_shares(storage_id, vserver_name[0])
             return shares_list
