@@ -191,7 +191,8 @@ NETWORK_PORT_TYPE = {
     'iscsi': constants.PortType.ISCSI,
     'fcp': constants.PortType.FC,
     'fcache': constants.PortType.FCACHE,
-    'none': constants.PortType.OTHER
+    'none': constants.PortType.OTHER,
+    'nfs, cifs': constants.PortType.NFS_CIFS
 }
 
 SEVERITY_MAP = {
