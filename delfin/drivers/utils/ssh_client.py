@@ -19,7 +19,7 @@ from eventlet import pools
 from oslo_log import log as logging
 from paramiko.hostkeys import HostKeyEntry
 
-# from delfin import cryptor
+from delfin import cryptor
 from delfin import exception, utils
 
 LOG = logging.getLogger(__name__)
@@ -54,7 +54,7 @@ class SSHClient(object):
 
         self.ssh.connect(hostname=self.ssh_host, port=self.ssh_port,
                          username=self.ssh_username,
-                         password=self.ssh_password,
+                         password=cryptor.decode(self.ssh_password),
                          timeout=self.ssh_conn_timeout)
 
     def set_host_key(self, host_key):
@@ -183,7 +183,7 @@ class SSHPool(pools.Pool):
 
             ssh.connect(hostname=self.ssh_host, port=self.ssh_port,
                         username=self.ssh_username,
-                        password=self.ssh_password,
+                        password=cryptor.decode(self.ssh_password),
                         timeout=self.ssh_conn_timeout)
             if self.conn_timeout:
                 transport = ssh.get_transport()
@@ -191,7 +191,7 @@ class SSHPool(pools.Pool):
             return ssh
         except Exception as e:
             err = six.text_type(e)
-            LOG.error('doexec InvalidUsernameOrPassword error')
+            LOG.error(err)
             if 'timed out' in err:
                 raise exception.InvalidIpOrPort()
             elif 'No authentication methods available' in err \
@@ -241,7 +241,7 @@ class SSHPool(pools.Pool):
         super(SSHPool, self).put(conn)
 
     def do_exec(self, command_str):
-        result = None
+        result = ''
         try:
             with self.item() as ssh:
                 utils.check_ssh_injection(command_str)
@@ -255,10 +255,11 @@ class SSHPool(pools.Pool):
             raise exception.InvalidUsernameOrPassword()
         except Exception as e:
             err = six.text_type(e)
-            LOG.error('doexec InvalidUsernameOrPassword error')
+            LOG.error(err)
             if 'timed out' in err \
-                    or 'SSH connect timeout' in err:
-                raise exception.SSHConnectTimeout()
+                    or 'SSH connect timeout' in err\
+                    or 'Unable to connect to port' in err:
+                raise exception.ConnectTimeout()
             elif 'No authentication methods available' in err \
                     or 'Authentication failed' in err \
                     or 'Invalid username or password' in err:
@@ -266,6 +267,10 @@ class SSHPool(pools.Pool):
             elif 'not a valid RSA private key file' in err \
                     or 'not a valid RSA private key' in err:
                 raise exception.InvalidPrivateKey()
+            elif 'invalid command name' in err:
+                raise exception.InvalidIpOrPort()
+            elif 'login failed' in err:
+                raise exception.StorageBackendException()
             else:
                 raise exception.SSHException(err)
         return result
