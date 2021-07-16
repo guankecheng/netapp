@@ -68,14 +68,31 @@ class Tools(object):
         return capacity
 
     @staticmethod
-    def split_value_map(value_info, value_map, split):
+    def split_value_map_list(value_info, map_list, is_alert=False, split=":"):
         detail_array = value_info.split('\r\n')
+        value_map = {}
+        temp_key = ''
         for detail in detail_array:
-            if detail is not None and detail != '':
+            if detail:
                 string_info = detail.split(split + " ")
                 key = string_info[0].replace(' ', '')
                 value = ''
                 if len(string_info) > 1:
                     for string in string_info[1:]:
-                        value += string.replace('""', '')
-                value_map[key] = value
+                        value = string.replace('""', '')
+                    value_map[key] = value
+                if is_alert and key and len(string_info) > 1:
+                    temp_key = key
+                    continue
+                if is_alert and temp_key:
+                    if len(string_info) > 1:
+                        value_map[temp_key] += string_info[1]
+                    elif len(string_info) == 1:
+                        value_map[temp_key] += string_info[0]
+            else:
+                if value_map != {}:
+                    map_list.append(value_map)
+                value_map = {}
+        if value_map != {}:
+            map_list.append(value_map)
+        return map_list
