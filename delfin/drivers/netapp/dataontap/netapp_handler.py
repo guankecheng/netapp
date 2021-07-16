@@ -26,6 +26,7 @@ from delfin import exception, utils
 from delfin.common import constants
 from delfin.drivers.utils.ssh_client import SSHPool
 from delfin.drivers.utils.tools import Tools
+from delfin.drivers.netapp.dataontap import alert_template
 
 LOG = logging.getLogger(__name__)
 
@@ -83,6 +84,9 @@ class NetAppHandler(object):
             alert_model = {}
             alert_map = {}
             if len(alert_array) > 1:
+                category = constants.Category.RECOVERY \
+                    if 'created' in alert_array[0] \
+                    else constants.Category.RECOVERY
                 alert_values = alert_array[1].split(",")
                 for alert_value in alert_values:
                     array = alert_value.split("=")
@@ -92,7 +96,8 @@ class NetAppHandler(object):
                         alert_map[key] = value
                 if alert_map:
                     alert_map_info = \
-                        constant.ALERT_TEMPLATE.get(alert_map.get('AlertId'))
+                        alert_template.ALERT_TEMPLATE.get(
+                            alert_map.get('AlertId'))
                     severity = description = location = ''
                     if alert_map_info:
                         severity = constant.ALERT_SEVERITY[
@@ -105,7 +110,7 @@ class NetAppHandler(object):
                         'alert_id': alert_map.get('AlertId'),
                         'alert_name': alert_map.get('AlertId'),
                         'severity': severity,
-                        'category': constants.Category.FAULT,
+                        'category': category,
                         'type': constants.EventType.EQUIPMENT_ALARM,
                         'occur_time': utils.utcnow_ms(),
                         'description': description,
