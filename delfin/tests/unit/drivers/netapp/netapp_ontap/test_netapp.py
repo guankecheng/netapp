@@ -30,6 +30,7 @@ class Request:
 class TestNetAppCmodeDriver(TestCase):
     SSHPool.get = mock.Mock(
         return_value={paramiko.SSHClient()})
+
     NetAppHandler.login = mock.Mock()
     netapp_client = NetAppCmodeDriver(**test_constans.ACCESS_INFO)
 
@@ -50,10 +51,11 @@ class TestNetAppCmodeDriver(TestCase):
                          test_constans.CONTROLLER_INFO,
                          test_constans.DISKS_INFO,
                          test_constans.PHYSICAL_INFO,
+                         test_constans.ERROR_DISK_INFO,
                          test_constans.POOLS_INFO,
                          test_constans.AGGREGATE_DETAIL_INFO])
         data = self.netapp_client.get_storage(context)
-        self.assertEqual(data['vendor'], 'netapp')
+        self.assertEqual(data['vendor'], 'NetApp')
 
     def test_list_storage_pools(self):
         SSHPool.do_exec = mock.Mock(
@@ -74,11 +76,10 @@ class TestNetAppCmodeDriver(TestCase):
 
     def test_list_alerts(self):
         SSHPool.do_exec = mock.Mock(
-            side_effect=[test_constans.EVENT_INFO,
-                         test_constans.ALERT_INFO])
+            side_effect=[test_constans.ALERT_INFO])
         data = self.netapp_client.list_alerts(context)
         self.assertEqual(data[0]['alert_name'],
-                         'mgmtgwd.configbr.noSNCBackup')
+                         'DualPathToDiskShelf_Alert')
 
     def test_clear_alters(self):
         alert = {'alert_id': '123'}
@@ -91,35 +92,40 @@ class TestNetAppCmodeDriver(TestCase):
 
     def test_list_controllers(self):
         SSHPool.do_exec = mock.Mock(
-            side_effect=[test_constans.CONTROLLER_INFO])
+            side_effect=[test_constans.CONTROLLER_INFO,
+                         test_constans.CONTROLLER_IP_INFP])
         data = self.netapp_client.list_controllers(context)
         self.assertEqual(data[0]['name'], 'cl-01')
 
     def test_list_ports(self):
         SSHPool.do_exec = mock.Mock(
-            side_effect=[test_constans.INTERFACE_INFO,
-                         test_constans.FC_PORT_INFO,
+            side_effect=[test_constans.FC_PORT_INFO,
                          test_constans.PORTS_INFO])
         data = self.netapp_client.list_ports(context)
-        self.assertEqual(data[0]['name'], 'cl-01_mgmt1')
+        self.assertEqual(data[0]['name'], 'cl-01:0a')
 
     def test_list_disks(self):
         SSHPool.do_exec = mock.Mock(
             side_effect=[test_constans.DISKS_INFO,
-                         test_constans.PHYSICAL_INFO])
+                         test_constans.PHYSICAL_INFO,
+                         test_constans.ERROR_DISK_INFO])
         data = self.netapp_client.list_disks(context)
         self.assertEqual(data[0]['name'], 'NET-1.1')
 
     def test_list_qtrees(self):
         SSHPool.do_exec = mock.Mock(side_effect=[
-            test_constans.QTREES_INFO])
+            test_constans.QTREES_INFO, test_constans.FS_INFO])
         data = self.netapp_client.list_qtrees(context)
         self.assertEqual(data[0]['security_mode'], 'ntfs')
 
     def test_list_shares(self):
         SSHPool.do_exec = mock.Mock(
-            side_effect=[test_constans.SHARES_INFO,
-                         test_constans.SHARES_AGREEMENT_INFO])
+            side_effect=[test_constans.QTREES_INFO,
+                         test_constans.FS_INFO,
+                         test_constans.SHARES_AGREEMENT_INFO,
+                         test_constans.SHARE_VSERVER_INFO,
+                         test_constans.SHARES_INFO,
+                         test_constans.NFS_SHARE_INFO])
         data = self.netapp_client.list_shares(context)
         self.assertEqual(data[0]['name'], 'admin$')
 
@@ -136,4 +142,11 @@ class TestNetAppCmodeDriver(TestCase):
         SSHPool.do_exec = mock.Mock(
             side_effect=[test_constans.QUOTAS_INFO])
         data = self.netapp_client.list_quotas(context)
-        self.assertEqual(data[0]['id'], '')
+        self.assertEqual(data[0]['file_soft_limit'], 1000)
+
+    def test_ge_alert_sources(self):
+        SSHPool.do_exec = mock.Mock(
+            side_effect=[test_constans.NODE_IPS_INFO,
+                         test_constans.CLUSTER_IPS_INFO])
+        data = self.netapp_client.get_alert_sources(context)
+        self.assertEqual(data[0]['host'], '192.168.159.131')
