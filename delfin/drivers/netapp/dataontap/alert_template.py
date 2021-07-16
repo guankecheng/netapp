@@ -493,4 +493,507 @@ ALERT_TEMPLATE = \
                                  'troubleshoot the original node port.If '
                                  'errors persist, contact technical '
                                  'support for further assistance.'},
-    
+    'NodeIfInErrorsWarnAlert': {
+            'severityofAlert': 'Major',
+            'probableCause': 'Threshold_crossed',
+            'description': 'The percentage of inbound packet errors of'
+                           ' node "$(nphm_node_analytics_info.device)" on '
+                           'interface "$('
+                           'nphm_node_analytics_info.interface-name)" is '
+                           'above the warning threshold.',
+            'PossibleEffect': 'Communication from this node to the cluster '
+                              'might be degraded',
+            'CorrectiveActions': '1) Migrate any cluster LIF that uses this '
+                                 'connection to another port connected to '
+                                 'a cluster switch.  For example, '
+                                 'if cluster LIF "clus1" is on port e0a '
+                                 'and the other LIF is on e0b, run the '
+                                 'following command to move "clus1" to '
+                                 'e0b: "network interface migrate '
+                                 '-vserver vs1 -lif clus1 -sourcenode '
+                                 'node1 -destnode node1 -dest-port e0b"2) '
+                                 'Replace the network cable with a '
+                                 'known-good cable.If errors are '
+                                 'corrected, stop. No further action is '
+                                 'required.Otherwise, continue to Step '
+                                 '3.3) Move the network cable to another '
+                                 'port on the node (if available).Migrate '
+                                 'the cluster LIF to the new port.If '
+                                 'errors are corrected, contact technical '
+                                 'support to troubleshoot the original '
+                                 'node port. Otherwise, continue to Step '
+                                 '4.4) Move the network cable to another '
+                                 'available cluster switch port.Migrate '
+                                 'the cluster LIF back to the original '
+                                 'port.If errors are corrected, contact '
+                                 'technical support to troubleshoot the '
+                                 'original switch port.If errors persist, '
+                                 'contact technical support for further '
+                                 'assistance.'},
+        'NodeIfOutErrorsWarnAlert': {
+            'severityofAlert': 'Major',
+            'probableCause': 'Threshold_crossed',
+            'description': 'The percentage of outbound packet errors of '
+                           'node "$(nphm_node_analytics_info.device)" on interface '
+                           '"$(nphm_node_analytics_info.interface-name)" '
+                           'is above the warning threshold.',
+            'PossibleEffect': 'Communication from this node to the cluster '
+                              'might be degraded',
+            'CorrectiveActions': '1) Migrate any cluster LIF that uses this '
+                                 'connection to another port connected to a '
+                                 'cluster switch.  For example, if cluster LIF '
+                                 '"clus1" is on port e0a and the other '
+                                 'LIF is on e0b, run the following '
+                                 'command to move "clus1" to e0b: '
+                                 '"network interface migrate -vserver vs1 '
+                                 '-lif clus1 -sourcenode node1 -destnode '
+                                 'node1 -dest-port e0b"2) Replace the '
+                                 'network cable with a known-good '
+                                 'cable.If errors are corrected, stop. No '
+                                 'further action is required.Otherwise, '
+                                 'continue to Step 3.3) Move the network '
+                                 'cable to another port on the node (if '
+                                 'available).Migrate the cluster LIF to '
+                                 'the new port.If errors are corrected, '
+                                 'contact technical support to '
+                                 'troubleshoot the original node port. '
+                                 'Otherwise, continue to Step 4.4) Move '
+                                 'the network cable to another available '
+                                 'cluster switch port.Migrate the cluster '
+                                 'LIF back to the original port.If errors '
+                                 'are corrected, contact technical '
+                                 'support to troubleshoot the original '
+                                 'switch port.If errors persist, contact '
+                                 'technical support for further '
+                                 'assistance.'},
+        'NvramBadBlocksAlert': {
+            'severityofAlert': 'Major',
+            'probableCause': 'hardware_degrading',
+            'description': 'The number of bad block errors on NVRAM module'
+                           '  "$(nphm_nvram_fru.display-name)" is above  '
+                           'the warning threshold of "$('
+                           'nphm_nvram_bb_threshold.nvram-bb-threshold)".',
+            'PossibleEffect': 'Potential data loss as the NVRAM becomes '
+                              'degraded.',
+            'CorrectiveActions': 'Contact technical support for assistance '
+                                 'with NVRAM module replacement.'},
+        'PCIeLaneErrorAlert': {
+            'severityofAlert': 'Minor',
+            'probableCause': 'Threshold_crossed',
+            'description': 'One or more PCIe lanes for the device"$(nphm_io_'
+                           'pcie_lane.location)" in slot "$('
+                           'nphm_io_pcie_lane.slot)"are not operating '
+                           'correctly.',
+            'PossibleEffect': 'Functionality or performance of this device'
+                              ' might be degraded.',
+            'CorrectiveActions': 'Contact technical support for further'
+                                 ' assistance.'},
+        'PCIeRxErrorAlert': {
+            'severityofAlert': 'Critical',
+            'probableCause': 'hardware_degradation',
+            'description': '1. The link between the PCIE endpoint and its'
+                           ' root port is degraded.2. A physical layer '
+                           'device (PHY) in the PCIe endpoint is no longer '
+                           'working.3. A physical layer device (PHY) in '
+                           'the switch to which the device in the PCIe '
+                           'slot is connected is no longer working.',
+            'PossibleEffect': 'The device connected to the PCIe slot will'
+                              ' not function properly.',
+            'CorrectiveActions': 'Contact technical support for assistance'
+                                 ' in determining whether an I/O card or '
+                                 'PCM replacement is required.'},
+        'SPAutoUpgradeFailedMajorAlert': {
+            'severityofAlert': 'Major',
+            'probableCause': 'Configuration_error',
+            'description': 'A Service Processor automatic firmware update'
+                           ' failure was detected, which can result in '
+                           'Service Processor not being updated to the '
+                           'latest available compatible firmware package.',
+            'PossibleEffect': 'Suboptimal system behavior can result from'
+                              ' Service Processor not being updated to the '
+                              'latest available compatible firmware package.',
+            'CorrectiveActions': '1. Use the "system service-processor '
+                                 'image show" command to display the '
+                                 'firmware version that SP is currently '
+                                 'booted from.2. Manually upgrade Service '
+                                 'Processor by using the "system '
+                                 'service-processor image update" '
+                                 'command.3. Allow sufficient time for the '
+                                 'system to update Service Processor '
+                                 'firmware to the specified SP firmware '
+                                 'package.4. Contact the technical support '
+                                 'if the alert persists.'},
+        'SPLinkDownAlert': {
+            'severityofAlert': 'Major',
+            'probableCause': 'Connection_establishment_error',
+            'description': 'Service Processor in node $(LOCALHOST) has no'
+                           ' network connectivity.The cable between the '
+                           'Wrench port on the controller and the ethernet '
+                           'switch is disconnected.',
+            'PossibleEffect': 'You might not be able to use the Service '
+                              'Processor to remotely access, monitor, '
+                              'and troubleshoot your storage system.',
+            'CorrectiveActions': '1. Check the connection between the Wrench'
+                                 ' port and the ethernet switch.2. If the '
+                                 'cable is properly connected, ensure that '
+                                 'the Service Processor\'s ethernet '
+                                 'interface is configured properly by '
+                                 'executing the command "system '
+                                 'service-processor network show".3. Check '
+                                 'for network cable related issues. 4. '
+                                 'Contact the technical support if the '
+                                 'alert persists.'},
+        'SPNewVersionAvailableAlert': {
+            'severityofAlert': 'Major',
+            'probableCause': 'Configuration_error',
+            'description': 'A Service Processor on node $(LOCALHOST) is not '
+                           'booted from the latest locally available '
+                           'firmware package. A new compatible SP firmware '
+                           'package is available.',
+            'PossibleEffect': 'Suboptimal system behavior can result from'
+                              ' Service Processor not being updated to the '
+                              'latest available compatible firmware package.',
+            'CorrectiveActions': '"system service-processor image modify'
+                                 ' -node $(LOCALHOST) -autoupdate true".2. '
+                                 'If SP auto-update must remain disabled ('
+                                 'not recommended), download the latest '
+                                 'compatible SP firmware package from the '
+                                 'Support Site and trigger SP update using '
+                                 'the "system service-processor image '
+                                 'update" command.3. Use the "system '
+                                 'service-processor image show" command to '
+                                 'display the firmware version that SP is '
+                                 'currently booted from.4. Allow '
+                                 'sufficient time (up to 1 hour) for the '
+                                 'system to update Service Processor '
+                                 'firmware to the specified SP firmware '
+                                 'package.5. Contact the technical support '
+                                 'if the alert persists.'},
+        'SPNotConfiguredAlert': {
+            'severityofAlert': 'Major',
+            'probableCause': 'Configuration_error',
+            'description': 'Service Processor is not properly configured.',
+            'PossibleEffect': 'You might not be able to use the Service'
+                              ' Processor to remotely access, monitor, '
+                              'and troubleshoot your storage system.',
+            'CorrectiveActions': '1. Use the "system service-processor'
+                                 ' network modify" command to configure '
+                                 'the network interface of the Service '
+                                 'Processor. 2. Use the "system '
+                                 'service-processor image modify -node $('
+                                 'LOCALHOST) -autoupdate true" to '
+                                 'configure AutoUpdate feature of the '
+                                 'Service Processor.3. Contact the '
+                                 'technical support if the alert persists.'},
+        'ClusterSeveredAllLinksAlert': {
+            'severityofAlert': 'Major',
+            'probableCause': 'Out_of_service',
+            'description': 'FCVI adapters and intercluster LIFs have broken'
+                           ' connections to the peered cluster or the '
+                           'peered cluster is down.',
+            'PossibleEffect': 'NVRAM mirroring to the peered cluster is '
+                              'compromised and replication of '
+                              'configuration between the clusters might stop.',
+            'CorrectiveActions': '1) Ensure that the intercluster LIFs '
+                                 'are up and running. Repair the '
+                                 'intercluster LIFs if they are down.2) '
+                                 'Verify that the peered cluster is up and '
+                                 'running by using the command "cluster '
+                                 'peer ping". Refer to the MetroCluster '
+                                 'Disaster Recovery Guide if the peered '
+                                 'cluster is down. 3) For fabric '
+                                 'MetroCluster, verify that the backend '
+                                 'fabric ISLs are up and running. Repair '
+                                 'the backend fabric ISLs if they are '
+                                 'down. 4) For non-fabric Metrocluster, '
+                                 'verify that the cabling is correct '
+                                 'between the FCVI adapters. Reconfigure '
+                                 'the cabling if the links are down.'},
+        'DualControllerHa_Alert': {
+            'severityofAlert': 'Major',
+            'probableCause': 'Configuration_error',
+            'description': 'Disk shelf $(sschm_shelf_info.id) is not conne'
+                           'cted to both controllers of the HA pair ($('
+                           'sschm_node_info.owner-node), '
+                           '$(sschm_node_info.ha-node)).',
+            'PossibleEffect': 'Access to disk shelf $(sschm_shelf_info.id) '
+                              'will be lost with a single controller '
+                              'failure.',
+            'CorrectiveActions': '1. Halt all controllers that are connected '
+                                 'to disk shelf $(sschm_shelf_info.id).2.'
+                                 ' Connect disk shelf $(sschm_shelf_info.'
+                                 'id) to both HA controllers following the'
+                                 ' rules in the Universal SAS and ACP '
+                                 'Cabling Guide.3. Reboot the halted '
+                                 'controllers.4. Contact support personnel '
+                                 'if the alert persists.'},
+        'DualControllerNonHa_Alert': {
+            'severityofAlert': 'Major',
+            'probableCause': 'Configuration_error',
+            'description': 'Disk shelf $(sschm_shelf_info.id) is connected '
+                           'to two controllers ($('
+                           'sschm_shelf_info.connected-nodes)) that are '
+                           'not an HA pair.',
+            'PossibleEffect': 'Access to disk shelf $(sschm_shelf_info.id)'
+                              ' may be lost with a single controller '
+                              'failure.',
+            'CorrectiveActions': '1. Halt all controllers that are connected'
+                                 ' to disk shelf $(sschm_shelf_info.id).2. '
+                                 'Connect disk shelf $('
+                                 'sschm_shelf_info.id) to both HA '
+                                 'controllers following the rules in the '
+                                 'Universal SAS and ACP Cabling Guide.3. '
+                                 'Reboot the halted controllers.4. Contact '
+                                 'support personnel if the alert persists.'},
+        'FabricSwitchFanFail_Alert': {
+            'severityofAlert': 'Major',
+            'probableCause': 'Fan_failure',
+            'description': 'The fan "$(fhm_switch_errors.switch-component-'
+                           'name)" on switch "$('
+                           'fhm_switch_errors.switch-name)" has failed.',
+            'PossibleEffect': 'Failure of the fan in the switch "$(fhm_sw'
+                              'itch_errors.switch-name)" might affect its '
+                              'cooling.',
+            'CorrectiveActions': '1) Ensure that the fans in the switch '
+                                 'are operating correctly by using the '
+                                 'command "storage switch show '
+                                 '-cooling".2) Ensure that the fan FRUs '
+                                 'are properly inserted and operational.'},
+        'FabricSwitchPowerFail_Alert': {
+            'severityofAlert': 'Major',
+            'probableCause': 'Power_supply_failure',
+            'description': 'A power supply unit on the switch "$('
+                           'fhm_switch_errors.switch-name)" is not '
+                           'operational.',
+            'PossibleEffect': 'Power supply redundancy on switch "$('
+                              'fhm_switch_errors.switch-name)" is lost.',
+            'CorrectiveActions': '1) Check the error details by using the '
+                                 'command "storage switch show -error '
+                                 '-switch-name $('
+                                 'fhm_switch_errors.switch-name)".2) '
+                                 'Identify the faulty power supply unit '
+                                 'by using the command "storage switch '
+                                 'show -power -switch-name $('
+                                 'fhm_switch_errors.switch-name)".3) '
+                                 'Ensure that the power supply unit "$('
+                                 'fhm_switch_errors.switch-component-name)" '
+                                 'is properly inserted into the chassis of '
+                                 'the switch "$('
+                                 'fhm_switch_errors.switch-name)" and '
+                                 'fully operational.'},
+        'FabricSwitchTempCritical_Alert': {
+            'severityofAlert': 'Major',
+            'probableCause': 'Temperature_unacceptable',
+            'description': '"$(fhm_switch_errors.switch-component-name)" '
+                           'temperature sensor on the FC switch "$('
+                           'fhm_switch_errors.switch-name)" is reporting '
+                           'critical temperature.',
+            'PossibleEffect': '"$(fhm_switch_errors.switch-name)" switch '
+                              'might shutdown if the temperature remains '
+                              'at critical level.',
+            'CorrectiveActions': '1) Check the operational status of the '
+                                 'temperature sensors on the switch by '
+                                 'using the command "storage switch show '
+                                 '-cooling".2) Verify that the switch is '
+                                 'operating under recommended temperature '
+                                 'conditions.'},
+        'FabricSwitchTempSensorFailed_Alert': {
+            'severityofAlert': 'Major',
+            'probableCause': 'Sensor_failure',
+            'description': 'Sensor "$('
+                           'fhm_switch_errors.switch-component-name)" on '
+                           'the FC switch "$('
+                           'fhm_switch_errors.switch-name)" has failed.',
+            'PossibleEffect': 'Problems with the switch "$('
+                              'fhm_switch_errors.switch-name)" '
+                              'temperature might go undetected.',
+            'CorrectiveActions': '1) Check the operational status of the '
+                                 'temperature sensors on the switch by '
+                                 'using the command "storage switch show '
+                                 '-cooling".2) Verify that the switch is '
+                                 'operating under recommended temperature '
+                                 'conditions.'},
+        'FabricSwitchUnreachable_Alert': {
+            'severityofAlert': 'Major',
+            'probableCause': 'Connection_establishment_error',
+            'description': '"$(fhm_switch_errors.switch-component-name)" '
+                           'switch is not reachable over the management '
+                           'network.',
+            'PossibleEffect': 'Switch "$('
+                              'fhm_switch_errors.switch-component-name)" '
+                              'cannot be monitored for alerts.',
+            'CorrectiveActions': '1) Ensure that the node management LIF '
+                                 'is up by using the command "network '
+                                 'interface show".2) Ensure that the '
+                                 'switch "$( '
+                                 'fhm_switch_errors.switch-component-name)"'
+                                 ' is alive by using the command "network '
+                                 'ping".3) Ensure that the switch is '
+                                 'reachable over SNMP by checking its SNMP '
+                                 'settings after logging into the switch.'},
+        'InterclusterBrokenConnectionAlert': {
+            'severityofAlert': 'Major',
+            'probableCause': 'Out_of_service',
+            'description': 'Connectivity to peer cluster is broken.',
+            'PossibleEffect': 'Communication to the peer cluster is '
+                              'compromised and the replication of '
+                              'configuration between the clusters might '
+                              'stop.',
+            'CorrectiveActions': '1) Ensure that the port is connected to '
+                                 'the correct network/switch.2) Ensure '
+                                 'that the intercluster LIF is connected '
+                                 'with the peered cluster.3) Ensure that '
+                                 'the peered cluster is up and running by '
+                                 'using the command "cluster peer ping". '
+                                 'Refer to the MetroCluster Disaster '
+                                 'Recovery Guide if the peered cluster is '
+                                 'down.'},
+        'NoISLPresentAlert': {
+            'severityofAlert': 'Major',
+            'probableCause': 'Out_of_service',
+            'description': 'All ISL links on $(mcchm_isl.display-name) are '
+                           'down.',
+            'PossibleEffect': 'Backend fabric might lose ISL redundancy.',
+            'CorrectiveActions': '1) Repair the backend fabric ISLs on $('
+                                 'mcchm_isl.display-name).2) Ensure that '
+                                 'the peered cluster is up and running by '
+                                 'using the command "cluster peer ping". '
+                                 'Refer to the MetroCluster Disaster '
+                                 'Recovery Guide if the peered cluster is '
+                                 'down.'},
+        'RaidDegradedMirrorAggrAlert': {
+            'severityofAlert': 'Major',
+            'probableCause': 'Out_of_service',
+            'description': 'Mirrored aggregate $(mcchm_aggr.name) has a '
+                           'failed plex.',
+            'PossibleEffect': 'DR protection of backend storage is '
+                              'compromised.',
+            'CorrectiveActions': 'If a plex failed:1) Ensure that the ISLs '
+                                 'are healthy if the configuration '
+                                 'includes fabric switches.2) Locate the '
+                                 'problematic shelf and address any '
+                                 'issues if seen.3) Check if any disks '
+                                 'are broken by using the command '
+                                 '"storage disk show -container-type '
+                                 'broken".'},
+        'RaidLeftBehindAggrAlert': {
+            'severityofAlert': 'Major',
+            'probableCause': 'Out_of_service',
+            'description': 'Aggregate $(mcchm_aggr.name) was left behind '
+                           'during switchback.',
+            'PossibleEffect': 'Loss of access to aggregate by the original '
+                              'owner.',
+            'CorrectiveActions': '1) Check the aggregate state by using '
+                                 'the command "aggr show".2) If the '
+                                 'aggregate is online, return it to its '
+                                 'original owner by using the command '
+                                 '"metrocluster switchback".'},
+        'RaidLeftBehindSpareAlert': {
+            'severityofAlert': 'Major',
+            'probableCause': 'Out_of_service',
+            'description': 'Spare disk $(mcchm_disk.name) was left behind '
+                           'during switchback.',
+            'PossibleEffect': 'Loss of a spare disk by the original owner.',
+            'CorrectiveActions': 'If the disk is not failed, return it to '
+                                 'its original owner by using the command '
+                                 '"metrocluster switchback".'},
+        'StorageBridgeInvalidConfiguration_Alert': {
+            'severityofAlert': 'Major',
+            'probableCause': 'Connection_establishment_error',
+            'description': 'Bridge $(mcchm_bridge_errors.name) is '
+                           'incorrectly configured.',
+            'PossibleEffect': 'Loss of redundancy or access to storage.',
+            'CorrectiveActions': '1) Check the bridge\'s port details by '
+                                 'using the command "storage bridge show '
+                                 '-ports -name $('
+                                 'mcchm_bridge_errors.name)" and ensure '
+                                 'that the bridge\'s second FC and SAS '
+                                 'ports are not being used.2) Refer to '
+                                 'the MetroCluster(tm) Installation and '
+                                 'Configuration Guide for the recommended '
+                                 'configuration settings.'},
+        'StorageBridgePortDown_Alert': {
+            'severityofAlert': 'Major',
+            'probableCause': 'Cable_tamper',
+            'description': 'The port "$(fhm_bridge_errors.component-name)" '
+                           'on the bridge "$(fhm_bridge_errors.name)" is '
+                           'offline.',
+            'PossibleEffect': 'Failure of the port "$('
+                              'fhm_bridge_errors.component-name)" in the '
+                              'bridge "$(fhm_bridge_errors.name)" might '
+                              'cause loss of redundancy.',
+            'CorrectiveActions': '1) Check the operational status of the '
+                                 'ports on the bridge by using the '
+                                 'command "storage bridge show -ports".2) '
+                                 'Verify logical and physical '
+                                 'connectivity to the port.'},
+        'StorageBridgeTempAboveCritical_Alert': {
+            'severityofAlert': 'Major',
+            'probableCause': 'Temperature_unacceptable',
+            'description': 'Sensor "$(fhm_bridge_errors.component-name)" '
+                           'on the FC bridge "$(fhm_bridge_errors.name)" '
+                           'is reporting a temperature that is above the '
+                           'critical threshold.',
+            'PossibleEffect': 'FC Bridge "$(fhm_bridge_errors.name)" might '
+                              'shut down if the bridge temperature '
+                              'remains at this reading.',
+            'CorrectiveActions': '1) Check the operational status of the '
+                                 'chassis temperature sensor on the '
+                                 'bridge using the command "storage '
+                                 'bridge show -cooling".2) Verify that '
+                                 'the bridge is operating under '
+                                 'recommended temperature conditions.'},
+        'StorageBridgeTempBelowCritical_Alert': {
+            'severityofAlert': 'Major',
+            'probableCause': 'Temperature_unacceptable',
+            'description': 'Sensor "$(fhm_bridge_errors.component-name)" '
+                           'on the FC bridge "$(fhm_bridge_errors.name)" '
+                           'is reporting a temperature that is below the '
+                           'critical threshold.',
+            'PossibleEffect': 'FC Bridge "$(fhm_bridge_errors.name)" might '
+                              'shut down if the bridge temperature '
+                              'remains at this reading.',
+            'CorrectiveActions': '1) Check the operational status of the '
+                                 'fans on the bridge.2) Verify that the '
+                                 'bridge is operating under recommended '
+                                 'temperature conditions.'},
+        'StorageBridgeUnreachable_Alert': {
+            'severityofAlert': 'Major',
+            'probableCause': 'Connection_establishment_error',
+            'description': '"$(fhm_bridge_errors.name)" bridge is not '
+                           'reachable over management network.',
+            'PossibleEffect': 'Bridge "$(fhm_bridge_errors.name)" cannot '
+                              'be monitored for alerts.',
+            'CorrectiveActions': '1) Ensure that the node management LIF '
+                                 'is up by using the command "network '
+                                 'interface show".2) Ensure that the '
+                                 'bridge "$(fhm_bridge_errors.name)" is '
+                                 'alive by using the command "network '
+                                 'ping".'},
+        'CriticalFan1FruFaultAlert': {
+            'severityofAlert': 'Critical',
+            'probableCause': 'hardware_degradation',
+            'description': '$(cenv_fru_info.fru-name) is faulty. The nodes '
+                           'in this chassis are $('
+                           'cenv_fru_info.connected-nodes1).',
+            'PossibleEffect': 'The chassis can lose its cooling capability '
+                              'and the temperature can increase. If the '
+                              'temperature increases past the threshold '
+                              'values, the system might shutdown.',
+            'CorrectiveActions': '1. Check $(cenv_fru_info.fru-name) for '
+                                 'failures. If necessary replace $('
+                                 'cenv_fru_info.fru-name) as soon as '
+                                 'possible.2. Refer to fan module '
+                                 'replacement documentation for more '
+                                 'information.'},
+        'CriticalFan2FruFaultAlert': {
+            'severityofAlert': 'Critical',
+            'probableCause': 'hardware_degradation',
+            'description': '$(cenv_fru_info.fru-name) is faulty. The nodes '
+                           'in this chassis are $('
+                           'cenv_fru_info.connected-nodes1).',
+            'PossibleEffect': 'The chassis can lose its cooling capability '
+                              'and the temperature can increase. If the '
+                              'temperature increases past the threshold '
+                              'values, the system might shutdown.',
+            'CorrectiveActions': '1. Check $(cenv_fru_info.fru-name) for '
