@@ -268,3 +268,229 @@ ALERT_TEMPLATE = \
                                  'nd IOM B are properly cabled to their i'
                                  'ndependent domains.5. Contact support p'
                                  'ersonnel if the alert persists.'},
+        'SinglePathToDisk_Alert': {
+            'severityofAlert': 'Major',
+            'probableCause': 'Cable_tamper',
+            'description': 'Disk $(storage_node_disk.disk-name) does not ha'
+                           've two paths to controller $(LOCALHOST) but the'
+                           ' containing disk shelf $(storage_node_disk.shel'
+                           'f) does have two paths. Disk $(storage_node_dis'
+                           'k.disk-name) might be faulty.',
+            'PossibleEffect': 'Access to disk $(storage_node_disk.disk-name'
+                              ') via controller $(LOCALHOST) will be lost w'
+                              'ith a single hardware component failure (e.g'
+                              '. cable, HBA, or IOM failure).',
+            'CorrectiveActions': '1. Reseat disk $(storage_node_disk.disk-n'
+                                 'ame) following the rules in the Installat'
+                                 'ion and Service Guide.2. Wait six minutes'
+                                 ' for the alert condition to clear.3. If '
+                                 'reseating disk $(storage_node_disk.disk-n'
+                                 'ame) fails to clear the alert condition, '
+                                 'replace disk $(storage_node_disk.disk-name'
+                                 ').4. Wait six minutes for the alert condi'
+                                 'tion to clear.5. Contact support personne'
+                                 'l if the alert persists.'},
+        'SqrToSqrOrCirToCirPortConnection_Alert': {
+            'severityofAlert': 'Major',
+            'probableCause': 'Cable_tamper',
+            'description': 'Shelf-to-shelf connection between disk shelves'
+                           ' $(storage_node_shelf_connector.shelf) and $(s'
+                           'torage_node_shelf_connector.remote-shelf) have'
+                           ' $(storage_node_shelf_connector.module-type) s'
+                           'quare to square ports or circle to circle port'
+                           's cabled together.',
+            'PossibleEffect': 'Connection between disk shelves $(storage_n'
+                              'ode_shelf_connector.shelf) and $(storage_no'
+                              'de_shelf_connector.remote-shelf) might be i'
+                              'nactive and cause controller $(LOCALHOST) t'
+                              'o lose connectivity to the shelves.',
+            'CorrectiveActions': '1. Consult the guide applicable to your '
+                                 '$(storage_node_shelf_connector.module-ty'
+                                 'pe) disk shelf to review cabling rules a'
+                                 'nd complete the SAS cabling worksheet for'
+                                 ' your system.2. Connect disk shelf $(sto'
+                                 'rage_node_shelf_connector.shelf) square '
+                                 'port to disk shelf $(storage_node_shelf'
+                                 '_connector.remote-shelf) circle port.3.'
+                                 ' Verify that IOM A of disk shelf $(stor'
+                                 'age_node_shelf_connector.shelf) is conn'
+                                 'ected to IOM A of disk shelf $(storage_'
+                                 'node_shelf_connector.remote-shelf).4. V'
+                                 'erify that IOM B of disk shelf $(storag'
+                                 'e_node_shelf_connector.shelf) is connect'
+                                 'ed to IOM B of disk shelf $(storage_nod'
+                                 'e_shelf_connector.remote-shelf).5. Cont'
+                                 'act support personnel if the alert pers'
+                                 'ists.'},
+        'StorageFCAdapterFault_Alert': {
+            'severityofAlert': 'Major',
+            'probableCause': 'Cable_tamper',
+            'description': 'FC initiator adapter $(mcc_nhm_storage_fc_ada'
+                           'pter.name) is at fault.',
+            'PossibleEffect': 'Resiliency of backend storage is compromis'
+                              'ed.',
+            'CorrectiveActions': '1. Ensure that the FC initiator link ha'
+                                 's not been tampered with.2. Verify the '
+                                 'operational status of the FC initiator'
+                                 ' adapter by using the command "system '
+                                 'node run -node local -command storage'
+                                 ' show adapter".'},
+        'ThreePathToStack_Alert': {
+            'severityofAlert': 'Major',
+            'probableCause': 'Cable_tamper',
+            'description': 'Controller $(LOCALHOST) has only $(storage_no'
+                           'de_stack.path-count) paths to stack $(storage'
+                           '_node_stack.stack-id).',
+            'PossibleEffect': 'Only multipath or quad-path configurations'
+                              ' are supported for IOM12 stacks.',
+            'CorrectiveActions': '1. Consult the guide applicable to your'
+                                 ' $(storage_node_stack.module-type) disk'
+                                 ' shelf to review cabling rules and comp'
+                                 'lete the SAS cabling worksheet for your'
+                                 ' system.2. Connect controller $(LOCALHO'
+                                 'ST) to stack $(storage_node_stack.stack-'
+                                 'id) using a multipath or quad-path config'
+                                 'uration.3. Contact support personnel if '
+                                 'the alert persists.'},
+        'UnsupportedMixOfIOM12andIOM6Shelves_Alert': {
+            'severityofAlert': 'Major',
+            'probableCause': 'Cable_tamper',
+            'description': 'Cabling together disk shelves $(storage_node_'
+                           'shelf_connector.shelf) of $(storage_node_shelf'
+                           '_connector.module-type) and $(storage_node_she'
+                           'lf_connector.remote-shelf) of $(storage_node_'
+                           'shelf_connector.remote-module-type) is not su'
+                           'pported.',
+            'PossibleEffect': 'Devices might not be accessible by the cont'
+                              'roller.',
+            'CorrectiveActions': '1. Consult the guide applicable to your '
+                                 '$(storage_node_shelf_connector.module-type) disk shelf to revi'
+                                 'ew cabling rules and complete the SAS cab'
+                                 'ling worksheet for your system.2. Connect'
+                                 ' disk shelf $(storage_node_shelf_connector'
+                                 '.shelf) only to other $(storage_node_shelf'
+                                 '_connector.module-type) disk shelves in a '
+                                 'stack.3. Connect disk shelf $(storage_node'
+                                 '_shelf_connector.remote-shelf) only to ot'
+                                 'her $(storage_node_shelf_connector.remote'
+                                 '-module-type) disk shelves in a separate'
+                                 ' stack.4. Contact support personnel if th'
+                                 'e alert persists.'},
+        'BootMediaMissingAlert': {
+            'severityofAlert': 'Minor',
+            'probableCause': 'Configuration_error',
+            'description': 'Node"$(nphm_boot_media_count.display-name)" sup'
+                           'ports 2 boot media devices, but less than 2 boo'
+                           't media devices have been detected.',
+            'PossibleEffect': 'Boot media is not currently redundant.',
+            'CorrectiveActions': '1. Halt the node. 2. Verify that both b'
+                                 'oot media devices are present and reseat them.3. Reboot the nod'
+                                 'e.4. If the problem persists, contact techn'
+                                 'ical support for further assistance.'},
+        'BootmediaReplaceAlert': {
+            'severityofAlert': 'Critical',
+            'probableCause': 'hardware_degrading',
+            'description': 'Bad sector count in the boot media has reached c'
+                           'ritical level.',
+            'PossibleEffect': 'Upgrading, downgrading, reverting, or applyin'
+                              'g patches to Data ONTAP can damage the boot d'
+                              'evice. If the boot device is damaged, the sto'
+                              'rage system will not boot.',
+            'CorrectiveActions': '1. Contact technical support to obtain a n'
+                                 'ew boot device.2. If possible, perform a ta'
+                                 'keover of this node and bring the node down'
+                                 ' for maintenance.3. Refer to the "Boot medi'
+                                 'a replacement guide for your given hardware'
+                                 ' platform" to replace the boot device.4. Up'
+                                 'date the boot device with the appropriate'
+                                 ' Da'
+                                 'ta ONTAP version. 5. Bring the storage syst'
+                                 'em online.'},
+        'BootmediaWarnAlert': {
+            'severityofAlert': 'Major',
+            'probableCause': 'hardware_degrading',
+            'description': 'Boot device is wearing out due to write operatio'
+                           'ns in the form of regular updates.',
+            'PossibleEffect': 'Upgrading, downgrading, reverting, or applyi'
+                              'ng patches to Data ONTAP can cause addition'
+                              'al wear to the boot device. The boot device'
+                              ' might enter critical condition due to the '
+                              'additional wear.',
+            'CorrectiveActions': '1. Contact technical support to obtain '
+                                 'a new boot device.2. If possible, perfo'
+                                 'rm a takeover of this node and bring th'
+                                 'e node down for maintenance.3. Refer to'
+                                 ' the "Boot media replacement guide for '
+                                 'your given hardware platform" to replac'
+                                 'e the boot device.4. Update the boot de'
+                                 'vice with the appropriate Data ONTAP ver'
+                                 'sion. 5. Bring the storage system online.'},
+        'CriticalCECCCountMemErrAlert': {
+            'severityofAlert': 'Critical',
+            'probableCause': 'DIMM_Degraded',
+            'description': 'The DIMM has degraded, leading to memory error'
+                           's.',
+            'PossibleEffect': 'Memory issues can lead to a catastrophic sy'
+                              'stem panic, which can lead to data downtim'
+                              'e on the node.',
+            'CorrectiveActions': '1. Contact technical support to obtain '
+                                 'a new DIMM of the same specification.2.'
+                                 ' If possible, perform a takeover of this'
+                                 ' node and bring the node down for maint'
+                                 'enance.3. Refer to the DIMM replacement'
+                                 ' guide for your given hardware platform'
+                                 ' to replace the DIMM.4. Bring the stora'
+                                 'ge system online.'},
+        'IOXMBadPowerSignalAlert': {
+            'severityofAlert': 'Major',
+            'probableCause': 'hardware_degradation',
+            'description': 'One or more power rails on the I/O expansion'
+                           ' module (IOXM) deteriorated.',
+            'PossibleEffect': 'Devices on the IOXM might not work when th'
+                              'e IOXM is in degraded mode.',
+            'CorrectiveActions': '1. Contact technical support to get new'
+                                 ' IOXM that is compatible with your plat'
+                                 'form.2. If possible, perform a takeove'
+                                 'r of this node and bring the node down'
+                                 ' for maintenance.3. Replace the IOXM. '
+                                 'Refer to the Hardware specification g'
+                                 'uide for more information on the posi'
+                                 'tion of the FRU and ways to check or '
+                                 'replace it.4. Bring the storage system'
+                                 ' online.5. If the problem persists, c'
+                                 'ontact technical support to get the c'
+                                 'hassis replaced.'},
+        'NodeClusFlapWarnAlert': {
+            'severityofAlert': 'Major',
+            'probableCause': 'Threshold_crossed',
+            'description': 'The number of link flapping errors on port "$('
+                           'nphm_clus_flaps_info.display-name)" is above  '
+                           'the warning threshold of "$(nphm_clus_flaps_'
+                           'info.threshold)" for the polling period.',
+            'PossibleEffect': 'Communication from this node to the cluster '
+                              'might be degraded.',
+            'CorrectiveActions': '1) Migrate any cluster LIF that uses '
+                                 'this link to another port connected '
+                                 'to a cluster switch by using the '
+                                 '"network interface migrate" command . 2) '
+                                 'Replace the network cable with a  '
+                                 'known-good cable.If errors are  '
+                                 'corrected,  stop. No further action is '
+                                 'required.Otherwise,  continue to Step '
+                                 '3.3) Move the network cable  to another '
+                                 'available port on the cluster switch(if '
+                                 'available).If errors are corrected, '
+                                 'stop. Contact technical support to '
+                                 'troubleshoot the original switch port. '
+                                 'Otherwise, continue to Step 4.4) If '
+                                 'available, configure another port on '
+                                 'the node for the cluster broadcast '
+                                 'domain.Move the network cable to '
+                                 'another available cluster switch '
+                                 'port.Migrate the cluster LIF back to '
+                                 'the original port.If errors are '
+                                 'corrected, contact technical support to '
+                                 'troubleshoot the original node port.If '
+                                 'errors persist, contact technical '
+                                 'support for further assistance.'},
+    
