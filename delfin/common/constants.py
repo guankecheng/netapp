@@ -51,9 +51,11 @@ class VolumeStatus(object):
 class ControllerStatus(object):
     NORMAL = 'normal'
     OFFLINE = 'offline'
+    FAULT = 'fault'
+    DEGRADED = 'degraded'
     UNKNOWN = 'unknown'
 
-    ALL = (NORMAL, OFFLINE, UNKNOWN)
+    ALL = (NORMAL, OFFLINE, FAULT, DEGRADED, UNKNOWN)
 
 
 class StorageType(object):
@@ -106,10 +108,11 @@ class PortType(object):
     COMBO = 'combo'
     CNA = 'cna'
     RCIP = 'rcip'
+    NFS_CIFS = 'nfs-cifs'
     OTHER = 'other'
 
     ALL = (FC, ISCSI, FICON, FCOE, ETH, SAS, IB, LOGIC,
-           CIFS, NFS, FCACHE, COMBO, CNA, RCIP, OTHER)
+           CIFS, NFS, FCACHE, COMBO, CNA, RCIP, NFS_CIFS, OTHER)
 
 
 class PortLogicalType(object):
@@ -320,6 +323,21 @@ class SecurityLevel(object):
 # Performance collection constants and common models
 # Metric model
 metric_struct = namedtuple("Metric", "name labels values")
+
+
+class ResourceType(object):
+    STORAGE = 'storage'
+    STORAGE_POOL = 'storagePool'
+    VOLUME = 'volume'
+    CONTROLLER = 'controller'
+    PORT = 'port'
+    DISK = 'disk'
+    FILESYSTEM = 'filesystem'
+    SHARE = 'share'
+
+    ALL = (STORAGE, STORAGE_POOL, VOLUME, CONTROLLER,
+           PORT, DISK, FILESYSTEM, SHARE)
+
 
 # Unified Array metrics model
 DELFIN_ARRAY_METRICS = [

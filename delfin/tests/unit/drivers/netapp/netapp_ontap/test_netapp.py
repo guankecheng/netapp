@@ -14,6 +14,8 @@
 from unittest import TestCase, mock
 
 import paramiko
+
+from delfin.drivers.utils.rest_client import RestClient
 from delfin.tests.unit.drivers.netapp.netapp_ontap import test_constans
 from delfin import context
 from delfin.drivers.netapp.dataontap.netapp_handler import NetAppHandler
@@ -150,3 +152,35 @@ class TestNetAppCmodeDriver(TestCase):
                          test_constans.CLUSTER_IPS_INFO])
         data = self.netapp_client.get_alert_sources(context)
         self.assertEqual(data[0]['host'], '192.168.159.131')
+
+    def test_get_storage_performance(self):
+        SSHPool.do_exec = mock.Mock(
+            side_effect=[  # storage
+                test_constans.SYSTEM_INFO,
+                # pool
+                test_constans.AGGREGATE_DETAIL_INFO,
+                # volume
+                test_constans.LUN_INFO,
+                # fs
+                test_constans.FS_INFO,
+            ])
+        self.netapp_client.netapp_handler.do_rest_call = mock.Mock(
+            side_effect=[  # storage
+                test_constans.CLUSTER_PER_INFO,
+                # pool
+                test_constans.POOL_PER_INFO,
+                test_constans.POOL_PER_INFO,
+                test_constans.POOL_PER_INFO,
+                # volume
+                test_constans.LUN_PER_INFO,
+                # fs
+                test_constans.FS_PER_INFO,
+                test_constans.FS_PER_INFO,
+                test_constans.FS_PER_INFO,
+            ])
+        data = self.netapp_client.collect_perf_metrics(
+            context, test_constans.ACCESS_INFO['storage_id'],
+            test_constans.RESOURCE_METRICS,
+            start_time=str(1485314410000),
+            end_time=str(1485314420000))
+        self.assertEqual(data[0][2][1485314413000], 1000)

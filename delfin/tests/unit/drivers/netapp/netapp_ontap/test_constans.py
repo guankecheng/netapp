@@ -22,7 +22,14 @@ ACCESS_INFO = {
         "port": 22,
         "username": "admin",
         "password": "aq114477",
-    }
+    },
+    "rest": {
+        "host": "192.168.159.130",
+        "port": 22,
+        "username": "admin",
+        "password": "aq114477",
+    },
+
 }
 
 SYSTEM_INFO = """
@@ -493,6 +500,7 @@ VBN_BAD may be present in the active filesystem: false\r
                           Is Volume a FlexGroup: false\r
                                   SnapLock Type: non-snaplock\r
                           Vserver DR Protection: -\r
+ UUID of the Efficiency Policy: b0f36cd7-e7bc-11e2-9994-123478563412\r
 \r
                                    Vserver Name: svm1\r
                                     Volume Name: svm1_root\r
@@ -586,6 +594,7 @@ VBN_BAD may be present in the active filesystem: false\r
                           Is Volume a FlexGroup: false\r
                                   SnapLock Type: non-snaplock\r
                           Vserver DR Protection: -\r
+ UUID of the Efficiency Policy: b0f36cd7-e7bc-11e2-9994-123478563412\r
 \r
                                    Vserver Name: svm1\r
                                     Volume Name: vol_svm1_1\r
@@ -679,6 +688,7 @@ VBN_BAD may be present in the active filesystem: false\r
                           Is Volume a FlexGroup: false\r
                                   SnapLock Type: non-snaplock\r
                           Vserver DR Protection: -\r
+ UUID of the Efficiency Policy: b0f36cd7-e7bc-11e2-9994-123478563412\r
 7 entries were displayed."""
 
 ALERT_INFO = """----cluster----\r
@@ -1285,7 +1295,7 @@ svm1 vol_svm1_2 aggr1 online RW 2GB 2.00GB 0%\r"""
 
 TRAP_MAP = {
     '1.3.6.1.4.1.789.1.1.12.0':
-        'A Health Monitor has created an alert. '
+        'A Health Monitor has clear an alert. '
         '[Alert Id = DisabledInuseSASPort_Alert , Alerting Resource = 0a].',
     'controller_name': 'cl-01',
     '1.3.6.1.4.1.789.1.1.9.0': '1-80-000008'
@@ -1568,3 +1578,198 @@ cl      cluster_mgmt 192.168.159.131"""
 CONTROLLER_IP_INFP = """vserver   lif     curr-node address\r
 --------- --------------- --------- ------------\r
 NetappFSA Netapp-01_mgmt1 cl-01 8.44.162.245"""
+
+RESOURCE_METRICS = {
+    'storage':
+        ['iops', 'readIops', 'writeIops', 'throughput',
+         'readThroughput', 'writeThroughput', 'responseTime'],
+    'storagePool':
+        ['iops', 'readIops', 'writeIops', 'throughput',
+         'readThroughput', 'writeThroughput', 'responseTime'],
+    'volume':
+        ['iops', 'readIops', 'writeIops', 'throughput',
+         'readThroughput', 'writeThroughput', 'responseTime',
+         'cacheHitRatio', 'readCacheHitRatio', 'writeCacheHitRatio',
+         'ioSize', 'readIoSize', 'writeIoSize'],
+    # 'controller':
+    #     ['iops', 'readIops', 'writeIops', 'throughput',
+    #      'readThroughput', 'writeThroughput', 'responseTime'],
+    # 'port':
+    #     ['iops', 'readIops', 'writeIops', 'throughput',
+    #      'readThroughput', 'writeThroughput', 'responseTime'],
+    # 'disk':
+    #     ['iops', 'readIops', 'writeIops', 'throughput',
+    #      'readThroughput', 'writeThroughput', 'responseTime'],
+    'filesystem':
+        ['iops', 'readIops', 'writeIops', 'throughput',
+         'readThroughput', 'writeThroughput', 'responseTime',
+         'ioSize', 'readIoSize', 'writeIoSize'],
+}
+
+CLUSTER_PER_INFO = {
+  "records": [
+    {
+      "timestamp": "2017-01-25T11:20:13Z",
+      "status": "ok",
+      "_links": {
+        "self": {
+          "href": "/api/resourcelink"
+        }
+      },
+      "throughput": {
+        "other": 0,
+        "read": "200",
+        "total": "1000",
+        "write": "100"
+      },
+      "latency": {
+        "other": 0,
+        "read": "200",
+        "total": "1000",
+        "write": "100"
+      },
+      "iops": {
+        "other": 0,
+        "read": "200",
+        "total": "1000",
+        "write": "100"
+      },
+      "duration": "PT15S"
+    }
+  ],
+  "_links": {
+    "next": {
+      "href": "/api/resourcelink"
+    },
+    "self": {
+      "href": "/api/resourcelink"
+    }
+  },
+  "num_records": 0
+}
+
+POOL_PER_INFO = {
+  "records": [
+    {
+      "timestamp": "2017-01-25T11:20:13Z",
+      "status": "ok",
+      "_links": {
+        "self": {
+          "href": "/api/resourcelink"
+        }
+      },
+      "throughput": {
+        "other": 0,
+        "read": "200",
+        "total": "1000",
+        "write": "100"
+      },
+      "latency": {
+        "other": 0,
+        "read": "200",
+        "total": "1000",
+        "write": "100"
+      },
+      "iops": {
+        "other": 0,
+        "read": "200",
+        "total": "1000",
+        "write": "100"
+      },
+      "duration": "PT15S"
+    }
+  ],
+  "_links": {
+    "next": {
+      "href": "/api/resourcelink"
+    },
+    "self": {
+      "href": "/api/resourcelink"
+    }
+  },
+  "num_records": 0
+}
+
+LUN_PER_INFO = {
+  "records": [
+    {
+      "timestamp": "2017-01-25T11:20:13Z",
+      "status": "ok",
+      "_links": {
+        "self": {
+          "href": "/api/resourcelink"
+        }
+      },
+      "throughput": {
+        "other": 0,
+        "read": "200",
+        "total": "1000",
+        "write": "100"
+      },
+      "latency": {
+        "other": 0,
+        "read": "200",
+        "total": "1000",
+        "write": "100"
+      },
+      "iops": {
+        "other": 0,
+        "read": "200",
+        "total": "1000",
+        "write": "100"
+      },
+      "duration": "PT15S"
+    }
+  ],
+  "_links": {
+    "next": {
+      "href": "/api/resourcelink"
+    },
+    "self": {
+      "href": "/api/resourcelink"
+    }
+  },
+  "num_records": 0
+}
+
+FS_PER_INFO = {
+  "records": [
+    {
+      "timestamp": "2017-01-25T11:20:13Z",
+      "status": "ok",
+      "_links": {
+        "self": {
+          "href": "/api/resourcelink"
+        }
+      },
+      "throughput": {
+        "other": 0,
+        "read": "200",
+        "total": "1000",
+        "write": "100"
+      },
+      "latency": {
+        "other": 0,
+        "read": "200",
+        "total": "1000",
+        "write": "100"
+      },
+      "iops": {
+        "other": 0,
+        "read": "200",
+        "total": "1000",
+        "write": "100"
+      },
+      "duration": "PT15S"
+    }
+  ],
+  "_links": {
+    "next": {
+      "href": "/api/resourcelink"
+    },
+    "self": {
+      "href": "/api/resourcelink"
+    }
+  },
+  "num_records": 0
+}

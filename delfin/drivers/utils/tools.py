@@ -73,7 +73,7 @@ class Tools(object):
         value_map = {}
         temp_key = ''
         for detail in detail_array:
-            if detail:
+            if detail and 'entries' not in detail:
                 string_info = detail.split(split + " ")
                 key = string_info[0].replace(' ', '')
                 value = ''

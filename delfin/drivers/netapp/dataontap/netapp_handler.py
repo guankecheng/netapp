@@ -14,6 +14,8 @@
 # under the License.
 
 import time
+
+import requests
 import six
 import hashlib
 import eventlet
@@ -24,9 +26,10 @@ from oslo_utils import units
 from delfin.drivers.netapp.dataontap import constants as constant
 from delfin import exception, utils
 from delfin.common import constants
+from delfin.drivers.netapp.dataontap.performance_handler import PerformanceHandler
+from delfin.drivers.utils.rest_client import RestClient
 from delfin.drivers.utils.ssh_client import SSHPool
 from delfin.drivers.utils.tools import Tools
-from delfin.drivers.netapp.dataontap import alert_template
 
 LOG = logging.getLogger(__name__)
 
@@ -39,6 +42,13 @@ class NetAppHandler(object):
 
     def __init__(self, **kwargs):
         self.ssh_pool = SSHPool(**kwargs)
+
+        self.rest_client = RestClient(**kwargs)
+        if self.rest_client.session is None:
+            self.rest_client.init_http_head()
+        self.rest_client.session.auth = requests.auth.HTTPBasicAuth(
+            self.rest_client.rest_username,
+            self.rest_client.rest_password)
 
     @staticmethod
     def get_table_data(values):
@@ -84,7 +94,7 @@ class NetAppHandler(object):
             alert_model = {}
             alert_map = {}
             if len(alert_array) > 1:
-                category = constants.Category.RECOVERY \
+                category = constants.Category.FAULT \
                     if 'created' in alert_array[0] \
                     else constants.Category.RECOVERY
                 alert_values = alert_array[1].split(",")
@@ -94,33 +104,25 @@ class NetAppHandler(object):
                         key = array[0].replace(' ', '')
                         value = array[1].replace(' ', '').replace('.', '')
                         alert_map[key] = value
-                if alert_map:
-                    alert_map_info = \
-                        alert_template.ALERT_TEMPLATE.get(
-                            alert_map.get('AlertId'))
-                    severity = description = location = ''
-                    if alert_map_info:
-                        severity = constant.ALERT_SEVERITY[
-                            alert_map_info['severityofAlert']]
-                        location = \
-                            alert_map_info['probableCause'] +\
-                            ':' + alert_map_info['PossibleEffect']
-                        description = alert_map_info['description']
+                if alert_map and category == constants.Category.RECOVERY:
                     alert_model = {
                         'alert_id': alert_map.get('AlertId'),
                         'alert_name': alert_map.get('AlertId'),
-                        'severity': severity,
+                        'severity': '',
                         'category': category,
                         'type': constants.EventType.EQUIPMENT_ALARM,
                         'occur_time': utils.utcnow_ms(),
-                        'description': description,
+                        'description': '',
                         'match_key': hashlib.md5(
                             (alert_map.get('AlertId') + node_name +
                              alert_map['AlertingResource']
                              ).encode()).hexdigest(),
                         'resource_type': constants.DEFAULT_RESOURCE_TYPE,
-                        'location': location
+                        'location': ''
                     }
+                else:
+                    raise exception.IncompleteTrapInformation(
+                        constant.STORAGE_VENDOR)
             return alert_model
         except Exception as err:
             err_msg = "Failed to parse alert from " \
@@ -131,8 +133,7 @@ class NetAppHandler(object):
     def login(self):
         try:
             result = self.ssh_do_exec('cluster identity show')
-            if 'is not a recognized command' in result \
-                    or 'command not found' in result:
+            if 'is not a recognized command' in result:
                 raise exception.InvalidIpOrPort()
         except Exception as e:
             LOG.error("Failed to login netapp %s" %
@@ -167,9 +168,8 @@ class NetAppHandler(object):
             Tools.split_value_map_list(
                 system_info, storage_map_list, split=':')
             if len(storage_map_list) > 0:
-                storage_map = storage_map_list[len(storage_map_list) - 1]
-                controller_map = \
-                    controller_map_list[len(controller_map_list) - 1]
+                storage_map = storage_map_list[-1]
+                controller_map = controller_map_list[1]
                 for disk in disk_list:
                     raw_capacity += disk['capacity']
                 for pool in pool_list:
@@ -988,3 +988,175 @@ class NetAppHandler(object):
                       "netapp cmode: %s" % (six.text_type(err))
             LOG.error(err_msg)
             raise exception.InvalidResults(err_msg)
+
+    def do_rest_call(self, url, data):
+        try:
+            res = self.rest_client.do_call(
+                url, data, 'GET', constant.SOCKET_TIMEOUT)
+            if res.status_code == constant.RETURN_SUCCESS_CODE \
+                    or res.status_code == constant.CREATED_SUCCESS_CODE \
+                    or res.status_code == constant.ACCEPTED_RETURN_CODE:
+                result_json = res.json()
+                return result_json.get('data')
+            elif res.status_code == constant.BAD_REQUEST_RETURN_CODE:
+                raise exception.BadRequest()
+            elif res.status_code == constant.UNAUTHORIZED_RETURN_CODE:
+                raise exception.NotAuthorized()
+            elif res.status_code == constant.FORBIDDEN_RETURN_CODE:
+                raise exception.InvalidUsernameOrPassword()
+            elif res.status_code == constant.NOT_FOUND_RETURN_CODE:
+                raise exception.NotFound()
+            elif res.status_code == constant.METHOD_NOT_ALLOWED_CODE:
+                raise exception.Invalid()
+            elif res.status_code == constant.CONFLICT_RETURN_CODE:
+                raise exception.Invalid()
+            elif res.status_code == constant.INTERNAL_ERROR_CODE:
+                raise exception.BadResponse()
+        except exception.DelfinException as e:
+            err_msg = "Failed to rest call from " \
+                      "netapp cmode: %s" % (six.text_type(e))
+            LOG.error(err_msg)
+            raise e
+        except Exception as err:
+            err_msg = "Failed to rest call from " \
+                      "netapp cmode: %s" % (six.text_type(err))
+            LOG.error(err_msg)
+            raise exception.InvalidResults(err_msg)
+
+    def collect_perf_metrics(self, storage_id,
+                             resource_metrics, start_time, end_time):
+        try:
+            metrics = []
+            if start_time and end_time:
+                metrics_keys = resource_metrics.keys()
+                # storage metrics
+                if constants.ResourceType.STORAGE in metrics_keys:
+                    metrics.extend(
+                        self.get_storage_per(
+                            resource_metrics,
+                            storage_id, start_time, end_time))
+                # pool metrics
+                if constants.ResourceType.STORAGE_POOL in metrics_keys:
+                    metrics.extend(
+                        self.get_pool_per(
+                            resource_metrics,
+                            storage_id, start_time, end_time))
+                # volume metrics
+                if constants.ResourceType.VOLUME in metrics_keys:
+                    metrics.extend(
+                        self.get_volume_per(
+                            resource_metrics,
+                            storage_id, start_time, end_time))
+                # controller metrics
+                if constants.ResourceType.CONTROLLER in metrics_keys:
+                    pass
+                # port metrics
+                if constants.ResourceType.PORT in metrics_keys:
+                    pass
+                # disk metrics
+                if constants.ResourceType.DISK in metrics_keys:
+                    pass
+                # filesystem metrics
+                if constants.ResourceType.FILESYSTEM in metrics_keys:
+                    metrics.extend(
+                        self.get_fs_per(
+                            resource_metrics,
+                            storage_id, start_time, end_time))
+                # share metrics
+                if constants.ResourceType.SHARE in metrics_keys:
+                    pass
+            return metrics
+        except exception.DelfinException as e:
+            err_msg = "Failed to get storage performance from " \
+                      "netapp cmode: %s" % (six.text_type(e))
+            LOG.error(err_msg)
+            raise e
+        except Exception as err:
+            err_msg = "Failed to get storage performance from " \
+                      "netapp cmode: %s" % (six.text_type(err))
+            LOG.error(err_msg)
+            raise exception.InvalidResults(err_msg)
+
+    def get_storage_per(self, metrics, storage_id, start_time, end_time):
+        data = {'interval': constant.HOUR_STAMP}
+        json_info = self.do_rest_call(constant.CLUSTER_PER_URL, data)
+        if json_info is not None:
+            data_info = json_info.get('records')
+            system_info = self.ssh_do_exec(
+                constant.CLUSTER_SHOW_COMMAND)
+            storage_map_list = []
+            Tools.split_value_map_list(
+                system_info, storage_map_list, split=':')
+            storage = storage_map_list[-1]
+            storage_metrics = PerformanceHandler.\
+                get_per_value(metrics, storage_id,
+                              start_time, end_time,
+                              data_info,
+                              storage['ClusterSerialNumber'],
+                              storage['ClusterName'])
+            return storage_metrics
+
+    def get_pool_per(self, metrics, storage_id, start_time, end_time):
+        agg_info = self.ssh_do_exec(
+            constant.AGGREGATE_SHOW_DETAIL_COMMAND)
+        agg_map_list = []
+        pool_metrics = []
+        Tools.split_value_map_list(agg_info, agg_map_list, split=':')
+        for agg_map in agg_map_list:
+            if 'UUIDString' in agg_map:
+                data = {'interval': constant.HOUR_STAMP}
+                uuid = agg_map['UUIDString']
+                json_info = self.do_rest_call(
+                    constant.POOL_PER_URL % uuid, data)
+                data_info = json_info.get('records')
+                pool_metrics.extend(
+                    PerformanceHandler.get_per_value(metrics, storage_id,
+                                                     start_time, end_time,
+                                                     data_info,
+                                                     agg_map['UUIDString'],
+                                                     agg_map['Aggregate']))
+
+        return pool_metrics
+
+    def get_volume_per(self, metrics, storage_id, start_time, end_time):
+        volume_info = self.ssh_do_exec(
+                constant.LUN_SHOW_DETAIL_COMMAND)
+        volume_map_list = []
+        volume_metrics = []
+        Tools.split_value_map_list(volume_info, volume_map_list, split=':')
+        for volume in volume_map_list:
+            if 'LUNUUID' in volume:
+                data = {'interval': constant.HOUR_STAMP}
+                uuid = volume['LUNUUID']
+                json_info = self.do_rest_call(
+                    constant.VOLUME_PER_URL % uuid, data)
+                data_info = json_info.get('records')
+                volume_metrics.extend(
+                    PerformanceHandler.get_per_value(metrics, storage_id,
+                                                     start_time, end_time,
+                                                     data_info,
+                                                     volume['SerialNumber'],
+                                                     volume['LUNName']))
+        return volume_metrics
+
+    def get_fs_per(self, metrics, storage_id, start_time, end_time):
+        fs_info = self.ssh_do_exec(
+                constant.FS_SHOW_DETAIL_COMMAND)
+        fs_map_list = []
+        fs_metrics = []
+        Tools.split_value_map_list(fs_info, fs_map_list, split=':')
+        for fs in fs_map_list:
+            if 'UUIDoftheEfficiencyPolicy' in fs:
+                data = {'interval': constant.HOUR_STAMP}
+                uuid = fs['UUIDoftheEfficiencyPolicy']
+                json_info = self.do_rest_call(
+                    constant.VOLUME_PER_URL % uuid, data)
+                data_info = json_info.get('records')
+                fs_id = self.get_fs_id(
+                    fs['VserverName'], fs['VolumeName'])
+                fs_metrics.extend(
+                    PerformanceHandler.get_per_value(metrics, storage_id,
+                                                     start_time, end_time,
+                                                     data_info, fs_id,
+                                                     fs['VolumeName']))
+        return fs_metrics
