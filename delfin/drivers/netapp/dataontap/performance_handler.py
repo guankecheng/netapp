@@ -52,13 +52,13 @@ class PerformanceHandler(object):
 
     @staticmethod
     def get_per_value(metrics, storage_id, start_time, end_time,
-                      data_info, resource_id, resource_name):
+                      data_info, resource_id, resource_name, resource_type):
         fs_metrics = []
-        selection = metrics.get(constants.ResourceType.STORAGE)
+        selection = metrics.get(resource_type)
         for key in selection:
             labels = {
                 'storage_id': storage_id,
-                'resource_type': 'storage',
+                'resource_type': resource_type,
                 'resource_id': resource_id,
                 'resource_name': resource_name,
                 'type': 'RAW',
@@ -75,11 +75,13 @@ class PerformanceHandler(object):
                     if int(start_time) <= timestamp <= int(end_time):
                         key_list = constant.PER_MAP.get(key, [])
                         if len(key_list) > 0:
-                            value = PerformanceHandler.get_value(
-                                per_info.get(key_list[0]).get(
-                                    key_list[1]), key)
-
-                            values[timestamp] = value
+                            value = per_info.get(key_list[0], None)
+                            if value is not None:
+                                value = value.get(key_list[1], None)
+                                if value is not None:
+                                    value = PerformanceHandler.\
+                                        get_value(value, key)
+                                    values[timestamp] = value
             if values != {}:
                 m = constants.metric_struct(name=key, labels=labels,
                                             values=values)
