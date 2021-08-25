@@ -44,6 +44,8 @@ class NetAppHandler(object):
         self.ssh_pool = SSHPool(**kwargs)
 
         self.rest_client = RestClient(**kwargs)
+
+        self.rest_client.verify = kwargs.get('verify', False)
         if self.rest_client.session is None:
             self.rest_client.init_http_head()
         self.rest_client.session.auth = requests.auth.HTTPBasicAuth(
@@ -997,7 +999,7 @@ class NetAppHandler(object):
                     or res.status_code == constant.CREATED_SUCCESS_CODE \
                     or res.status_code == constant.ACCEPTED_RETURN_CODE:
                 result_json = res.json()
-                return result_json.get('data')
+                return result_json.get('records')
             elif res.status_code == constant.BAD_REQUEST_RETURN_CODE:
                 raise exception.BadRequest()
             elif res.status_code == constant.UNAUTHORIZED_RETURN_CODE:
@@ -1052,7 +1054,10 @@ class NetAppHandler(object):
                     pass
                 # port metrics
                 if constants.ResourceType.PORT in metrics_keys:
-                    pass
+                    metrics.extend(
+                        self.get_port_per(
+                            resource_metrics,
+                            storage_id, start_time, end_time))
                 # disk metrics
                 if constants.ResourceType.DISK in metrics_keys:
                     pass
@@ -1078,10 +1083,9 @@ class NetAppHandler(object):
             raise exception.InvalidResults(err_msg)
 
     def get_storage_per(self, metrics, storage_id, start_time, end_time):
-        data = {'interval': constant.HOUR_STAMP}
+        data = {}
         json_info = self.do_rest_call(constant.CLUSTER_PER_URL, data)
         if json_info is not None:
-            data_info = json_info.get('records')
             system_info = self.ssh_do_exec(
                 constant.CLUSTER_SHOW_COMMAND)
             storage_map_list = []
@@ -1091,12 +1095,13 @@ class NetAppHandler(object):
             storage_metrics = PerformanceHandler.\
                 get_per_value(metrics, storage_id,
                               start_time, end_time,
-                              data_info,
+                              json_info,
                               storage['ClusterSerialNumber'],
-                              storage['ClusterName'])
+                              storage['ClusterName'], 'storage')
             return storage_metrics
 
     def get_pool_per(self, metrics, storage_id, start_time, end_time):
+        data = {}
         agg_info = self.ssh_do_exec(
             constant.AGGREGATE_SHOW_DETAIL_COMMAND)
         agg_map_list = []
@@ -1104,21 +1109,21 @@ class NetAppHandler(object):
         Tools.split_value_map_list(agg_info, agg_map_list, split=':')
         for agg_map in agg_map_list:
             if 'UUIDString' in agg_map:
-                data = {'interval': constant.HOUR_STAMP}
                 uuid = agg_map['UUIDString']
                 json_info = self.do_rest_call(
                     constant.POOL_PER_URL % uuid, data)
-                data_info = json_info.get('records')
                 pool_metrics.extend(
                     PerformanceHandler.get_per_value(metrics, storage_id,
                                                      start_time, end_time,
-                                                     data_info,
+                                                     json_info,
                                                      agg_map['UUIDString'],
-                                                     agg_map['Aggregate']))
+                                                     agg_map['Aggregate'],
+                                                     'storagePool'))
 
         return pool_metrics
 
     def get_volume_per(self, metrics, storage_id, start_time, end_time):
+        data = {}
         volume_info = self.ssh_do_exec(
                 constant.LUN_SHOW_DETAIL_COMMAND)
         volume_map_list = []
@@ -1126,37 +1131,62 @@ class NetAppHandler(object):
         Tools.split_value_map_list(volume_info, volume_map_list, split=':')
         for volume in volume_map_list:
             if 'LUNUUID' in volume:
-                data = {'interval': constant.HOUR_STAMP}
                 uuid = volume['LUNUUID']
                 json_info = self.do_rest_call(
                     constant.VOLUME_PER_URL % uuid, data)
-                data_info = json_info.get('records')
                 volume_metrics.extend(
                     PerformanceHandler.get_per_value(metrics, storage_id,
                                                      start_time, end_time,
-                                                     data_info,
+                                                     json_info,
                                                      volume['SerialNumber'],
-                                                     volume['LUNName']))
+                                                     volume['LUNName'],
+                                                     'volume'))
         return volume_metrics
 
     def get_fs_per(self, metrics, storage_id, start_time, end_time):
-        fs_info = self.ssh_do_exec(
-                constant.FS_SHOW_DETAIL_COMMAND)
-        fs_map_list = []
+        fs_info = self.do_rest_call(
+            constant.FS_INFO_URL, {})
         fs_metrics = []
-        Tools.split_value_map_list(fs_info, fs_map_list, split=':')
-        for fs in fs_map_list:
-            if 'UUIDoftheEfficiencyPolicy' in fs:
-                data = {'interval': constant.HOUR_STAMP}
-                uuid = fs['UUIDoftheEfficiencyPolicy']
+        for fs in fs_info:
+            if 'uuid' in fs:
+                data = {}
+                uuid = fs['uuid']
                 json_info = self.do_rest_call(
-                    constant.VOLUME_PER_URL % uuid, data)
-                data_info = json_info.get('records')
+                    constant.FS_PER_URL % uuid, data)
                 fs_id = self.get_fs_id(
-                    fs['VserverName'], fs['VolumeName'])
+                    fs['svm']['name'], fs['name'])
                 fs_metrics.extend(
                     PerformanceHandler.get_per_value(metrics, storage_id,
                                                      start_time, end_time,
-                                                     data_info, fs_id,
-                                                     fs['VolumeName']))
+                                                     json_info, fs_id,
+                                                     fs['name'],
+                                                     'filesystem'))
         return fs_metrics
+
+    def get_port_per(self, metrics, storage_id, start_time, end_time):
+        fc_port = self.do_rest_call(constant.FC_INFO_URL, {})
+        port_metrics = []
+        for fc in fc_port:
+            if 'uuid' in fc:
+                uuid = fc['uuid']
+                json_info = self.do_rest_call(constant.FC_PER_URL % uuid, {})
+                port_id = fc['node']['name'] + '_' + fc['name']
+                port_metrics.extend(
+                    PerformanceHandler.get_per_value(metrics, storage_id,
+                                                     start_time, end_time,
+                                                     json_info, port_id,
+                                                     fc['name'],
+                                                     'port'))
+        eth_port = self.do_rest_call(constant.ETH_INFO_URL, {})
+        for eth in eth_port:
+            if 'uuid' in eth:
+                uuid = eth['uuid']
+                json_info = self.do_rest_call(constant.ETH_PER_URL % uuid, {})
+                port_id = eth['node']['name'] + '_' + eth['name']
+                port_metrics.extend(
+                    PerformanceHandler.get_per_value(metrics, storage_id,
+                                                     start_time, end_time,
+                                                     json_info, port_id,
+                                                     eth['name'],
+                                                     'port'))
+        return port_metrics
