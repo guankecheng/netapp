@@ -1,1038 +1,990 @@
-                                 'failures. If necessary replace $('
-                                 'cenv_fru_info.fru-name) as soon as '
-                                 'possible.2. Refer to fan module '
-                                 'replacement documentation for more '
-                                 'information.'},
-        'CriticalFan3FruFaultAlert': {
-            'severityofAlert': 'Critical',
-            'probableCause': 'hardware_degradation',
-            'description': '$(cenv_fru_info.fru-name) is faulty. The nodes '
-                           'in this chassis are $('
-                           'cenv_fru_info.connected-nodes1).',
-            'PossibleEffect': 'The chassis can lose its cooling capability '
-                              'and the temperature can increase. If the '
-                              'temperature increases past the threshold '
-                              'values, the system might shutdown.',
-            'CorrectiveActions': '1. Check $(cenv_fru_info.fru-name) for '
-                                 'failures. If necessary replace $('
-                                 'cenv_fru_info.fru-name) as soon as '
-                                 'possible.2. Refer to fan module '
-                                 'replacement documentation for more '
-                                 'information.'},
-        'CriticalFan4FruFaultAlert': {
-            'severityofAlert': 'Critical',
-            'probableCause': 'hardware_degradation',
-            'description': '$(cenv_fru_info.fru-name) is faulty. The nodes '
-                           'in this chassis are $('
-                           'cenv_fru_info.connected-nodes1).',
-            'PossibleEffect': 'The chassis can lose its cooling capability '
-                              'and the temperature can increase. If the '
-                              'temperature increases past the threshold '
-                              'values, the system might shutdown.',
-            'CorrectiveActions': '1. Check $(cenv_fru_info.fru-name) for '
-                                 'failures. If necessary replace $('
-                                 'cenv_fru_info.fru-name) as soon as '
-                                 'possible.2. Refer to fan module '
-                                 'replacement documentation for more '
-                                 'information.'},
-        'CriticalFanCurrFaultAlert': {
-            'severityofAlert': 'Critical',
-            'probableCause': 'hardware_degradation',
-            'description': '$(cenv_fru_info.fru-name) is faulty. The nodes '
-                           'in this chassis are $('
-                           'cenv_fru_info.connected-nodes1).',
-            'PossibleEffect': 'The fan does not have current within the '
-                              'normal range, and could potentially fail.A '
-                              'fan failure could cause the chassis to '
-                              'lose its cooling capability and the '
-                              'temperature can increase. If the '
-                              'temperature increases past the threshold '
-                              'values, the system might shutdown.',
-            'CorrectiveActions': '1. Check $(cenv_fru_info.fru-name) for '
-                                 'failures. If necessary replace $('
-                                 'cenv_fru_info.fru-name) as soon as '
-                                 'possible.2. Refer to fan module '
-                                 'replacement documentation for more '
-                                 'information.'},
-        'CriticalFanFruFaultAlert': {
-            'severityofAlert': 'Critical',
-            'probableCause': 'hardware_degradation',
-            'description': '$(cenv_fru_info.fru-name) is faulty. The nodes '
-                           'in this chassis are $('
-                           'cenv_fru_info.connected-nodes1).',
-            'PossibleEffect': 'The chassis can lose its cooling capability '
-                              'and the temperature can increase. If the '
-                              'temperature increases past the threshold '
-                              'values, the system might shutdown.',
-            'CorrectiveActions': '1. Check $(cenv_fru_info.fru-name) for '
-                                 'failures. If necessary replace $('
-                                 'cenv_fru_info.fru-name) as soon as '
-                                 'possible.2. Refer to the Hardware '
-                                 'specification guide for more '
-                                 'information on the position of the fan '
-                                 'and ways to check or replace it. 3. '
-                                 'Contact support personnel if the alert '
-                                 'persists.'},
-        'CriticalFanVoltFaultAlert': {
-            'severityofAlert': 'Critical',
-            'probableCause': 'hardware_degradation',
-            'description': '$(cenv_fru_info.fru-name) is faulty. The nodes '
-                           'in this chassis are $('
-                           'cenv_fru_info.connected-nodes1).',
-            'PossibleEffect': 'The fan does not have voltage within the '
-                              'normal range, and could potentially fail.A '
-                              'fan failure could cause the chassis to '
-                              'lose its cooling capability and the '
-                              'temperature can increase. If the '
-                              'temperature increases past the threshold '
-                              'values, the system might shutdown.',
-            'CorrectiveActions': '1. Check $(cenv_fru_info.fru-name) for '
-                                 'failures. If necessary replace $('
-                                 'cenv_fru_info.fru-name) as soon as '
-                                 'possible.2. Refer to fan module '
-                                 'replacement documentation for more '
-                                 'information.'},
-        'CriticalFruMultiFaultAlert': {
-            'severityofAlert': 'Critical',
-            'probableCause': 'Equipment_malfunction',
-            'description': '$(cenv_fru_info.fru-name) has multiple faults. '
-                           'The nodes in this chassis are $('
-                           'cenv_fru_info.connected-nodes1).',
-            'PossibleEffect': 'The FRU $(cenv_fru_info.fru-name) might '
-                              'stop functioning soon. The nodes in the '
-                              'chassis might not function effectively or '
-                              'redundancy might be lost.',
-            'CorrectiveActions': '1. Check $(cenv_fru_info.fru-name) for '
-                                 'failures. If necessary replace $('
-                                 'cenv_fru_info.fru-name) as soon as '
-                                 'possible.2. Refer to the Hardware '
-                                 'specification guide for more '
-                                 'information on the position of the '
-                                 'field-replaceable unit (FRU) and ways '
-                                 'to check or replace it. 3. Contact '
-                                 'support personnel if the alert persists.'},
-        'CriticalFruNotPresentAlert': {
-            'severityofAlert': 'Critical',
-            'probableCause': 'Configuration_error',
-            'description': '$(cenv_fru_info.fru-name) is not present in '
-                           'the chassis $(cenv_fru_info.chassis-id). The '
-                           'nodes in this chassis are $('
-                           'cenv_fru_info.connected-nodes1).',
-            'PossibleEffect': 'The nodes in the chassis might not function '
-                              'effectively or redundancy might be lost.',
-            'CorrectiveActions': '1. Plug in $(cenv_fru_info.fru-name) '
-                                 'correctly into the slot.2. Refer to the '
-                                 'Hardware specification guide for more '
-                                 'information on the position of the '
-                                 'field-replaceable unit (FRU) and ways '
-                                 'to check or replace it. 3. Contact '
-                                 'support personnel if the alert persists.'},
-        'CriticalPSUFruFaultAlert': {
-            'severityofAlert': 'Critical',
-            'probableCause': 'Equipment_malfunction',
-            'description': '$(cenv_fru_info.fru-name) is faulty. The nodes '
-                           'in this chassis are $('
-                           'cenv_fru_info.connected-nodes1).',
-            'PossibleEffect': '$(cenv_fru_info.fru-name) is faulty and has '
-                              'stopped functioning. The system might '
-                              'switch off if the other redundant power '
-                              'supply units (PSUs) become faulty.',
-            'CorrectiveActions': '1. Check $(cenv_fru_info.fru-name) for '
-                                 'failures. If necessary replace $('
-                                 'cenv_fru_info.fru-name) as soon as '
-                                 'possible.2. Refer to the Hardware '
-                                 'specification guide for more '
-                                 'information on the position of the '
-                                 'power supply unit (PSU) and ways to '
-                                 'check or replace it. 3. Contact support '
-                                 'personnel if the alert persists.'},
-        'CriticalPSUFruOffAlert': {
-            'severityofAlert': 'Critical',
-            'probableCause': 'Loss_of_redundancy',
-            'description': '$(cenv_fru_info.fru-name) is off. The nodes in '
-                           'this chassis are $('
-                           'cenv_fru_info.connected-nodes1).',
-            'PossibleEffect': 'The system might switch off if the other '
-                              'redundant power supply units (PSUs) become '
-                              'faulty.',
-            'CorrectiveActions': '1. Check $(cenv_fru_info.fru-name) and '
-                                 'switch it on. 2. Refer to the Hardware '
-                                 'specification guide for more '
-                                 'information on the position of the '
-                                 'power supply unit (PSU) and ways to '
-                                 'check or replace it. 3. Contact support '
-                                 'personnel if the alert persists.'},
-        'CriticalPSUFruOverCurrentAlert': {
-            'severityofAlert': 'Critical',
-            'probableCause': 'Equipment_malfunction',
-            'description': 'The input current to the power supply unit $('
-                           'cenv_fru_info.fru-name) is very high. The '
-                           'nodes in this chassis are $('
-                           'cenv_fru_info.connected-nodes1).',
-            'PossibleEffect': 'The power supply unit $('
-                              'cenv_fru_info.fru-name) might stop '
-                              'functioning if the input current stays '
-                              'high for a prolonged period. The system '
-                              'can lose redundancy if this power supply '
-                              'unit (PSU) stops functioning.',
-            'CorrectiveActions': '1. Check $(cenv_fru_info.fru-name) and '
-                                 'the supply power to it. 2. Refer to the '
-                                 'Hardware specification guide for more '
-                                 'information on the position of the '
-                                 'power supply unit (PSU) and ways to '
-                                 'check or replace it. 3. Contact support '
-                                 'personnel if the alert persists.'},
-        'CriticalPSUFruOverPowerAlert': {
-            'severityofAlert': 'Critical',
-            'probableCause': 'Equipment_malfunction',
-            'description': 'The input voltage to the power supply unit $('
-                           'cenv_fru_info.fru-name) is very high. The '
-                           'nodes in this chassis are $('
-                           'cenv_fru_info.connected-nodes1).',
-            'PossibleEffect': 'The power supply unit $('
-                              'cenv_fru_info.fru-name) might stop '
-                              'functioning if the input voltage stays '
-                              'high for a prolonged period. The system '
-                              'can lose redundancy if this power supply '
-                              'unit (PSU) stops functioning.',
-            'CorrectiveActions': '1. Check $(cenv_fru_info.fru-name) and '
-                                 'the supply power to it. 2. Refer to the '
-                                 'Hardware specification guide for more '
-                                 'information on the position of the '
-                                 'power supply unit (PSU) and ways to '
-                                 'check or replace it. 3. Contact support '
-                                 'personnel if the alert persists.'},
-        'CriticalPSUFruOverTemperatureAlert': {
-            'severityofAlert': 'Critical',
-            'probableCause': 'Equipment_malfunction',
-            'description': 'The temperature of power supply unit $(cenv_fru_info.fru-name) is very high. The nodes in this chassis are $(cenv_fru_info.connected-nodes1).',
-            'PossibleEffect': 'The power supply unit $(cenv_fru_info.fru-name) might stop functioning if the temperature stays high for a prolonged period. The system can lose redundancy if this power supply unit (PSU) stops functioning.',
-            'CorrectiveActions': '1. Check $(cenv_fru_info.fru-name) and the fans associated with it. 2. Refer to the Hardware specification guide for more information on the position of the power supply unit (PSU) and ways to check or replace it. 3. Contact support personnel if the alert persists.'},
-        'CriticalPSUFruOverVoltageAlert': {
-            'severityofAlert': 'Critical',
-            'probableCause': 'Equipment_malfunction',
-            'description': 'The input voltage to the power supply unit $(cenv_fru_info.fru-name) is very high. The nodes in this chassis are $(cenv_fru_info.connected-nodes1).',
-            'PossibleEffect': 'The power supply unit $(cenv_fru_info.fru-name) might stop functioning if the input voltage stays high for a prolonged period. The system can lose redundancy if this power supply unit (PSU) stops functioning.',
-            'CorrectiveActions': '1. Check $(cenv_fru_info.fru-name) and the supply power to it. 2. Refer to the Hardware specification guide for more information on the position of the power supply unit (PSU) and ways to check or replace it. 3. Contact support personnel if the alert persists.'},
-        'FanFruFan1MajorAlert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Equipment_malfunction',
-            'description': 'A fan in the fan module $(cenv_fru_info.fru-name) is in critical state. The nodes connected to this fan are $(cenv_fru_info.connected-nodes1).',
-            'PossibleEffect': 'The chassis can lose its cooling capability and the temperature can increase. If the temperature increases past the threshold values, the system might shutdown.',
-            'CorrectiveActions': '1. Check $(cenv_fru_info.fru-name) for failures. If necessary replace $(cenv_fru_info.fru-name) as soon as possible. 2. Refer to the Hardware specification guide for more information on the position of the fan and ways to check or replace it. 3. Contact support personnel if the alert persists.'},
-        'FanFruFan1MinorAlert': {
-            'severityofAlert': 'Minor',
-            'probableCause': 'Equipment_malfunction',
-            'description': 'A fan in the fan module $(cenv_fru_info.fru-name) is in warning state. The nodes in this chassis are $(cenv_fru_info.connected-nodes1).',
-            'PossibleEffect': 'Cooling of the system could be slightly degraded. The chassis can lose its cooling capability and the temperature can increase.',
-            'CorrectiveActions': '1. Check $(cenv_fru_info.fru-name) for failures. If necessary replace $(cenv_fru_info.fru-name) as soon as possible.2. Refer to the Hardware specification guide for more information on the position of the fan and ways to check or replace it. 3. Contact support personnel if the alert persists.'},
-        'FanFruFan2MajorAlert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Equipment_malfunction',
-            'description': 'A fan in the fan module $(cenv_fru_info.fru-name) is in critical state. The nodes in this chassis are $(cenv_fru_info.connected-nodes1).',
-            'PossibleEffect': 'The chassis can lose its cooling capability and the temperature can increase. If the temperature increases past the threshold values, the system might shutdown.',
-            'CorrectiveActions': '1. Check $(cenv_fru_info.fru-name) for failures. If necessary replace $(cenv_fru_info.fru-name) as soon as possible. 2. Refer to the Hardware specification guide for more information on the position of the fan and ways to check or replace it.3. Contact support personnel if the alert persists.'},
-        'FanFruFan2MinorAlert': {
-            'severityofAlert': 'Minor',
-            'probableCause': 'Equipment_malfunction',
-            'description': 'A fan in the fan module $(cenv_fru_info.fru-name) is in warning state. The nodes in this chassis are $(cenv_fru_info.connected-nodes1).',
-            'PossibleEffect': 'Cooling of the system could be slightly degraded. The chassis can lose its cooling capability and the temperature can increase.',
-            'CorrectiveActions': '1. Check $(cenv_fru_info.fru-name) for failures. If necessary replace $(cenv_fru_info.fru-name) as soon as possible.2. Refer to the Hardware specification guide for more information on the position of the fan and ways to check or replace it.3. Contact support personnel if the alert persists.'},
-        'PSUFruFanBadAlert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Equipment_malfunction',
-            'description': 'Power Supply Unit $(cenv_fru_info.fru-name) has a major fan problem. The nodes in this chassis are $(cenv_fru_info.connected-nodes1).',
-            'PossibleEffect': 'The power supply unit (PSU) might stop functioning if the temperature increases.',
-            'CorrectiveActions': '1. Check $(cenv_fru_info.fru-name) and the fans associated with it. 2. Refer to the Hardware specification guide for more information on the position of the power supply unit (PSU) and ways to check or replace it. 3. Contact support personnel if the alert persists.'},
-        'PSUFruFanCriticalAlert': {
-            'severityofAlert': 'Critical',
-            'probableCause': 'Equipment_malfunction',
-            'description': 'Power Supply Unit $(cenv_fru_info.fru-name) has a critical fan problem. The nodes in this chassis are $(cenv_fru_info.connected-nodes1).',
-            'PossibleEffect': 'The power supply unit (PSU) might stop functioning if the temperature increases.',
-            'CorrectiveActions': '1. Check $(cenv_fru_info.fru-name) and the fans associated with it. 2. Refer to the Hardware specification guide for more information on the position of the power supply unit (PSU) and ways to check or replace it. 3. Contact support personnel if the alert persists.'},
-        'PSUFruFanMinorAlert': {
-            'severityofAlert': 'Minor',
-            'probableCause': 'Equipment_malfunction',
-            'description': 'Power Supply Unit $(cenv_fru_info.fru-name) has a fan problem. The nodes in this chassis are $(cenv_fru_info.connected-nodes1).',
-            'PossibleEffect': 'The power supply unit (PSU) might stop functioning if the fan is not fixed.',
-            'CorrectiveActions': '1. Check $(cenv_fru_info.fru-name) and the fans associated with it. 2. Refer to the Hardware specification guide for more information on the position of the power supply unit (PSU) and ways to check or replace it.3. Contact support personnel if the alert persists.'},
-        'ClusterSwitchCN1610MTU_Alert': {
-            'severityofAlert': 'Minor',
-            'probableCause': 'Configuration_error',
-            'description': 'MTU value "$(cluster_switch_interface.mtu)" on port "$(cluster_switch_interface.display-name)" of switch "$(cluster_switch_interface.device)" is too small. It should be 9216.',
-            'PossibleEffect': 'Received Ethernet packets that are larger than the configured MTU are dropped, causing data transfer issues.',
-            'CorrectiveActions': 'To modify the switch port MTU, consult the switch configuration guide.'},
-        'ClusterSwitchConfig_Alert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Configuration_error',
-            'description': 'One or more nodes are not connected to both cluster switches.',
-            'PossibleEffect': 'If one cluster switch fails, "$(cluster_switch_connection.node)" might lose access to the cluster.',
-            'CorrectiveActions': 'Ensure the switch "$(cluster_switch_connection.missing-switch)" is connectedto the node "$(cluster_switch_connection.node)".'},
-        'ClusterSwitchMissing_Alert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Configuration_error',
-            'description': 'Redundant configuration is missing for cluster switches.',
-            'PossibleEffect': 'If the remaining cluster switch fails, you can no longer access the cluster.',
-            'CorrectiveActions': '1) Ensure that a redundant pair of cluster switches exists in the network.2) Ensure that cluster ports are connected to both switches.3) Enable the Cisco Discovery Protocol (CDP)/Industy Standard Discovery Protocol(ISDP) on the switches, if you previously disabled it. CDP/ISDP is enabled by default. Refer to your switch documentation for instructions. 4) If Data ONTAP cannot automatically discover a switch, use the "system health cluster-switch create" command to configure discovery and monitoring of the switch.'},
-        'ClusterSwitchNEXUS5596MTU_Alert': {
-            'severityofAlert': 'Minor',
-            'probableCause': 'Configuration_error',
-            'description': 'MTU value "$(cluster_switch_interface.mtu)" on port "$(cluster_switch_interface.display-name)" of switch "$(cluster_switch_interface.device)" is too small. It should be 1500.',
-            'PossibleEffect': 'Received Ethernet packets that are larger than the configured MTU are dropped, causing data transfer issues.',
-            'CorrectiveActions': 'To modify the switch port MTU, consult the switch configuration guide.'},
-        'NodeSwitchPortMTU_Alert': {
-            'severityofAlert': 'Minor',
-            'probableCause': 'Configuration_error',
-            'description': 'MTU value "$(cluster_switch_interface.remote-port-mtu)" on port "$(cluster_switch_interface.remote-port-name)" of node "$(cluster_switch_interface.remote-device)" is improperly set. It should be 9000.',
-            'PossibleEffect': 'Received Ethernet packets that are larger than the configured MTU are dropped, causing data transfer issues.',
-            'CorrectiveActions': 'modify the MTU using the command "network port broadcast-domain modify -broadcast-domain <broadcast_domain_name> -mtu <MTU>". To find out the broadcast domain name of the port, execute the command "network port broadcast-domain show".'},
-        'SwitchFanFail_Alert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Fan_failure',
-            'description': 'The fan "$(cluster_switch_fan.fan-name)" on the switch "$(cluster_switch_fan.device)" has failed.',
-            'PossibleEffect': 'Failure of the fan in the switch "$(cluster_switch_fan.device)" might affect it\'s cooling.',
-            'CorrectiveActions': '1) Check if the fans in the switch are running properly.2) Ensure proper power supply to the fan FRU. 3) Contact technical support if the alert persists.'},
-        'SwitchFanNotOperational_Alert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Out_of_service',
-            'description': 'The fan "$(cluster_switch_fan.fan-name)" on switch "$(cluster_switch_fan.device)" is not functioning properly.',
-            'PossibleEffect': 'Cooling of switch "$(cluster_switch_fan.device)" will be degraded.',
-            'CorrectiveActions': '1) Verify that the fan is turned on through the switch CLI.2) Contact technical support if the alert persists.'},
-        'SwitchFanNotPresent_Alert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Out_of_service',
-            'description': 'The fan "$(cluster_switch_fan.fan-name)" is not inserted properly.',
-            'PossibleEffect': 'Cooling of switch "$(cluster_switch_fan.device)" will be degraded.',
-            'CorrectiveActions': '1) Verify that the fan module is inserted properly.'},
-        'SwitchIfInErrorsWarn_Alert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Threshold_crossed',
-            'description': 'The percentage of inbound packet errors of switch interface "$(cluster_switch_analytics.unique-name)" is above the warning threshold.',
-            'PossibleEffect': 'Communication between nodes in the cluster might be degraded.',
-            'CorrectiveActions': '1) Migrate any cluster LIF that uses this connection to another port connected to a cluster switch.For example, if cluster LIF "clus1" is on port e0a and the other LIF is on e0b,run the following command to move "clus1" to e0b:"network interface migrate -vserver vs1 -lif clus1 -sourcenode node1 -destnode node1 -dest-port e0b"2) Replace the network cable with a known-good cable.If errors are corrected, stop. No further action is required.Otherwise, continue to Step 3.3) Move the network cable to another port on the node (if available).Migrate the cluster LIF to the new port.If errors are corrected, contact technical support to troubleshoot the original node port.Otherwise, continue to Step 4.4) Move the network cable to another available cluster switch port.Migrate the cluster LIF back to the original port.If errors are corrected, contact technical support to troubleshoot the original switch port.If errors persist, contact technical support for further assistance.'},
-        'SwitchIfIslDownWarn_Alert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Cable_tamper',
-            'description': 'The cable used to connect switch "$(cluster_switch_interface.unique-name)" to the ISL port might be faulty.',
-            'PossibleEffect': 'Cluster redundancy might be lost.',
-            'CorrectiveActions': '1) Check whether the cable is fully inserted into the interface port on both ends. 2) Reconnect the ISL port using another cable. After reconnecting it, verify whether the link of the ISL port is up by executing the commands as per switch configuration guide or by checking whether the Link status LED is on.3) Contact technical support if the alert persists.'},
-        'SwitchIfOutErrorsWarn_Alert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Threshold_crossed',
-            'description': 'The percentage of outbound packet errors of switch interface "$(cluster_switch_analytics.unique-name)" is above the warning threshold.',
-            'PossibleEffect': 'Communication between nodes in the cluster might be degraded.',
-            'CorrectiveActions': '1) Migrate any cluster LIF that uses this connection to another port connected to a cluster switch.For example, if cluster LIF "clus1" is on port e0a and the other LIF is on e0b,run the following command to move "clus1" to e0b:"network interface migrate -vserver vs1 -lif clus1 -sourcenode node1 -destnode node1 -dest-port e0b"2) Replace the network cable with a known-good cable.If errors are corrected, stop. No further action is required.Otherwise, continue to Step 3.3) Move the network cable to another port on the node (if available).Migrate the cluster LIF to the new port.If errors are corrected, contact technical support to troubleshoot the original node port.Otherwise, continue to Step 4.4) Move the network cable to another available cluster switch port.Migrate the cluster LIF back to the original port.If errors are corrected, contact technical support to troubleshoot the original switch port.If errors persist, contact technical support for further assistance.'},
-        'SwitchPowerFail_Alert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Power_supply_failure',
-            'description': 'The power supply "$(cluster_switch_power.psu-name)" on the switch "$(cluster_switch_power.device)" is missing or is not operational.',
-            'PossibleEffect': 'Power supply redundancy on switch "$(cluster_switch_power.device)" will be lost.',
-            'CorrectiveActions': '1) Ensure that the power supply mains supplying power to the switch is turned on. 2) Ensure that the power cord is connected to the power supply of the switch. 3) Contact technical support if the alert persists.'},
-        'SwitchPowerNotOperational_Alert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Out_of_service',
-            'description': 'The power supply "$(cluster_switch_power.psu-name)" on switch "$(cluster_switch_power.device)" is not functioning properly.',
-            'PossibleEffect': 'Switch "$(cluster_switch_power.device)" might shutdown if the dual power supply degrades to a non-operational state.',
-            'CorrectiveActions': "1) Ensure that the power supply unit is turned on through switch CLI. 2) Run diagnostics on the switch to check the operational status of the power supply unit (PSU). For instructions about how to run switch diagnostics, see the switch's configuration guide. 3) Contact technical support if the alert persists."},
-        'SwitchPowerNotPresent_Alert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Out_of_service',
-            'description': 'The power supply "$(cluster_switch_power.psu-name)" on switch "$(cluster_switch_power.device)" is not functioning properly.',
-            'PossibleEffect': 'The remaining power supply is a single point of failure. Switch "$(cluster_switch_power.device)" might shut down with the next PSU failure.',
-            'CorrectiveActions': "1) Check whether the switch's power supply unit is properly inserted into the chassis of the switch."},
-        'SwitchPsuFanNotOperational_Alert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Out_of_service',
-            'description': 'The fan "$(cluster_switch_fan.fan-name)" on switch "$(cluster_switch_fan.device)" is not functioning properly.',
-            'PossibleEffect': 'Cooling of switch "$(cluster_switch_fan.device)" will be degraded.',
-            'CorrectiveActions': '1) Verify that the fan is turned on through the switch CLI.2) Contact technical support if the alert persists.'},
-        'SwitchTemperatureCritical_Alert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Temperature_unacceptable',
-            'description': 'Sensor "$(cluster_switch_temperature.sensor-name)" on switch "$(cluster_switch_temperature.device)" is reporting a temperature of $(cluster_switch_temperature.temperature) C, which is $(cluster_switch_temperature.cause-desc-var).',
-            'PossibleEffect': 'Switch "$(cluster_switch_temperature.device)" might shut down if the switch temperature remains $(cluster_switch_temperature.effect-msg-var) the critical threshold.',
-            'CorrectiveActions': "1) Check the fans on the switch.2) Maintain the switch's recommended operating environment.3) Check the front and rear panels of the switch to make sure they are clear of any obstructions.4) Contact technical support if the alert persists."},
-        'SwitchTemperatureNotOperational_Alert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Sensor_failure',
-            'description': 'The sensor "$(cluster_switch_temperature.sensor-name)" on the switch "$(cluster_switch_temperature.device)" is not functioning properly.',
-            'PossibleEffect': 'Problems with the switch "$(cluster_switch_temperature.device)" temperature might go undetected.',
-            'CorrectiveActions': "1) Run diagnostics on the switch to check the operational status of the temperature sensors. For instructions about how to run switch diagnostics, see the switch's configuration guide. 2) Contact technical support if the alert persists."},
-        'SwitchTemperatureWarn_Alert': {
-            'severityofAlert': 'Minor',
-            'probableCause': 'Threshold_crossed',
-            'description': 'Sensor "$(cluster_switch_temperature.sensor-name)" on switch "$(cluster_switch_temperature.device)" is reporting a temperature of $(cluster_switch_temperature.temperature) C, which is $(cluster_switch_temperature.cause-desc-var).',
-            'PossibleEffect': 'Switch "$(cluster_switch_temperature.device)" might shut down if the switch temperature continues to $(cluster_switch_temperature.effect-msg-var).',
-            'CorrectiveActions': "1) Check the fans on the switch.2) Maintain the switch's recommended operating environment.3) Check the front and rear panels of the switch to make sure they are clear of any obstructions."},
-        'SwitchlessConfig_Alert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Configuration_error',
-            'description': 'No cluster switch is detected and the switchless option is not enabled.',
-            'PossibleEffect': 'Communication problems and cluster connectivity issues occur.',
-            'CorrectiveActions': '1) If the cluster network is configured as a two-node switchless cluster (TNSC),enable the switchless option with the command "network options switchless-cluster modify -enabled true".No further action is required.2) If the cluster network is configured with cluster switches, the nodes fail to detect the switches.Ensure that the network interfaces on the cluster switches connected to the node cluster ports are enabled on both sides.If the errors are corrected, stop. No further action is required. Otherwise, continue to step 3.3) Check the physical connections between the nodes and the cluster switches. Replace network cables with known-good cables.If the errors are corrected, stop. No further action is required. Otherwise, continue to step 4.4) Ensure that either CDP (for Cisco switches) or ISDP (for NetApp CN1610) is enabled on the cluster switches.If the errors still persist, contact technical support for further assistance.'},
-        'UnsupportedSwitch_Alert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Configuration_error',
-            'description': 'Unsupported cluster switch is detected.',
-            'PossibleEffect': 'Communication problems and cluster connectivity issues occur.',
-            'CorrectiveActions': 'Unsupported cluster switch "$(cluster_switch_support.device)" found. Connect a supported cluster switch to cluster network.'},
-        'DegradedOnlinePort_Alert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Cable_tamper',
-            'description': 'SAS port $(storage_node_port.port) on controller $(LOCALHOST) has $(storage_node_port.inactive-phy-count) disabled PHYs.',
-            'PossibleEffect': 'Inactive PHYs might cause degraded link performance.',
-            'CorrectiveActions': '1. Verify that SAS port $(storage_node_port.port) has disabled PHYs by using the "storage port show -node $(LOCALHOST) -port $(storage_node_port.port)" command. '},
-        'DegradedOnlineShelfPort_Alert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Cable_tamper',
-            'description': 'Shelf-to-shelf connection between disk shelves '
-                           '$(storage_node_shelf_connector.shelf) $('
-                           'storage_node_shelf_connector.connector-designator)'
-                           ' port and $('
-                           'storage_node_shelf_connector.remote-shelf) $('
-                           'storage_node_shelf_connector.remote-connector'
-                           '-designator) port have $('
-                           'storage_node_shelf_connector.inactive-phy-count'
-                           ') inactive PHYs on IOM $('
-                           'storage_node_shelf_connector.shelf-module-id).',
-            'PossibleEffect': 'Inactive PHYs might cause degraded link '
-                              'performance.',
-            'CorrectiveActions': '1. Consult the guide applicable to your '
-                                 '$(storage_node_shelf_connector.module-type)'
-                                 ' disk shelf to review cabling rules and '
-                                 'complete the SAS cabling worksheet for '
-                                 'your system.2. Verify that disk shelf $('
-                                 'storage_node_shelf_connector.shelf) has '
-                                 'disabled PHYs by using the "storage '
-                                 'shelf show -shelf $('
-                                 'storage_node_shelf_connector.shelf) '
-                                 '-port" command. 3. If the disk shelves '
-                                 'have multiple paths to the node, reseat '
-                                 'disk shelf $('
-                                 'storage_node_shelf_connector.shelf) $('
-                                 'storage_node_shelf_connector.connector-'
-                                 'designator) port cable on IOM $('
-                                 'storage_node_shelf_connector.shelf-modul'
-                                 'e-id) and disk shelf $('
-                                 'storage_node_shelf_connector.remote-shelf)'
-                                 ' $(storage_node_shelf_connector.remote-c'
-                                 'onnector-designator) port cable on IOM '
-                                 '$(storage_node_shelf_connector.remote-shel'
-                                 'f-module-id).4. Verify that the physical'
-                                 ' cable connection is secure and operationa'
-                                 'l, and replace the cable, if necessary.'},
-        'MccIp_PortOfflineAlert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Cable_tamper',
-            'description': 'Physical link on port $('
-                           'mcc_nhm_ip_adapter.port-no) is offline.',
-            'PossibleEffect': 'DR protection of NVRAM mirrors and remote '
-                              'storage might be compromised.',
-            'CorrectiveActions': '1. Ensure that the link has not been '
-                                 'tampered with.2. Verify that the '
-                                 'physical status of the '
-                                 'adapter is "Up" by using the '
-                                 '"metrocluster interconnect adapter '
-                                 'show" command.'},
-        'MultipleTransitionsInStack_Alert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Cable_tamper',
-            'description': 'Stack $(storage_node_stack.stack-id) on '
-                           'controller $(LOCALHOST) contains multiple '
-                           'technology transitions between SAS shelves.',
-            'PossibleEffect': 'Some SAS shelves might not be accessible. '
-                              'Multiple technology transitions are not '
-                              'supported.',
-            'CorrectiveActions': '1. Consult the guide for hot-adding '
-                                 'shelves with IOM12 modules to stacks of '
-                                 'shelves with IOM6 modules.2. Connect '
-                                 'controller $(LOCALHOST) to stack $('
-                                 'storage_node_stack.stack-id) using a '
-                                 'multipath configuration that does not '
-                                 'contain multiple technology transitions.'},
-        'NoPathToNSMA_Alert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Cable_tamper',
-            'description': 'Controller $(LOCALHOST) is connected only to '
-                           'module B of shelf $(storage_node_ns.shelf) '
-                           'through port $('
-                           'storage_node_ns.initiator-ports).',
-            'PossibleEffect': 'You will lose access to shelf $('
-                              'storage_node_ns.shelf) if module B fails.',
-            'CorrectiveActions': '1. Consult the guide applicable to your '
-                                 'NVMe storage shelf to review cabling '
-                                 'rules for your '
-                                 'system.2. Connect controller $('
-                                 'LOCALHOST) to module A and module B of '
-                                 'shelf $(storage_node_ns.shelf).'},
-        'NoPathToNSMB_Alert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Cable_tamper',
-            'description': 'Controller $(LOCALHOST) is connected only to '
-                           'module A of shelf $(storage_node_ns.shelf) '
-                           'through port $('
-                           'storage_node_ns.initiator-ports).',
-            'PossibleEffect': 'You will lose access to shelf $('
-                              'storage_node_ns.shelf) if module A fails.',
-            'CorrectiveActions': '1. Consult the guide applicable to your '
-                                 'NVMe storage shelf to review cabling '
-                                 'rules for your system.2. Connect '
-                                 'controller $(LOCALHOST) to module A and '
-                                 'module B of shelf $('
-                                 'storage_node_ns.shelf).'},
-        'PriPortToBPort_Alert': {
-            'severityofAlert': 'Minor',
-            'probableCause': 'Cable_tamper',
-            'description': 'Port $(storage_port_ns.port) on controller $('
-                           'LOCALHOST) is connected to port $('
-                           'storage_port_ns.remote-port) on module $('
-                           'storage_port_ns.shelf-module-id) of shelf $('
-                           'storage_port_ns.shelf).',
-            'PossibleEffect': 'This will affect upgrades to '
-                              'switch-attached storage.',
-            'CorrectiveActions': '1. Consult the guide applicable to your '
-                                 'NVMe storage shelf to review cabling '
-                                 'rules for your system.2. Connect $('
-                                 'storage_port_ns.port) to e0a on either '
-                                 'module of shelf $('
-                                 'storage_port_ns.shelf).'},
-        'SecPortToAPort_Alert': {
-            'severityofAlert': 'Minor',
-            'probableCause': 'Cable_tamper',
-            'description': 'Port $(storage_port_ns.port) on controller $('
-                           'LOCALHOST) is connected to port $('
-                           'storage_port_ns.remote-port) on module $('
-                           'storage_port_ns.shelf-module-id) of shelf $('
-                           'storage_port_ns.shelf).',
-            'PossibleEffect': 'This will affect upgrades to '
-                              'switch-attached storage.',
-            'CorrectiveActions': '1. Consult the guide applicable to your '
-                                 'NVMe storage shelf to review cabling '
-                                 'rules for your system.2. Connect $('
-                                 'storage_port_ns.port) to e0b on either '
-                                 'module of shelf $('
-                                 'storage_port_ns.shelf).'},
-        'SingleAdapterToShelf_Alert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Cable_tamper',
-            'description': 'Controller $(LOCALHOST) is connected to shelf '
-                           '$(storage_node_ns.shelf) using ports $('
-                           'storage_node_ns.initiator-ports) on the same '
-                           'adapter.',
-            'PossibleEffect': 'Access to shelf $(storage_node_ns.shelf) '
-                              'might be lost with an adapter failure.',
-            'CorrectiveActions': '1. Consult the guide applicable to your '
-                                 'NVMe storage shelf to review cabling '
-                                 'rules for your system.2. Connect '
-                                 'controller $(LOCALHOST) to module A and '
-                                 'module B of shelf $('
-                                 'storage_node_ns.shelf) using ports from '
-                                 'different adapters.'},
-        'SingleAdapterToSwitch_Alert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Cable_tamper',
-            'description': 'Controller $(storage_node_switch.node) is '
-                           'connected to switches $('
-                           'storage_node_switch.switch-list) using ports '
-                           'on the same adapter ($('
-                           'storage_node_switch.initiator-ports)).',
-            'PossibleEffect': 'You will lose access to shelves $('
-                              'storage_node_switch.shelves) if a single '
-                              'adapter fails.',
-            'CorrectiveActions': '1. Consult the guide applicable to your '
-                                 'NVMe storage shelf to review cabling '
-                                 'rules for your system.2. Connect '
-                                 'controller $(LOCALHOST) to storage '
-                                 'switches using ports from two different '
-                                 'adapters.'},
-        'SingleSwitchToShelf_Alert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Cable_tamper',
-            'description': 'Controller $(storage_node_switch.node) is '
-                           'connected to NVMe storage shelves $('
-                           'storage_node_switch.shelves) through only one '
-                           'switch $(storage_node_switch.switch-list).',
-            'PossibleEffect': 'You will lose access to shelves if switch $('
-                              'storage_node_switch.switch-list) fails.',
-            'CorrectiveActions': '1. Consult the guide applicable to your '
-                                 'NVMe storage shelf to review cabling '
-                                 'rules for your system.2. Connect '
-                                 'controller $(LOCALHOST) to NVMe shelves '
-                                 'through two storage switches.'},
-        'DomainMismatchFromNodeToShelf_Alert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Configuration_error',
-            'description': 'The storage domain between the nodes $('
-                           'sschm_switch.node-list) and switch $('
-                           'sschm_switch.switch-name) is different from '
-                           'the domain between the switch and shelves $('
-                           'sschm_switch.shelves).',
-            'PossibleEffect': 'This issue will affect conversions to '
-                              'direct-attached storage.',
-            'CorrectiveActions': 'Connect the switch $('
-                                 'sschm_switch.switch-name) to both the '
-                                 'node and the shelves with the same '
-                                 'storage domain, following the guide '
-                                 'applicable to your shelf.'},
-        'FabricSwitchNoISLPresentAlert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Out_of_service',
-            'description': 'All ISL links on $(mcchm_isl.display-name) are '
-                           'down.',
-            'PossibleEffect': 'Backend fabric might lose ISL redundancy.',
-            'CorrectiveActions': '1) Repair the backend fabric ISLs on $('
-                                 'mcchm_isl.display-name).2) Ensure that '
-                                 'the peered cluster is up and running by '
-                                 'using the command "cluster peer ping". '
-                                 'Refer to the MetroCluster Disaster '
-                                 'Recovery Guide if the peered cluster is '
-                                 'down.'},
-        'MissingPathFromSwitchToNSM_Alert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Configuration_error',
-            'description': 'Shelf $(sschm_shelf_module.shelf-name) module'
-                           ' $(sschm_shelf_module.module-id) is connected '
-                           'to only one storage switch.',
-            'PossibleEffect': 'Access to shelf $(sschm_shelf_module.'
-                              'shelf-name) module $('
-                              'sschm_shelf_module.module-id) can be lost '
-                              'due to a switch failure.',
-            'CorrectiveActions': 'Connect shelf $('
-                                 'sschm_shelf_module.shelf-name) module $('
-                                 'sschm_shelf_module.module-id) to two '
-                                 'storage switches, following the guide '
-                                 'applicable to your shelf.'},
-        'MixedDomainFromNodeToSwitch_Alert': {
-            'severityofAlert': 'Minor',
-            'probableCause': 'Configuration_error',
-            'description': 'Storage Switch $(sschm_switch.device) is '
-                           'connected to nodes $(sschm_switch.node-'
-                           'list) using ports $(sschm_switch.port-lis'
-                           't). The storage ports belong to different'
-                           ' storage domains.',
-            'PossibleEffect': 'This issue will affect conversions to '
-                              'direct-attached storage.',
-            'CorrectiveActions': 'Connect the switch $(sschm_switch.'
-                                 'device) using ports from the same'
-                                 ' storage domain, following the '
-                                 'guide applicable to your shelf.'},
-        'MixedDomainFromSwitchToShelf_Alert': {
-            'severityofAlert': 'Minor',
-            'probableCause': 'Configuration_error',
-            'description': 'Storage Switch $(sschm_switch.switch-name) is '
-                           'connected to shelves $(sschm_switch.shelves) '
-                           'with mixed domains.',
-            'PossibleEffect': 'This issue will affect conversions to '
-                              'direct-attached storage.',
-            'CorrectiveActions': 'Connect the switch $(sschm_switch.swi'
-                                 'tch-name) to both shelves with the '
-                                 'same storage domain, following the '
-                                 'guide applicable to your shelf.'},
-        'NoPathFromSwitchToNSM_Alert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Configuration_error',
-            'description': 'Storage shelf $(sschm_shelf_module.shelf-name) '
-                           'module $(sschm_shelf_module.module-id) is not '
-                           'connected to storage switches.',
-            'PossibleEffect': 'Access to shelf $(sschm_shelf_module.shelf-'
-                              'name) can be lost with a single shelf module '
-                              'failure.',
-            'CorrectiveActions': 'Connect shelf $(sschm_shelf_module.shelf-n'
-                                 'ame) module $('
-                                 'sschm_shelf_module.module-id) '
-                                 'to two storage switches, following the '
-                                 'guide'
-                                 ' applicable to your shelf.'},
-        'ShelfPSUFailure_Alert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Power_supply_failure',
-            'description': 'Power Supply Units (PSU) on Shelf $(sschm_shelf'
-                           '_psu.shelf-name) connected to controllers $('
-                           'sschm_shelf_psu.nodes) are not operational.',
-            'PossibleEffect': 'Some SAS or NVMe storage shelves might '
-                              'not be accessible.',
-            'CorrectiveActions': '1. Check the AC power distribution to '
-                                 'the PSU and the PSU power switch.2. '
-                                 'Switch off the PSU (if equipped). Remove '
-                                 'the PSU. Wait one minute. Insert the '
-                                 'PSU. Switch on the PSU (if equipped).'},
-        'StorageBridgePowerSupplyFailed_Alert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Power_supply_failure',
-            'description': '$(fhm_bridge_errors.component-name) '
-                           '$(fhm_bridge_errors.component-unique-id) of "$('
-                           'fhm_bridge_errors.name)" has failed.',
-            'PossibleEffect': 'If the remaining power supply fails,'
-                              ' "$(fhm_bridge_errors.name)" will go '
-                              'offline, causing a loss of path redundancy '
-                              'to storage.',
-            'CorrectiveActions': '1) Check the power source for the'
-                                 ' bridge, the power cords and fuses.2) If '
-                                 'the problem cannot be corrected, replace '
-                                 'the failed power supply.'},
-        'CoredumpMissingAlert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Configuration_error',
-            'description': 'Coredump device "$(nphm_coredump_info.displ'
-                           'ay-name)" is missing from the system.',
-            'PossibleEffect': 'Coredump files cannot be saved.',
-            'CorrectiveActions': '1. Perform a takeover of this node an'
-                                 'd bring the node down for maintenance. '
-                                 '2. Verify that a coredump device is '
-                                 'securely inserted in the system.3. Use '
-                                 'the "bye" LOADER command to reboot the '
-                                 'node, then perform a giveback.'},
-        'CoredumpWarnAlert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'hardware_degrading',
-            'description': 'Coredump device is approaching the end of its '
-                           'rated life.',
-            'PossibleEffect': 'A coredump device that reaches the end of its '
-                              'rated life might not be able to save or retain'
-                              'coredumps.',
-            'CorrectiveActions': '1. Plan a maintenance window to replace the '
-                                 'coredump device.2. Perform a takeover of '
-                                 'this node and bring the node down for '
-                                 'maintenance.3. Replace the coredump '
-                                 'device.4. Use the "bye" LOADER command '
-                                 'to reboot the node, then perform a giveback.'},
-        'NVDIMMBadHealthAlert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'hardware_degrading',
-            'description': 'NVDIMM "$(nphm_nvdimm_fru.display-name)" on node "$(nphm_nvdimm_fru.node-id)"is indicating a degraded status.',
-            'PossibleEffect': 'Potential data loss as the NVDIMM becomes degraded.',
-            'CorrectiveActions': 'Contact technical support for assistance with NVDIMM module replacement.'},
-        'NVDIMMFailEndOfLifeAlert': {
-            'severityofAlert': 'Critical',
-            'probableCause': 'hardware_degradation',
-            'description': 'Flash memory in NVDIMM "$(nphm_nvdimm_fru.'
-                           'display-name)"on node "$('
-                           'nphm_nvdimm_fru.node-id)" has reached its end '
-                           'of life.',
-            'PossibleEffect': 'Potential data loss because NVDIMM flash'
-                              ' memory is not usable.',
-            'CorrectiveActions': 'Contact technical support for assistance'
-                                 ' with NVDIMM module replacement.'},
-        'NVDIMMWarnLifeStatusAlert': {
-            'severityofAlert': 'Minor',
-            'probableCause': 'hardware_degrading',
-            'description': 'Flash memory in NVDIMM "$(nphm_nvdimm_fru'
-                           '.display-name)"on node "$('
-                           'nphm_nvdimm_fru.node-id)" is nearing its end '
-                           'of life.',
-            'PossibleEffect': 'Potential data loss if NVDIMM flash'
-                              ' memory becomes unusable.',
-            'CorrectiveActions': 'Contact technical support for assistance.'},
-        'ClusterIfInErrorsWarn_Alert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Threshold_crossed',
-            'description': 'The percentage of inbound packet errors of '
-                           'switch interface "$('
-                           'cluster_switch_analytics.unique-name)" is '
-                           'above the warning threshold.',
-            'PossibleEffect': 'Communication between nodes in the cluster'
-                              ' might be degraded.',
-            'CorrectiveActions': '1) Migrate any cluster LIF that uses this '
-                                 'connection to another port connected to '
-                                 'a cluster switch.For example, if cluster '
-                                 'LIF "clus1" is on port e0a and the other '
-                                 'LIF is on e0b,run the following command '
-                                 'to move "clus1" to e0b:"network '
-                                 'interface migrate -vserver vs1 -lif '
-                                 'clus1 -destination-node node1 '
-                                 '-destination-port e0b"2) Replace the '
-                                 'network cable with a known-good cable.If '
-                                 'errors are corrected, stop. No further '
-                                 'action is required.Otherwise, continue '
-                                 'to Step 3.3) Move the network cable to '
-                                 'another port on the node (if '
-                                 'available).Migrate the cluster LIF to '
-                                 'the new port.If errors are corrected, '
-                                 'contact technical support to '
-                                 'troubleshoot the original node '
-                                 'port.Otherwise, continue to Step 4.4) '
-                                 'Move the network cable to another '
-                                 'available cluster switch port.Migrate '
-                                 'the cluster LIF back to the original '
-                                 'port.If errors are corrected, contact '
-                                 'technical support to troubleshoot the '
-                                 'original switch port.If errors persist, '
-                                 'contact technical support for further '
-                                 'assistance.'},
-        'ClusterIfIslDownWarn_Alert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Cable_tamper',
-            'description': 'The cable used to connect switch "$(clu'
-                           'ster_switch_interface.unique-name)" to the ISL p'
-                           'ort might be faulty. For the port-channel, please check each individual link.',
-            'PossibleEffect': 'Cluster redundancy might be lost.',
-            'CorrectiveActions': '1) Check whether the cable is ful'
-                                 'ly inserted into the interface port on bot'
-                                 'h ends. 2) Reconnect the ISL port using '
-                                 'another cable. After reconnecting it, '
-                                 'verify whether the link of the ISL port '
-                                 'is up by executing the commands per the '
-                                 'switch configuration guide or by '
-                                 'checking whether the Link status LED is on.'},
-        'ClusterIfOutErrorsWarn_Alert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Threshold_crossed',
-            'description': 'The percentage of outbound packet error'
-                           's of switch interface "$(cluster_switch_analytics.unique-name)" '
-                           'is above the warning threshold.',
-            'PossibleEffect': 'Communication between nodes in the c'
-                              'luster might be degraded.',
-            'CorrectiveActions': '1) Migrate any cluster LIF that u'
-                                 'ses this connection to another port '
-                                 'connected to a cluster switch.For examp'
-                                 'le, if cluster LIF "clus1" is on port e0a '
-                                 'and the other LIF is on e0b,'
-                                 'run the following command to move "clus1" '
-                                 'to e0b:"network interface migrate '
-                                 '-vserver vs1 -lif clus1 -destination-node '
-                                 'node1 -destination-port e0b"2) Replace '
-                                 'the network cable with a known-good '
-                                 'cable.If errors are corrected, stop. No '
-                                 'further action is required.Otherwise, '
-                                 'continue to Step 3.3) Move the network '
-                                 'cable to another port on the node (if '
-                                 'available).Migrate the cluster LIF to '
-                                 'the new port.If errors are corrected, '
-                                 'contact technical support to '
-                                 'troubleshoot the original node '
-                                 'port.Otherwise, continue to Step 4.4) '
-                                 'Move the network cable to another '
-                                 'available cluster switch port.Migrate '
-                                 'the cluster LIF back to the original '
-                                 'port.If errors are corrected, contact '
-                                 'technical support to troubleshoot the '
-                                 'original switch port.If errors persist, '
-                                 'contact technical support for further '
-                                 'assistance.'},
-        'ClusterSwitchConnectivity_Alert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Configuration_error',
-            'description': 'One or more nodes are not connected to b'
-                           'oth cluster switches.',
-            'PossibleEffect': 'If one cluster switch fails, "$(clust'
-                              'er_switch_connection.node)" might lose access to the cluster.',
-            'CorrectiveActions': 'Verify that the switch "$(cluster_'
-                                 'switch_connection.missing-switch)" is connectedto the node "$(clus'
-                                 'ter_switch_connection.node)".'},
-        'ClusterSwitchlessConfig_Alert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Configuration_error',
-            'description': 'No cluster switch is detected and the sw'
-                           'itchless option is not enabled.',
-            'PossibleEffect': 'Communication problems and cluster co'
-                              'nnectivity issues occur.',
-            'CorrectiveActions': '1) If the cluster network is confi'
-                                 'gured as a two-node switchless cluster (TNSC),enable switchless de'
-                                 'tection by using the "network options detect-switchless-cluster modify -enabled true" command.No further action is required.2) If the cluster network is configured with cluster switches, the nodes fail to detect the switches.Ensure that the network interfaces on the cluster switches connected to the node cluster ports are enabled on both sides.If the errors are corrected, stop. No further action is required. Otherwise, continue to step 3.3) Check the physical connections between the nodes and the cluster switches. Replace network cables with known-good cables.If the errors are corrected, stop. No further action is required. Otherwise, continue to step 4.4) Ensure that either CDP (for Cisco switches) or ISDP (for NetApp CN1610 and Broadcom BES-53248 switches) is enabled on the cluster switches.'},
-        'StorageIfInErrorsWarn_Alert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Threshold_crossed',
-            'description': 'The percentage of inbound packet errors'
-                           ' of switch:port $(cluster_switch_analyt'
-                           'ics.device):$(cluster_switch_analytics.'
-                           'interface-name) is above the warning '
-                           'threshold.',
-            'PossibleEffect': 'Communication with storage shelves i'
-                              'n the cluster might be degraded.',
-            'CorrectiveActions': '1) Replace the network cable with'
-                                 ' a known-good cable.If errors are'
-                                 ' corrected, stop. No further actio'
-                                 'n is required.Otherwise, continue '
-                                 'to Step 2.2) Move the network cabl'
-                                 'e to another port on the node (if '
-                                 'available).Consult the guide appli'
-                                 'cable to your NVMe storage shelf to '
-                                 'review cabling rules for your system'
-                                 '.If errors are corrected, contact te'
-                                 'chnical support to troubleshoot the'
-                                 'original node port.Otherwise, contin'
-                                 'ue to Step 3.3) Move the network ca'
-                                 'ble to another available storage sw'
-                                 'itch port.If errors are corrected, '
-                                 'contact technical support to troubl'
-                                 'eshoot the original switch port.If '
-                                 'errors persist, contact technical su'
-                                 'pport for further assistance.'},
-        'StorageIfOutErrorsWarn_Alert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Threshold_crossed',
-            'description': 'The percentage of outbound packet errors of sw'
-                           'itch:port $(cluster_switch_analytics.device):'
-                           '$(cluster_switch_analytics.interface-name) '
-                           'is above the warning threshold.',
-            'PossibleEffect': 'Communication with storage shelves in the'
-                              ' cluster might be degraded.',
-            'CorrectiveActions': '1) Replace the network cable with a kn'
-                                 'own-good cable.If errors are corrected,'
-                                 ' stop. No further action is required.O'
-                                 'therwise, continue to Step 2.2) Move t'
-                                 'he network cable to another port on th'
-                                 'e node (if available).Consult the guid'
-                                 'e applicable to your NVMe storage shel'
-                                 'f to review cabling rules for your sys'
-                                 'tem.If errors are corrected, contact t'
-                                 'echnical support to troubleshoot the o'
-                                 'riginal node port.Otherwise, continue '
-                                 'to Step 3.3) Move the network cable to '
-                                 'another available storage switch port.I'
-                                 'f errors are corrected, contact techni'
-                                 'cal support to troubleshoot the origin'
-                                 'al switch port.If errors persist, conta'
-                                 'ct technical support for further assist'
-                                 'ance.'},
-        'StorageSwitchIfIslConfig_Alert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Configuration_error',
-            'description': 'An ISL link has been detected between storaqe '
-                           'switch:port $(cluster_switch_interface.device)'
-                           ':$(cluster_switch_interface.interface-name) and '
-                           'switch:port $(cluster_switch_interface.remote-'
-                           'device):$(cluster_switch_interface.remote-por'
-                           't-name)"',
-            'PossibleEffect': 'Poor storage performance could result.',
-            'CorrectiveActions': 'Disconnect the ISL cable connections'
-                                 ' between the two switches.'},
-        'StorageSwitchMissing_Alert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Configuration_error',
-            'description': 'Redundant configuration is missing for sto'
-                           'rage switches.',
-            'PossibleEffect': 'If the remaining storage switch fails,'
-                              ' you will no longer be able to access t'
-                              'he storage shelves.',
-            'CorrectiveActions': '1) Ensure that a redundant pair of s'
-                                 'torage switches exists in the networ'
-                                 'k.2) Ensure that cluster ports are '
-                                 'connected to both switches.3) Enable'
-                                 ' the Cisco Discovery Protocol (CDP)'
-                                 '/Industry Standard Discovery Protocol'
-                                 ' (ISDP) on switches, if you previousl'
-                                 'y disabled it. CDP/ISDP is enabled by'
-                                 ' default. Refer to your switch documen'
-                                 'tation for instructions. 4) If ONTAP(R)'
-                                 ' software cannot automatically discov'
-                                 'er a switch, use the "system switch e'
-                                 'thernet create" command to configure '
-                                 'discovery and monitoring of the switch'
-                                 '.'},
-        'SwitchAccess_Alert': {
-            'severityofAlert': 'Minor',
-            'probableCause': 'Login_attempts_failed',
-            'description': 'Login failed to Ethernet switch "$(cluste'
-                           'r_switch_information.unique-name)". Canno'
-                           't collect tech-support logs.',
-            'PossibleEffect': 'Ethernet switch tech-support logs are '
-                              'not available in AutoSupport(R) messag'
-                              'es for troubleshooting.',
-            'CorrectiveActions': '1) To set up public SSH key authent'
-                                 'ication on the Ethernet switch,run '
-                                 'the "system switch ethernet log set'
-                                 'up-password" command. ONTAP(R) sof'
-                                 'tware requires one-time use of the '
-                                 'Ethernet switch\'s administrative l'
-                                 'ogin credentialsto set up the publ'
-                                 'ic SSH key for ONTAP access. The a'
-                                 'dministrative credentials will be di'
-                                 'scarded after the setup command is '
-                                 'complete. 2) If public SSH key authe'
-                                 'ntication is already configured, log'
-                                 ' in to the Ethernet switch with adm'
-                                 'inistrative credentials from an SSH'
-                                 ' host or serial console to investiga'
-                                 'te the login failures. 3) To disable'
-                                 ' tech-support log collection, run th'
-                                 'e "system switch ethernet log disabl'
-                                 'e-collection" command.'},
-        'SwitchCommunityString_Alert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Configuration_error',
-            'description': 'Ethernet switch "$(cluster_switch_support'
-                           '.device)" with IP address "$(cluster_swit'
-                           'ch_support.ip-address)" is not reachable '
-                           'via SNMP. Incorrect SNMP community string'
-                           ' might be configured on the Ethernet switch.',
-            'PossibleEffect': 'Ethernet switch communication problems'
-                              ' and accessibility issues.',
-            'CorrectiveActions': 'Check the SNMP community string on '
-                                 'the Ethernet switch to verify that'
-                                 ' the expected community string is '
-                                 'configured. Use the "system switch'
-                                 ' ethernet show -snmp-config" comma'
-                                 'nd to view the expected community '
-                                 'string.'},
-        'SwitchFanUnknown_Alert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Fan_failure',
-            'description': 'The status of "$(cluster_switch_fan.fan-'
-                           'name)" on switch "$(cluster_switch_fan.d'
-                           'evice)" is unknown.',
-            'PossibleEffect': 'Unknown fan status in switch "$(clust'
-                              'er_switch_fan.device)" might affect '
-                              'cooling performance.',
-            'CorrectiveActions': '1) Verify that the fans on the sw'
-                                 'itch are running properly.2) Repl'
-                                 'ace the fan, if it is not operatio'
-                                 'nal.'},
-        'SwitchPortMTU_Alert': {
-            'severityofAlert': 'Minor',
-            'probableCause': 'Configuration_error',
-            'description': 'MTU value "$(cluster_switch_interface.rem'
-                           'ote-port-mtu)" on port "$(cluster_switch_i'
-                           'nterface.remote-port-name)" of node "$(clu'
-                           'ster_switch_interface.remote-device)" is '
-                           'improperly set. It should be 9000.',
-            'PossibleEffect': 'Received Ethernet packets that are larg'
-                              'er than the configured MTU are dropped,'
-                              ' causing data transfer issues.',
-            'CorrectiveActions': 'Modify the MTU by using the "network'
-                                 ' port broadcast-domain modify -ipspace'
-                                 ' Cluster -broadcast-domain Cluster -mtu'
-                                 ' <MTU>" command. To find out the broad'
-                                 'cast domain name of the port, run the '
-                                 '"network port broadcast-domain show" '
-                                 'command.'},
-        'SwitchPowerUnknown_Alert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Power_supply_failure',
-            'description': 'The status of "$(cluster_switch_power.psu'
-                           '-name)" on switch "$(cluster_switch_power'
-                           '.device)" is unknown.',
-            'PossibleEffect': 'Power supply redundancy on switch "$(c'
-                              'luster_switch_power.device)" might be '
-                              'lost.',
-            'CorrectiveActions': '1) Ensure that the power supply uni'
-                                 'ts supplying power to the switch are'
-                                 ' turned on. 2) Ensure that the powe'
-                                 'r cord is securely connected to the'
-                                 ' power supply of the switch.'},
-        'SwitchReboot_Alert': {
-            'severityofAlert': 'Minor',
-            'probableCause': 'Out_of_service',
-            'description': 'The Ethernet switch "$(cluster_switch_in'
-                           'formation.unique-name)" has recently reb'
-                           'ooted.',
-            'PossibleEffect': 'Communication problems and network co'
-                              'nnectivity issues might occur.',
-            'CorrectiveActions': 'If the Ethernet switch was not re'
-                                 'booted on purpose, then check the'
-                                 ' switch to ensure that it is oper'
-                                 'ating normally.'},
-        'SwitchTemperatureUnknown_Alert': {
-            'severityofAlert': 'Major',
-            'probableCause': 'Sensor_failure',
-            'description': 'The status of "$(cluster_switch_temperature'
-                           '.sensor-name)" on switch "$(cluster_switch_'
-                           'temperature.device)" is unknown.',
-            'PossibleEffect': 'Problems with the switch "$(cluster_swit'
-                              'ch_temperature.device)" temperature mig'
-                              'ht go undetected.',
-            'CorrectiveActions': "Run diagnostics on the switch to check the"
-                                 " operational status of the temperature s"
-                                 "ensors.For instructions about how to run "
-                                 "switch diagnostics, see the switch'"
-                                 "s configuration guide."}}
+# Copyright 2021 The SODA Authors.
+# All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WarrayANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+
+import time
+import six
+import hashlib
+import eventlet
+
+from oslo_log import log as logging
+from oslo_utils import units
+
+from delfin.drivers.netapp.dataontap import constants as constant
+from delfin import exception, utils
+from delfin.common import constants
+from delfin.drivers.utils.ssh_client import SSHPool
+from delfin.drivers.utils.tools import Tools
+
+LOG = logging.getLogger(__name__)
+
+
+class NetAppHandler(object):
+    OID_SERIAL_NUM = '1.3.6.1.4.1.789.1.1.9.0'
+    OID_TRAP_DATA = '1.3.6.1.4.1.789.1.1.12.0'
+    NODE_NAME = 'controller_name'
+    SECONDS_TO_MS = 1000
+
+    def __init__(self, **kwargs):
+        self.ssh_pool = SSHPool(**kwargs)
+
+    @staticmethod
+    def get_table_data(values):
+        header_index = 0
+        table = values.split("\r\n")
+        for i in range(0, len(table)):
+            if constant.PATTERN.search(table[i]):
+                header_index = i
+        return table[(header_index + 1):]
+
+    @staticmethod
+    def get_fs_id(vserver, volume):
+        return vserver + '_' + volume
+
+    @staticmethod
+    def get_qt_id(vserver, volume, qtree):
+        qt_id = vserver + '/' + volume
+        if qtree != '':
+            qt_id += '/' + qtree
+        return qt_id
+
+    def ssh_do_exec(self, command):
+        res = ''
+        with eventlet.Timeout(10, False):
+            res = self.ssh_pool.do_exec(command)
+        return res
+
+    @staticmethod
+    def get_size(limit, is_calculate=False):
+        if limit == '0B':
+            return 0
+        if limit == '-':
+            return 0 if is_calculate else '-'
+        return int(Tools.get_capacity_size(limit))
+
+    @staticmethod
+    def parse_alert(alert):
+        try:
+            alert_info = alert.get(NetAppHandler.OID_TRAP_DATA)
+            node_name = alert.get(NetAppHandler.NODE_NAME)
+            alert_info = alert_info.replace("]", '')
+            alert_array = alert_info.split("[")
+            alert_model = {}
+            alert_map = {}
+            if len(alert_array) > 1:
+                category = constants.Category.FAULT \
+                    if 'created' in alert_array[0] \
+                    else constants.Category.RECOVERY
+                alert_values = alert_array[1].split(",")
+                for alert_value in alert_values:
+                    array = alert_value.split("=")
+                    if len(array) > 1:
+                        key = array[0].replace(' ', '')
+                        value = array[1].replace(' ', '').replace('.', '')
+                        alert_map[key] = value
+                if alert_map and category == constants.Category.RECOVERY:
+                    alert_model = {
+                        'alert_id': alert_map.get('AlertId'),
+                        'alert_name': alert_map.get('AlertId'),
+                        'severity': None,
+                        'category': category,
+                        'type': constants.EventType.EQUIPMENT_ALARM,
+                        'occur_time': utils.utcnow_ms(),
+                        'description': None,
+                        'match_key': hashlib.md5(
+                            (alert_map.get('AlertId') + node_name +
+                             alert_map['AlertingResource']
+                             ).encode()).hexdigest(),
+                        'resource_type': constants.DEFAULT_RESOURCE_TYPE,
+                        'location': None
+                    }
+                else:
+                    raise exception.IncompleteTrapInformation(
+                        constant.STORAGE_VENDOR)
+            return alert_model
+        except exception.IncompleteTrapInformation as err:
+            raise err
+        except Exception as err:
+            err_msg = "Failed to parse alert from " \
+                      "netapp cmode: %s" % (six.text_type(err))
+            LOG.error(err_msg)
+            raise exception.InvalidResults(err_msg)
+
+    def login(self):
+        try:
+            result = self.ssh_do_exec('cluster identity show')
+            if 'is not a recognized command' in result \
+                    or 'command not found' in result:
+                raise exception.InvalidIpOrPort()
+        except Exception as e:
+            LOG.error("Failed to login netapp %s" %
+                      (six.text_type(e)))
+            raise e
+
+    def get_storage(self):
+        try:
+            raw_capacity = total_capacity = used_capacity = free_capacity = 0
+            controller_map_list = []
+            system_info = self.ssh_do_exec(
+                constant.CLUSTER_SHOW_COMMAND)
+            version_info = self.ssh_do_exec(
+                constant.VERSION_SHOW_COMMAND)
+            status_info = self.ssh_do_exec(
+                constant.STORAGE_STATUS_COMMAND)
+            controller_info = self.ssh_do_exec(
+                constant.CONTROLLER_SHOW_DETAIL_COMMAND)
+            Tools.split_value_map_list(
+                controller_info, controller_map_list, ":")
+            version_array = version_info.split("\r\n")
+            storage_version = ''
+            for version in version_array:
+                if 'NetApp' in version:
+                    storage_version = version.split(":")
+                    break
+            status = self.get_table_data(status_info)
+            status = constant.STORAGE_STATUS.get(status[0].split()[0])
+            disk_list = self.get_disks(None)
+            pool_list = self.list_storage_pools(None)
+            storage_map_list = []
+            Tools.split_value_map_list(
+                system_info, storage_map_list, split=':')
+            if len(storage_map_list) > 0:
+                storage_map = storage_map_list[len(storage_map_list) - 1]
+                controller_map = \
+                    controller_map_list[len(controller_map_list) - 1]
+                for disk in disk_list:
+                    raw_capacity += disk['capacity']
+                for pool in pool_list:
+                    total_capacity += pool['total_capacity']
+                    free_capacity += pool['free_capacity']
+                    used_capacity += pool['used_capacity']
+                storage_model = {
+                    "name": storage_map['ClusterName'],
+                    "vendor": constant.STORAGE_VENDOR,
+                    "model": controller_map['Model'],
+                    "status": status,
+                    "serial_number": storage_map['ClusterSerialNumber'],
+                    "firmware_version": storage_version[0],
+                    "location": controller_map['Location'],
+                    "total_capacity": total_capacity,
+                    "raw_capacity": raw_capacity,
+                    "used_capacity": used_capacity,
+                    "free_capacity": free_capacity
+                }
+                return storage_model
+        except exception.DelfinException as e:
+            err_msg = "Failed to get storage from " \
+                      "netapp cmode: %s" % (six.text_type(e.msg))
+            LOG.error(err_msg)
+            raise e
+        except Exception as err:
+            err_msg = "Failed to get storage from " \
+                      "netapp cmode: %s" % (six.text_type(err))
+            LOG.error(err_msg)
+            raise exception.InvalidResults(err_msg)
+
+    def get_aggregate(self, storage_id):
+        agg_list = []
+        agg_info = self.ssh_do_exec(
+            constant.AGGREGATE_SHOW_DETAIL_COMMAND)
+        agg_map_list = []
+        Tools.split_value_map_list(agg_info, agg_map_list, split=':')
+        for agg_map in agg_map_list:
+            if agg_map and 'Aggregate' in agg_map.keys():
+                status = constant.AGGREGATE_STATUS.get(agg_map['State'])
+                pool_model = {
+                    'name': agg_map['Aggregate'],
+                    'storage_id': storage_id,
+                    'native_storage_pool_id': agg_map['UUIDString'],
+                    'description': None,
+                    'status': status,
+                    'storage_type': constants.StorageType.UNIFIED,
+                    'total_capacity': self.get_size(agg_map['Size'], True),
+                    'used_capacity': self.get_size(agg_map['UsedSize'], True),
+                    'free_capacity':
+                        self.get_size(agg_map['AvailableSize'], True),
+                }
+                agg_list.append(pool_model)
+        return agg_list
+
+    def get_pool(self, storage_id):
+        pool_list = []
+        pool_info = self.ssh_do_exec(
+            constant.POOLS_SHOW_DETAIL_COMMAND)
+        pool_map_list = []
+        Tools.split_value_map_list(pool_info, pool_map_list, split=':')
+        for pool_map in pool_map_list:
+            if pool_map and 'StoragePoolName' in pool_map.keys():
+                status = constants.StoragePoolStatus.ABNORMAL
+                if pool_map['IsPoolHealthy?'] == 'true':
+                    status = constants.StoragePoolStatus.NORMAL
+                pool_model = {
+                    'name': pool_map['StoragePoolName'],
+                    'storage_id': storage_id,
+                    'native_storage_pool_id': pool_map['UUIDofStoragePool'],
+                    'description': None,
+                    'status': status,
+                    'storage_type': constants.StorageType.UNIFIED,
+                    'total_capacity':
+                        self.get_size(pool_map['StoragePoolTotalSize'], True),
+                    'used_capacity':
+                        self.get_size(pool_map['StoragePoolTotalSize'], True) -
+                        self.get_size(pool_map['StoragePoolUsableSize'], True),
+                    'free_capacity':
+                        self.get_size(pool_map['StoragePoolUsableSize'], True)
+                }
+                pool_list.append(pool_model)
+        return pool_list
+
+    def list_storage_pools(self, storage_id):
+        try:
+            pool_list = self.get_pool(storage_id)
+            agg_list = self.get_aggregate(storage_id)
+            return agg_list + pool_list
+        except exception.DelfinException as e:
+            err_msg = "Failed to get storage pool from " \
+                      "netapp cmode: %s" % (six.text_type(e))
+            LOG.error(err_msg)
+            raise e
+        except Exception as err:
+            err_msg = "Failed to get storage pool from " \
+                      "netapp cmode: %s" % (six.text_type(err))
+            LOG.error(err_msg)
+            raise exception.InvalidResults(err_msg)
+
+    def list_volumes(self, storage_id):
+        try:
+            volume_list = []
+            volume_info = self.ssh_do_exec(
+                constant.LUN_SHOW_DETAIL_COMMAND)
+            fs_list = self.get_filesystems(storage_id)
+            volume_map_list = []
+            Tools.split_value_map_list(volume_info, volume_map_list, split=':')
+            for volume_map in volume_map_list:
+                if volume_map and 'LUNName' in volume_map.keys():
+                    pool_id = None
+                    status = 'normal' if volume_map['State'] == 'online' \
+                        else 'offline'
+                    for fs in fs_list:
+                        if fs['name'] == volume_map['VolumeName']:
+                            pool_id = fs['native_pool_id']
+                    type = constants.VolumeType.THIN \
+                        if volume_map['SpaceAllocation'] == 'enabled' \
+                        else constants.VolumeType.THICK
+                    volume_model = {
+                        'name': volume_map['LUNName'],
+                        'storage_id': storage_id,
+                        'description': None,
+                        'status': status,
+                        'native_volume_id': volume_map['SerialNumber'],
+                        'native_storage_pool_id': pool_id,
+                        'wwn': None,
+                        'compressed': None,
+                        'deduplicated': None,
+                        'type': type,
+                        'total_capacity':
+                            self.get_size(volume_map['LUNSize'], True),
+                        'used_capacity':
+                            self.get_size(volume_map['UsedSize'], True),
+                        'free_capacity':
+                            self.get_size(volume_map['LUNSize'], True) -
+                            self.get_size(volume_map['UsedSize'], True)
+                    }
+                    volume_list.append(volume_model)
+            return volume_list
+        except exception.DelfinException as e:
+            err_msg = "Failed to get storage volume from " \
+                      "netapp cmode: %s" % (six.text_type(e))
+            LOG.error(err_msg)
+            raise e
+        except Exception as err:
+            err_msg = "Failed to get storage volume from " \
+                      "netapp cmode: %s" % (six.text_type(err))
+            LOG.error(err_msg)
+            raise exception.InvalidResults(err_msg)
+
+    def get_alerts(self, query_para):
+        alert_list = []
+        alert_info = self.ssh_do_exec(
+            constant.ALTER_SHOW_DETAIL_COMMAND)
+        alert_map_list = []
+        Tools.split_value_map_list(
+            alert_info, alert_map_list, True, split=':')
+        for alert_map in alert_map_list:
+            if alert_map and 'AlertID' in alert_map.keys():
+                occur_time = int(time.mktime(time.strptime(
+                    alert_map['IndicationTime'],
+                    constant.ALTER_TIME_TYPE)))
+                if not query_para or \
+                        (int(query_para['begin_time'])
+                         <= occur_time
+                         <= int(query_para['end_time'])):
+                    alert_model = {
+                        'alert_id': alert_map['AlertID'],
+                        'alert_name': alert_map['AlertID'],
+                        'severity': constant.ALERT_SEVERITY
+                        [alert_map['PerceivedSeverity']],
+                        'category': constants.Category.FAULT,
+                        'type': constants.EventType.EQUIPMENT_ALARM,
+                        'occur_time': occur_time * 1000,
+                        'description': alert_map['Description'],
+                        'sequence_number': alert_map['AlertID'],
+                        'match_key': hashlib.md5(
+                            (alert_map['AlertID'] +
+                             alert_map['Node'] +
+                             alert_map['AlertingResource']
+                             ).encode()).hexdigest(),
+                        'resource_type': constants.DEFAULT_RESOURCE_TYPE,
+                        'location':
+                            alert_map['ProbableCause'] +
+                            ':' + alert_map['PossibleEffect']
+                    }
+                    alert_list.append(alert_model)
+        return alert_list
+
+    def list_alerts(self, query_para):
+        try:
+            """Query the two alarms separately"""
+            alert_list = self.get_alerts(query_para)
+            return alert_list
+        except exception.DelfinException as e:
+            err_msg = "Failed to get storage alert from " \
+                      "netapp cmode: %s" % (six.text_type(e))
+            LOG.error(err_msg)
+            raise e
+        except Exception as err:
+            err_msg = "Failed to get storage alert from " \
+                      "netapp cmode: %s" % (six.text_type(err))
+            LOG.error(err_msg)
+            raise exception.InvalidResults(err_msg)
+
+    def clear_alert(self, alert):
+        try:
+            ssh_command = \
+                constant.CLEAR_ALERT_COMMAND + alert['alert_id']
+            self.ssh_do_exec(ssh_command)
+        except exception.DelfinException as e:
+            err_msg = "Failed to get storage alert from " \
+                      "netapp cmode: %s" % (six.text_type(e))
+            LOG.error(err_msg)
+            raise e
+        except Exception as err:
+            err_msg = "Failed to get storage alert from " \
+                      "netapp cmode: %s" % (six.text_type(err))
+            LOG.error(err_msg)
+            raise exception.InvalidResults(err_msg)
+
+    def get_disks(self, storage_id):
+        disks_list = []
+        physicals_list = []
+        disks_info = self.ssh_do_exec(
+            constant.DISK_SHOW_DETAIL_COMMAND)
+        physicals_info = self.ssh_do_exec(
+            constant.DISK_SHOW_PHYSICAL_COMMAND)
+        error_disk = self.ssh_do_exec(
+            constant.DISK_ERROR_COMMAND
+        )
+        error_disk_list = []
+        error_disk_array = self.get_table_data(error_disk)
+        for error_disk in error_disk_array:
+            error_array = error_disk.split()
+            if len(error_array) > 2:
+                error_disk_list.append(error_array[0])
+        disks_map_list = []
+        physical_array = self.get_table_data(physicals_info)
+        for physical in physical_array:
+            physicals_list.append(physical.split())
+        Tools.split_value_map_list(disks_info, disks_map_list, split=':')
+        for disks_map in disks_map_list:
+            if disks_map and 'Disk' in disks_map.keys():
+                speed = physical_type = firmware = None
+                logical_type = constant.DISK_LOGICAL. \
+                    get(disks_map['ContainerType'])
+                """Map disk physical information"""
+                for physical_info in physicals_list:
+                    if len(physical_info) > 6 and \
+                            physical_info[0] == disks_map['Disk']:
+                        physical_type = \
+                            constant.DISK_TYPE.get(physical_info[1])
+                        speed = physical_info[5] \
+                            if physical_info[5] != '-' else 0
+                        firmware = physical_info[4]
+                status = constants.DiskStatus.NORMAL
+                if disks_map['Disk'] in error_disk_list:
+                    status = constants.DiskStatus.ABNORMAL
+                disk_model = {
+                    'name': disks_map['Disk'],
+                    'storage_id': storage_id,
+                    'native_disk_id': disks_map['Disk'],
+                    'serial_number': disks_map['SerialNumber'],
+                    'manufacturer': disks_map['Vendor'],
+                    'model': disks_map['Model'],
+                    'firmware': firmware,
+                    'speed': speed,
+                    'capacity': self.get_size(disks_map['PhysicalSize'], True),
+                    'status': status,
+                    'physical_type': physical_type,
+                    'logical_type': logical_type,
+                    'native_disk_group_id': disks_map['Aggregate'],
+                    'location': None,
+                }
+                disks_list.append(disk_model)
+        return disks_list
+
+    def get_filesystems(self, storage_id):
+        fs_list = []
+        fs_info = self.ssh_do_exec(
+            constant.FS_SHOW_DETAIL_COMMAND)
+        thin_fs_info = self.ssh_do_exec(
+            constant.THIN_FS_SHOW_COMMAND)
+        pool_list = self.list_storage_pools(storage_id)
+        thin_fs_array = self.get_table_data(thin_fs_info)
+        fs_map_list = []
+        Tools.split_value_map_list(fs_info, fs_map_list, split=':')
+        for fs_map in fs_map_list:
+            type = constants.FSType.THICK
+            if fs_map and 'VolumeName' in fs_map.keys():
+                pool_id = ""
+                """get pool id"""
+                for pool in pool_list:
+                    if pool['name'] == fs_map['AggregateName']:
+                        pool_id = pool['native_storage_pool_id']
+                deduplicated = True
+                if fs_map['SpaceSavedbyDeduplication'] == '0B':
+                    deduplicated = False
+                if len(thin_fs_array) > 2:
+                    for thin_vol in thin_fs_array:
+                        thin_array = thin_vol.split()
+                        if len(thin_array) > 4:
+                            if thin_array[1] == fs_map['VolumeName']:
+                                type = constants.VolumeType.THIN
+                compressed = True
+                if fs_map['VolumeContainsSharedorCompressedData'] == \
+                        'false':
+                    compressed = False
+                status = constant.FS_STATUS.get(fs_map['VolumeState'])
+                fs_id = self.get_fs_id(
+                    fs_map['VserverName'], fs_map['VolumeName'])
+                fs_model = {
+                    'name': fs_map['VolumeName'],
+                    'storage_id': storage_id,
+                    'native_filesystem_id': fs_id,
+                    'native_pool_id': pool_id,
+                    'compressed': compressed,
+                    'deduplicated': deduplicated,
+                    'worm': constant.WORM_TYPE.get(fs_map['SnapLockType']),
+                    'status': status,
+                    'security_mode':
+                        constant.SECURITY_STYLE.get(
+                            fs_map['SecurityStyle'], fs_map['SecurityStyle']),
+                    'type': type,
+                    'total_capacity': self.get_size(fs_map['VolumeSize']),
+                    'used_capacity':
+                        self.get_size(fs_map['VolumeSize'], True) -
+                        self.get_size(fs_map['AvailableSize'], True),
+                    'free_capacity': self.get_size(fs_map['AvailableSize'])
+                }
+                if fs_model['total_capacity'] != '-' \
+                        and fs_model['total_capacity'] > 0:
+                    fs_list.append(fs_model)
+        return fs_list
+
+    def list_controllers(self, storage_id):
+        try:
+            controller_list = []
+            controller_info = self.ssh_do_exec(
+                constant.CONTROLLER_SHOW_DETAIL_COMMAND)
+            controller_ips = self.ssh_do_exec(
+                constant.CONTROLLER_IP_COMMAND)
+            ips_array = self.get_table_data(controller_ips)
+            ip_map = {}
+            controller_map_list = []
+            Tools.split_value_map_list(
+                controller_info, controller_map_list, split=':')
+            for controller_map in controller_map_list:
+                if controller_map and 'Node' in controller_map.keys():
+                    for ips in ips_array:
+                        ip_array = ips.split()
+                        key = value = ''
+                        if len(ip_array) == 4:
+                            for ip in ip_array:
+                                if ip == controller_map['Node']:
+                                    key = ip
+                                if constant.IP_PATTERN.search(ip):
+                                    value = ip
+                                ip_map[key] = value
+                                continue
+                    status = constants.ControllerStatus.NORMAL \
+                        if controller_map['Health'] == 'true' \
+                        else constants.ControllerStatus.OFFLINE
+                    controller_model = {
+                        'name': controller_map['Node'],
+                        'storage_id': storage_id,
+                        'native_controller_id': controller_map['SystemID'],
+                        'status': status,
+                        'location': controller_map['Location'],
+                        'soft_version': None,
+                        'cpu_info': None,
+                        'memory_size': None,
+                        'mgmt_ip': ip_map.get(controller_map['Node'])
+                    }
+                    controller_list.append(controller_model)
+            return controller_list
+        except exception.DelfinException as e:
+            err_msg = "Failed to get storage controllers from " \
+                      "netapp cmode: %s" % (six.text_type(e))
+            LOG.error(err_msg)
+            raise e
+
+        except Exception as err:
+            err_msg = "Failed to get storage controllers from " \
+                      "netapp cmode: %s" % (six.text_type(err))
+            LOG.error(err_msg)
+            raise exception.InvalidResults(err_msg)
+
+    def get_eth_port(self, storage_id):
+        try:
+            eth_list = []
+            eth_info = self.ssh_do_exec(
+                constant.PORT_SHOW_DETAIL_COMMAND)
+
+            eth_map_list = []
+            Tools.split_value_map_list(eth_info, eth_map_list, split=':')
+            for eth_map in eth_map_list:
+                if eth_map and 'Port' in eth_map.keys():
+                    logical_type = constant.ETH_LOGICAL_TYPE.get(
+                        eth_map['PortType'])
+                    port_id = \
+                        eth_map['Node'] + '_' + eth_map['Port']
+                    eth_model = {
+                        'name': eth_map['Port'],
+                        'storage_id': storage_id,
+                        'native_port_id': port_id,
+                        'location':
+                            eth_map['Node'] +
+                            ':' + eth_map['Port'],
+                        'connection_status':
+                            constants.PortConnectionStatus.CONNECTED
+                            if eth_map['Link'] == 'up'
+                            else constants.PortConnectionStatus.DISCONNECTED,
+                        'health_status':
+                            constants.PortHealthStatus.NORMAL
+                            if eth_map['PortHealthStatus'] == 'healthy'
+                            else constants.PortHealthStatus.ABNORMAL,
+                        'type': constants.PortType.ETH,
+                        'logical_type': logical_type,
+                        'speed': int(eth_map['SpeedOperational']) * units.Mi
+                        if eth_map['SpeedOperational'] != '-' else 0,
+                        'max_speed':
+                            int(eth_map['SpeedOperational']) * units.Mi
+                        if eth_map['SpeedOperational'] != '-' else 0,
+                        'native_parent_id': None,
+                        'wwn': None,
+                        'mac_address': eth_map['MACAddress'],
+                        'ipv4': None,
+                        'ipv4_mask': None,
+                        'ipv6': None,
+                        'ipv6_mask': None,
+                    }
+                    eth_list.append(eth_model)
+            return eth_list
+        except exception.DelfinException as e:
+            err_msg = "Failed to get storage ports from " \
+                      "netapp cmode: %s" % (six.text_type(e))
+            LOG.error(err_msg)
+            raise e
+        except Exception as err:
+            err_msg = "Failed to get storage ports from " \
+                      "netapp cmode: %s" % (six.text_type(err))
+            LOG.error(err_msg)
+            raise exception.InvalidResults(err_msg)
+
+    def get_fc_port(self, storage_id):
+        try:
+            fc_list = []
+            fc_info = self.ssh_do_exec(
+                constant.FC_PORT_SHOW_DETAIL_COMMAND)
+            fc_map_list = []
+            Tools.split_value_map_list(fc_info, fc_map_list, split=':')
+            for fc_map in fc_map_list:
+                if fc_map and 'Node' in fc_map.keys():
+                    type = constant.FC_TYPE.get(fc_map['PhysicalProtocol'])
+                    port_id = \
+                        fc_map['Node'] + '_' + fc_map['Adapter']
+                    fc_model = {
+                        'name':
+                            fc_map['Node'] +
+                            ':' + fc_map['Adapter'],
+                        'storage_id': storage_id,
+                        'native_port_id': port_id,
+                        'location':
+                            fc_map['Node'] +
+                            ':' + fc_map['Adapter'],
+                        'connection_status':
+                            constants.PortConnectionStatus.CONNECTED
+                            if fc_map['AdministrativeStatus'] == 'up'
+                            else constants.PortConnectionStatus.DISCONNECTED,
+                        'health_status':
+                            constants.PortHealthStatus.NORMAL
+                            if fc_map['OperationalStatus'] == 'online'
+                            else constants.PortHealthStatus.ABNORMAL,
+                        'type': type,
+                        'logical_type': None,
+                        'speed': int(fc_map['DataLinkRate(Gbit)']) * units.Gi
+                        if fc_map['DataLinkRate(Gbit)'] != '-' else 0,
+                        'max_speed': int(fc_map['MaximumSpeed']) * units.Gi
+                        if fc_map['MaximumSpeed'] != '-' else 0,
+                        'native_parent_id': None,
+                        'wwn': fc_map['AdapterWWPN'],
+                        'mac_address': None,
+                        'ipv4': None,
+                        'ipv4_mask': None,
+                        'ipv6': None,
+                        'ipv6_mask': None,
+                    }
+                    fc_list.append(fc_model)
+            return fc_list
+        except exception.DelfinException as e:
+            err_msg = "Failed to get storage ports from " \
+                      "netapp cmode: %s" % (six.text_type(e))
+            LOG.error(err_msg)
+            raise e
+
+        except Exception as err:
+            err_msg = "Failed to get storage ports from " \
+                      "netapp cmode: %s" % (six.text_type(err))
+            LOG.error(err_msg)
+            raise exception.InvalidResults(err_msg)
+
+    def list_ports(self, storage_id):
+        ports_list = \
+            self.get_fc_port(storage_id) + \
+            self.get_eth_port(storage_id)
+        return ports_list
+
+    def list_disks(self, storage_id):
+        try:
+            return self.get_disks(storage_id)
+        except exception.DelfinException as e:
+            err_msg = "Failed to get storage disks from " \
+                      "netapp cmode: %s" % (six.text_type(e))
+            LOG.error(err_msg)
+            raise e
+
+        except Exception as err:
+            err_msg = "Failed to get storage disks from " \
+                      "netapp cmode: %s" % (six.text_type(err))
+            LOG.error(err_msg)
+            raise exception.InvalidResults(err_msg)
+
+    def list_qtrees(self, storage_id):
+        try:
+            qt_list = []
+            qt_info = self.ssh_do_exec(
+                constant.QTREE_SHOW_DETAIL_COMMAND)
+            fs_info = self.ssh_do_exec(
+                constant.FS_SHOW_DETAIL_COMMAND)
+            fs_map_list = []
+            qt_map_list = []
+            Tools.split_value_map_list(fs_info, fs_map_list, split=':')
+            Tools.split_value_map_list(qt_info, qt_map_list, split=':')
+            for qt_map in qt_map_list:
+                if qt_map and 'QtreeName' in qt_map.keys():
+                    fs_id = self.get_fs_id(qt_map['VserverName'],
+                                           qt_map['VolumeName'])
+                    qtree_path = None
+                    for fs_map in fs_map_list:
+                        if fs_map and 'VserverName' in fs_map.keys() \
+                                and fs_id == self.get_fs_id(
+                                fs_map['VserverName'],
+                                fs_map['VolumeName']) \
+                                and fs_map['JunctionPath'] != '-':
+                            qtree_path = fs_map['JunctionPath']
+                            break
+                    qt_id = self.get_qt_id(
+                        qt_map['VserverName'],
+                        qt_map['VolumeName'],
+                        qt_map['QtreeName'])
+                    qtree_name = qt_map['QtreeName']
+                    if qt_map['QtreeName'] and qtree_path:
+                        qtree_path += '/' + qt_map['QtreeName']
+                        qtree_path = qtree_path.replace('//', '/')
+                    else:
+                        qtree_name = qt_id
+                    qt_model = {
+                        'name': qtree_name,
+                        'storage_id': storage_id,
+                        'native_qtree_id': qt_id,
+                        'path': qtree_path,
+                        'native_filesystem_id': fs_id,
+                        'security_mode': qt_map['SecurityStyle'],
+                    }
+                    qt_list.append(qt_model)
+            return qt_list
+        except exception.DelfinException as err:
+            err_msg = "Failed to get storage qtrees from " \
+                      "netapp cmode: %s" % (six.text_type(err))
+            LOG.error(err_msg)
+            raise err
+
+        except Exception as err:
+            err_msg = "Failed to get storage qtrees from " \
+                      "netapp cmode: %s" % (six.text_type(err))
+            LOG.error(err_msg)
+            raise exception.InvalidResults(err_msg)
+
+    def get_nfs_shares(self, storage_id, qtree_list, protocol_map):
+        try:
+            nfs_info = self.ssh_do_exec(
+                constant.NFS_SHARE_SHOW_COMMAND)
+            nfs_list = []
+            fs_map_list = []
+            Tools.split_value_map_list(nfs_info, fs_map_list, split=':')
+            for fs_map in fs_map_list:
+                if fs_map and 'VserverName' in fs_map.keys():
+                    protocol = protocol_map.get(fs_map['VserverName'])
+                    if constants.ShareProtocol.NFS in protocol:
+                        fs_id = self.get_fs_id(fs_map['VserverName'],
+                                               fs_map['VolumeName'])
+                        share_name = \
+                            fs_map['VserverName'] + '/' + fs_map['VolumeName']
+                        qt_id = self.get_qt_id(fs_map['VserverName'],
+                                               fs_map['VolumeName'], '')
+                        qtree_id = None
+                        for qtree in qtree_list:
+                            if qtree['native_qtree_id'] == qt_id:
+                                qtree_id = qt_id
+                            if fs_id == qtree['native_filesystem_id']\
+                                    and qtree['name'] != ""\
+                                    and qtree['name'] != \
+                                    qtree['native_qtree_id']:
+                                qt_share_name = \
+                                    share_name + '/' + qtree['name']
+                                share = {
+                                    'name': qt_share_name,
+                                    'storage_id': storage_id,
+                                    'native_share_id':
+                                        qt_share_name + '_' +
+                                        constants.ShareProtocol.NFS,
+                                    'native_qtree_id':
+                                        qtree['native_qtree_id'],
+                                    'native_filesystem_id':
+                                        qtree['native_filesystem_id'],
+                                    'path': qtree['path'],
+                                    'protocol': constants.ShareProtocol.NFS
+                                }
+                                nfs_list.append(share)
+                        share = {
+                            'name': share_name,
+                            'storage_id': storage_id,
+                            'native_share_id':
+                                share_name + '_' + constants.ShareProtocol.NFS,
+                            'native_qtree_id': qtree_id,
+                            'native_filesystem_id': fs_id,
+                            'path': fs_map['JunctionPath'],
+                            'protocol': constants.ShareProtocol.NFS
+                        }
+                        nfs_list.append(share)
+            return nfs_list
+        except exception.DelfinException as err:
+            err_msg = "Failed to get storage nfs share from " \
+                      "netapp cmode: %s" % (six.text_type(err))
+            LOG.error(err_msg)
+            raise err
+        except Exception as err:
+            err_msg = "Failed to get storage nfs share from " \
+                      "netapp cmode: %s" % (six.text_type(err))
+            LOG.error(err_msg)
+            raise exception.InvalidResults(err_msg)
+
+    def get_cifs_shares(self, storage_id, vserver_name,
+                        qtree_list, protocol_map):
+        shares_list = []
+        share_info = self.ssh_do_exec(
+            (constant.CIFS_SHARE_SHOW_DETAIL_COMMAND %
+             {'vserver_name': vserver_name}))
+        share_map_list = []
+        Tools.split_value_map_list(share_info, share_map_list, split=':')
+        for share_map in share_map_list:
+            if share_map and 'VolumeName' in share_map.keys() and \
+                    share_map['VolumeName'] != '-':
+                protocol_str = protocol_map.get(
+                    share_map['Vserver'])
+                fs_id = self.get_fs_id(share_map['Vserver'],
+                                       share_map['VolumeName'])
+                share_id = fs_id + '_' + share_map['Share'] + '_'
+                qtree_id = None
+                for qtree in qtree_list:
+                    name_array = share_map['Path'].split('/')
+                    if len(name_array) > 0:
+                        qtree_name = name_array[len(name_array) - 1]
+                        if qtree_name == share_map['VolumeName']:
+                            qtree_name = ''
+                        qt_id = self.get_qt_id(
+                            share_map['Vserver'],
+                            share_map['VolumeName'], qtree_name)
+                    else:
+                        break
+                    if qtree['native_qtree_id'] == qt_id:
+                        qtree_id = qt_id
+                        break
+                if constants.ShareProtocol.CIFS in protocol_str:
+                    share = {
+                        'name': share_map['Share'],
+                        'storage_id': storage_id,
+                        'native_share_id':
+                            share_id + constants.ShareProtocol.CIFS,
+                        'native_qtree_id': qtree_id,
+                        'native_filesystem_id': fs_id,
+                        'path': share_map['Path'],
+                        'protocol': constants.ShareProtocol.CIFS
+                    }
+                    shares_list.append(share)
+        return shares_list
+
+    def list_shares(self, storage_id):
+        try:
+            shares_list = []
+            qtree_list = self.list_qtrees(None)
+            protocol_info = self.ssh_do_exec(
+                constant.SHARE_AGREEMENT_SHOW_COMMAND)
+            protocol_map = {}
+            protocol_arr = self.get_table_data(protocol_info)
+            for protocol in protocol_arr:
+                agr_arr = protocol.split()
+                if len(agr_arr) > 1:
+                    protocol_map[agr_arr[0]] = agr_arr[1]
+            vserver_info = self.ssh_do_exec(
+                constant.VSERVER_SHOW_COMMAND)
+            vserver_array = self.get_table_data(vserver_info)
+            for vserver in vserver_array:
+                vserver_name = vserver.split()
+                if len(vserver_name) > 1:
+                    shares_list += self.get_cifs_shares(
+                        storage_id, vserver_name[0], qtree_list, protocol_map)
+            shares_list += self.get_nfs_shares(
+                storage_id, qtree_list, protocol_map)
+            return shares_list
+        except exception.DelfinException as err:
+            err_msg = "Failed to get storage shares from " \
+                      "netapp cmode: %s" % (six.text_type(err))
+            LOG.error(err_msg)
+            raise err
+
+        except Exception as err:
+            err_msg = "Failed to get storage shares from " \
+                      "netapp cmode: %s" % (six.text_type(err))
+            LOG.error(err_msg)
+            raise exception.InvalidResults(err_msg)
+
+    def list_filesystems(self, storage_id):
+        try:
+            fs_list = self.get_filesystems(storage_id)
+            return fs_list
+        except exception.DelfinException as e:
+            err_msg = "Failed to get storage volume from " \
+                      "netapp cmode: %s" % (six.text_type(e))
+            LOG.error(err_msg)
+            raise e
+        except Exception as err:
+            err_msg = "Failed to get storage volume from " \
+                      "netapp cmode: %s" % (six.text_type(err))
+            LOG.error(err_msg)
+            raise exception.InvalidResults(err_msg)
+
+    def list_quotas(self, storage_id):
+        try:
+            quota_list = []
+            quotas_info = self.ssh_do_exec(
+                constant.QUOTA_SHOW_DETAIL_COMMAND)
+            quota_map_list = []
+            Tools.split_value_map_list(quotas_info, quota_map_list, ":")
+            for quota_map in quota_map_list:
+                user_group_name = None
+                if quota_map and 'VolumeName' in quota_map.keys():
+                    quota_id = \
+                        quota_map['Vserver'] + '_' + \
+                        quota_map['VolumeName'] + '_' + \
+                        quota_map['Type'] + '_' + \
+                        quota_map['QtreeName'] + '_' + \
+                        quota_map['Target']
+                    type = constant.QUOTA_TYPE.get(quota_map['Type'])
+                    qt_id = self.get_qt_id(
+                        quota_map['Vserver'],
+                        quota_map['VolumeName'], '')
+                    if type == 'tree' and quota_map['Target'] != '':
+                        qt_id += '/' + quota_map['Target']
+                    else:
+                        if type == 'user' or 'group':
+                            user_group_name = quota_map['Target']
+                        if quota_map['QtreeName'] != '':
+                            qt_id += '/' + quota_map['QtreeName']
+                    fs_id = self.get_fs_id(quota_map['Vserver'],
+                                           quota_map['VolumeName'])
+                    quota = {
+                        'native_quota_id': quota_id,
+                        'type': type,
+                        'storage_id': storage_id,
+                        'native_filesystem_id': fs_id,
+                        'native_qtree_id': qt_id,
+                        'capacity_hard_limit':
+                            self.get_size(quota_map['DiskLimit']),
+                        'capacity_soft_limit':
+                            self.get_size(quota_map['SoftDiskLimit']),
+                        'file_hard_limit':
+                            int(quota_map['FilesLimit'])
+                            if quota_map['FilesLimit'] != '-' else '-',
+                        'file_soft_limit':
+                            int(quota_map['SoftFilesLimit'])
+                            if quota_map['SoftFilesLimit'] != '-' else '-',
+                        'file_count': None,
+                        'used_capacity': None,
+                        'user_group_name': user_group_name
+                    }
+                    quota_list.append(quota)
+            return quota_list
+        except exception.DelfinException as e:
+            err_msg = "Failed to get storage volume from " \
+                      "netapp cmode: %s" % (six.text_type(e))
+            LOG.error(err_msg)
+            raise e
+        except Exception as err:
+            err_msg = "Failed to get storage volume from " \
+                      "netapp cmode: %s" % (six.text_type(err))
+            LOG.error(err_msg)
+            raise exception.InvalidResults(err_msg)
+
+    def get_alert_sources(self):
+        try:
+            ip_list = []
+            mgt_ip = self.ssh_pool.do_exec(constant.MGT_IP_COMMAND)
+            node_ip = self.ssh_pool.do_exec(constant.NODE_IP_COMMAND)
+            mgt_ip_array = self.get_table_data(mgt_ip)
+            node_ip_array = self.get_table_data(node_ip)
+            for node in node_ip_array:
+                ip_array = node.split()
+                if len(ip_array) == 3:
+                    ip_list.append({'host': ip_array[2]})
+            ip_list.append({'host': mgt_ip_array[0].split()[2]})
+            return ip_list
+        except exception.DelfinException as e:
+            err_msg = "Failed to get storage ip from " \
+                      "netapp cmode: %s" % (six.text_type(e))
+            LOG.error(err_msg)
+            raise e
+        except Exception as err:
+            err_msg = "Failed to get storage ip from " \
+                      "netapp cmode: %s" % (six.text_type(err))
+            LOG.error(err_msg)
+            raise exception.InvalidResults(err_msg)
